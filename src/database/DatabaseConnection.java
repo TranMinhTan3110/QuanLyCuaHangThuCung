@@ -9,8 +9,8 @@ import java.sql.SQLException;
 
 public class DatabaseConnection {
     private static final String USER = "sa";
-    private static final String PASSWORD = "tanbeo@321";
-    private static final String SERVER = "Tan\\MINHTAN";
+    private static final String PASSWORD = "Mitsuki123456";
+    private static final String SERVER = "LAPTOP-RMNH9VA6";
     private static final String DATABASE = "QuanLyCuaHangThuCung";
     private static final int PORT = 1433;
 
@@ -21,7 +21,7 @@ public class DatabaseConnection {
         ds.setServerName(SERVER);
         ds.setPortNumber(PORT);
         ds.setDatabaseName(DATABASE);
-        //ds.setEncrypt(false); // Không dùng SSL
+//        ds.setEncrypt(false); // Không dùng SSL
         ds.setTrustServerCertificate(true); // Bỏ qua kiểm tra chứng chỉ
 
         return ds.getConnection();
