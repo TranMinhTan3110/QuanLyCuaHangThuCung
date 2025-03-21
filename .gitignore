@@ -27,3 +27,5 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+# Ignore database connection file
+src/dao/DatabaseConnection.java
