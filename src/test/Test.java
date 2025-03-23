@@ -6,7 +6,7 @@ import respository.userRespositorty;
 import service.AuthService;
 import view.LoginView;
 
-public class Test {m
+public class Test {
     public static void main(String[] args) {
         UserResposittoryImpl user = new UserResposittoryImpl();
         AuthService authService = new AuthService(user);
