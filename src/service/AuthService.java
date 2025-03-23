@@ -1,33 +1,40 @@
 package service;
 
-import model.entity.Role;
+import dao.LoginDAO.implement.UserResposittoryImpl;
 import model.entity.User;
 import model.request.LoginRequest;
 import model.response.LoginResponse;
-import respository.userResponsitorty;
-
-import java.sql.*;
+import respository.userRespositorty;
 
 public class AuthService {
-    private userResponsitorty  userResponsitorty;
+    //   private userRespositorty userRespositorty;
+    private UserResposittoryImpl user;
 
-    public AuthService(userResponsitorty userResponsitorty) {
-        this.userResponsitorty = userResponsitorty;
+    public AuthService(UserResposittoryImpl user) {
+        this.user = user;
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public boolean checkLogin(String userName, String password) {
         LoginResponse loginResponse = new LoginResponse();
-        User user = userResponsitorty.getUserWithUserNameAndPassWord(loginRequest);
-        if(user == null){
-            loginResponse.setMessage("Không tồn tại tài khoản");
-            loginResponse.setSuccess(false);
-            return loginResponse;
+//        userRespositorty.printAllNhanVien();
+//        User user = userRespositorty.getUserWithUserNameAndPassWord(loginRequest);
+//        if(user == null){
+//            loginResponse.setMessage("Không tồn tại tài khoản");
+//            loginResponse.setSuccess(false);
+//            System.out.println(loginResponse.getMessage());
+//            return loginResponse;
+//        }
+//        loginResponse.setSuccess(true);
+//        loginResponse.setMessage("Dăng nhập thành công");
+//        loginResponse.setUser(user);
+//        System.out.println(loginResponse.getMessage());
+//        return  loginResponse;
+        LoginRequest loginRequest = new LoginRequest(userName, password);
+        User u = user.getUserWithUserNameAndPassWord(loginRequest);
+        if (u == null) {
+            return false;
         }
-        loginResponse.setSuccess(true);
-        loginResponse.setMessage("Dăng nhập thành công");
-        loginResponse.setUser(user);
-        return  loginResponse;
+        return true;
 
     }
-
 }

@@ -1,22 +1,23 @@
-package respository.implement;
+package dao.LoginDAO.implement;
 
+import dao.DatabaseConnection;
 import model.entity.Role;
 import model.entity.User;
 import model.request.LoginRequest;
-import respository.userResponsitorty;
+import respository.userRespositorty;
 
 import java.sql.*;
 
-public class UserResposittoryImpl implements userResponsitorty {
-    private static final String url = "jdbc:sqlserver://localhost:1433;databaseName=truong;encrypt=false";
-    private static final String userName = "sa";
-    private static final String password = "Kha@1205";
+public class UserResposittoryImpl implements userRespositorty {
+
     @Override
     public User getUserWithUserNameAndPassWord(LoginRequest loginRequest) {
-        String query = "SELECT * FROM GiaoVien WHERE userName = ? AND password = ?";
 
-        try (Connection conn = DriverManager.getConnection(url, userName, password);
+        String query = "SELECT * FROM qltc.NhanVien WHERE userName = ? AND password = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
+            System.out.println("Kết nối thành công!");
 
             // Gán giá trị vào câu lệnh SQL
             stmt.setString(1, loginRequest.getUsername());
@@ -26,6 +27,8 @@ public class UserResposittoryImpl implements userResponsitorty {
             ResultSet rs = stmt.executeQuery();
 
             // Nếu có dữ liệu trả về
+
+
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -40,10 +43,11 @@ public class UserResposittoryImpl implements userResponsitorty {
                 user.setRole(roleEnum);
                 return user;
             }
+            return null;
         } catch (SQLException e) {
+            System.out.println("Kết nối thất bại!");
             e.printStackTrace();
         }
-
         return null; // Không tìm thấy user
     }
     private Role StringToEnum(String role) {
