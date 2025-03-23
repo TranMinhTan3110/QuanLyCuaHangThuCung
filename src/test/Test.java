@@ -1,14 +1,16 @@
 package test;
 
+import controller.LoginController;
+import dao.LoginDAO.implement.UserResposittoryImpl;
 import respository.userRespositorty;
 import service.AuthService;
 import view.LoginView;
 
-public class Test {
+public class Test {m
     public static void main(String[] args) {
-
-        AuthService authService = new AuthService(null);
-        LoginView loginView = new LoginView(null,authService);
-
+        UserResposittoryImpl user = new UserResposittoryImpl();
+        AuthService authService = new AuthService(user);
+        LoginView loginView = new LoginView(authService);
+        LoginController login = new LoginController(loginView,authService);
     }
 }

@@ -1,5 +1,6 @@
 package dao.LoginDAO.implement;
 
+import dao.DatabaseConnection;
 import model.entity.Role;
 import model.entity.User;
 import model.request.LoginRequest;
@@ -8,16 +9,13 @@ import respository.userRespositorty;
 import java.sql.*;
 
 public class UserResposittoryImpl implements userRespositorty {
-        private static final String url = "jdbc:sqlserver://localhost:1433;databaseName=truong;encrypt=false";
-        private static final String userName = "sa";
-        private static final String password = "kha@1205";
 
     @Override
     public User getUserWithUserNameAndPassWord(LoginRequest loginRequest) {
 
         String query = "SELECT * FROM qltc.NhanVien WHERE userName = ? AND password = ?";
 
-        try (Connection conn = DriverManager.getConnection(url, userName, password);
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             System.out.println("Kết nối thành công!");
 
@@ -29,6 +27,7 @@ public class UserResposittoryImpl implements userRespositorty {
             ResultSet rs = stmt.executeQuery();
 
             // Nếu có dữ liệu trả về
+
 
             if (rs.next()) {
                 User user = new User();

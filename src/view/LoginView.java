@@ -1,12 +1,10 @@
 package view;
 
 import controller.LoginController;
-import respository.userRespositorty;
 import service.AuthService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginView extends JFrame {
@@ -14,7 +12,8 @@ public class LoginView extends JFrame {
     private JPasswordField txtPassword;
     private JButton btnLogin;
     private AuthService authService;
-    public LoginView(LoginView loginView, AuthService authService) {
+
+    public LoginView(AuthService authService) { // Sửa constructor
         this.authService = authService;
         this.init();
         this.setVisible(true);
@@ -38,9 +37,10 @@ public class LoginView extends JFrame {
         btnLogin = new JButton("Đăng nhập");
         btnLogin.setActionCommand("btnLogin"); // Đặt ID cho button
         add(btnLogin);
+    }
 
-        ActionListener ac = new LoginController(this,authService);
-        btnLogin.addActionListener(ac);
+    public void addLoginListener(ActionListener listener) { // Sửa tên method
+        btnLogin.addActionListener(listener);
     }
 
     public String getUsername() {
@@ -50,5 +50,4 @@ public class LoginView extends JFrame {
     public String getPassword() {
         return new String(txtPassword.getPassword());
     }
-
 }
