@@ -1,33 +1,33 @@
 package service;
 
-import model.entity.Role;
+import dao.LoginDAO.implement.UserResposittoryImpl;
 import model.entity.User;
 import model.request.LoginRequest;
 import model.response.LoginResponse;
-import respository.userResponsitorty;
-
-import java.sql.*;
+import respository.userRespositorty;
 
 public class AuthService {
-    private userResponsitorty  userResponsitorty;
+    private userRespositorty userRespositorty;
 
-    public AuthService(userResponsitorty userResponsitorty) {
-        this.userResponsitorty = userResponsitorty;
+    public AuthService(userRespositorty userRespositorty ) {
+        this.userRespositorty = userRespositorty;
     }
 
     public LoginResponse login(LoginRequest loginRequest) {
         LoginResponse loginResponse = new LoginResponse();
-        User user = userResponsitorty.getUserWithUserNameAndPassWord(loginRequest);
+//        userRespositorty.printAllNhanVien();
+        User user = userRespositorty.getUserWithUserNameAndPassWord(loginRequest);
         if(user == null){
             loginResponse.setMessage("Không tồn tại tài khoản");
             loginResponse.setSuccess(false);
+            System.out.println(loginResponse.getMessage());
             return loginResponse;
         }
         loginResponse.setSuccess(true);
         loginResponse.setMessage("Dăng nhập thành công");
         loginResponse.setUser(user);
+        System.out.println(loginResponse.getMessage());
         return  loginResponse;
-
     }
 
 }
