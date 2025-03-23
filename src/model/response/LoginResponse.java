@@ -34,4 +34,13 @@ public class LoginResponse {
     public void setSuccess(boolean success) {
         this.success = success;
     }
+
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                "message='" + message + '\'' +
+                ", success=" + success +
+                ", user=" + user +
+                '}';
+    }
 }
