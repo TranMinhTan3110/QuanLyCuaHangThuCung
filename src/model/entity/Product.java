@@ -12,6 +12,11 @@ public class Product {
         this.price = price;
         this.categoryID = categoryID;
     }
+    public Product(String name, double price, int categoryID) {
+        this.name = name;
+        this.price = price;
+        this.categoryID = categoryID;
+    }
 
     public int getProductID() {
         return productID;

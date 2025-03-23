@@ -13,8 +13,15 @@ public class LoginView extends JFrame {
     private JTextField txtUsername;
     private JPasswordField txtPassword;
     private JButton btnLogin;
+    private AuthService authService;
 
-    public LoginView(AuthService authService) {
+    public LoginView(AuthService authService) { // Sửa constructor
+        this.authService = authService;
+        this.init();
+        this.setVisible(true);
+    }
+
+    private void init() {
         setTitle("Đăng nhập");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,11 +39,12 @@ public class LoginView extends JFrame {
         btnLogin = new JButton("Đăng nhập");
         btnLogin.setActionCommand("btnLogin"); // Đặt ID cho button
         add(btnLogin);
-
-        LoginController controller = new LoginController(this, authService);
-        btnLogin.addActionListener(controller);
-        this.setVisible(true);
     }
+
+    public void addLoginListener(ActionListener listener) { // Sửa tên method
+        btnLogin.addActionListener(listener);
+    }
+
     public String getUsername() {
         return txtUsername.getText();
     }
