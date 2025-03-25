@@ -36,7 +36,6 @@ public class UserResposittoryImpl implements userRespositorty {
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
                 user.setAddress(rs.getString("address"));
-                user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
                 String role = rs.getString("role");
                 Role roleEnum = StringToEnum(role);
@@ -55,8 +54,8 @@ public class UserResposittoryImpl implements userRespositorty {
             return Role.admin;
         }
         if("user".equals(role)) {
-            return Role.user;
+            return Role.employee;
         }
-        return Role.user;
+        return Role.employee;
     }
 }

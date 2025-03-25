@@ -1,7 +1,7 @@
 package model.entity;
 
 public class User extends Person {
-    private String username;
+    private String userName;
     private String password;
     private Role role; // "admin" hoặc "customer"
 
@@ -10,19 +10,21 @@ public class User extends Person {
     }
 
     // Constructor có tham số (gọi constructor của Person)
-    public User(int id,String name, String email, String phone, String address,String username, String password, Role role) {
-        super(id,name, email, phone, address);
-        this.username = username;
+    public User(int id,String name,  String phone, String address,String username, String password, Role role) {
+        super(id,name, phone, address);
+        this.userName = username;
         this.password = password;
         this.role = role;
     }
 
+
+
     public String getUsername() {
-        return username;
+        return userName;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.userName = username;
     }
 
     public Role getRole() {

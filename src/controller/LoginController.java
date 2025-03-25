@@ -43,6 +43,7 @@ public class LoginController {
     boolean check =     authService.checkLogin(userName,password);
       if(check==true){
           System.out.println("Đăng nhập thành công!");
+
       }
       else{
           System.out.println("Đăng nhập thất bại!");

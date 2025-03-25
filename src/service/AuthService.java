@@ -16,19 +16,7 @@ public class AuthService {
 
     public boolean checkLogin(String userName, String password) {
         LoginResponse loginResponse = new LoginResponse();
-//        userRespositorty.printAllNhanVien();
-//        User user = userRespositorty.getUserWithUserNameAndPassWord(loginRequest);
-//        if(user == null){
-//            loginResponse.setMessage("Không tồn tại tài khoản");
-//            loginResponse.setSuccess(false);
-//            System.out.println(loginResponse.getMessage());
-//            return loginResponse;
-//        }
-//        loginResponse.setSuccess(true);
-//        loginResponse.setMessage("Dăng nhập thành công");
-//        loginResponse.setUser(user);
-//        System.out.println(loginResponse.getMessage());
-//        return  loginResponse;
+
         LoginRequest loginRequest = new LoginRequest(userName, password);
         User u = user.getUserWithUserNameAndPassWord(loginRequest);
         if (u == null) {
