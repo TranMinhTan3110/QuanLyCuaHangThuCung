@@ -21,7 +21,7 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setInt(4, pet.getAge());
             st.setDouble(5, pet.getPrice());
 
-            int check = st.executeUpdate(sql);
+            int check = st.executeUpdate();
             return check > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setInt(4,pet.getAge());
             st.setDouble(5,pet.getPrice());
 
-            int check = st.executeUpdate(sql);
+            int check = st.executeUpdate();
             return check > 0;
         }catch (SQLException e) {
             e.printStackTrace();
