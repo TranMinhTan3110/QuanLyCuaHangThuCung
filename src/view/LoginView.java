@@ -126,7 +126,7 @@ public class LoginView extends JFrame {
         btnLogin.setForeground(getPrimaryColor());
         btnLogin.setBorder(new LineBorder(getPrimaryColor(), 2));
 
-// Thêm hai nút vào buttonPanel
+// Thêm nút vào buttonPanel
         buttonPanel.add(btnCancel);
         buttonPanel.add(btnLogin);
 
