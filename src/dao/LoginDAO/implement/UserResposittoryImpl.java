@@ -12,12 +12,11 @@ public class UserResposittoryImpl implements userRespositorty {
     @Override
     public User getUserWithUserNameAndPassWord(LoginRequest loginRequest) {
 
-        String query = "SELECT * FROM qltc.NhanVien WHERE userName = ? AND password = ?";
+        String query = "SELECT * FROM User WHERE userName = ? AND password = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             System.out.println("Kết nối thành công!");
-
 // Gán giá trị vào câu lệnh SQL
             stmt.setString(1, loginRequest.getUsername());
             stmt.setString(2, loginRequest.getPassword());
@@ -26,8 +25,6 @@ public class UserResposittoryImpl implements userRespositorty {
             ResultSet rs = stmt.executeQuery();
 
 // Nếu có dữ liệu trả về
-
-
             if (rs.next()) {
                 User user = new User();
                 user.setId(rs.getInt("id"));
@@ -43,6 +40,7 @@ public class UserResposittoryImpl implements userRespositorty {
                 return user;
             }
             return null;
+
         } catch (SQLException e) {
             System.out.println("Kết nối thất bại!");
             e.printStackTrace();
@@ -53,9 +51,9 @@ public class UserResposittoryImpl implements userRespositorty {
         if("admin".equals(role)) {
             return Role.admin;
         }
-        if("user".equals(role)) {
-            return Role.user;
+        if("employee".equals(role)) {
+            return Role.employee;
         }
-        return Role.user;
+        return Role.employee;
     }
 }

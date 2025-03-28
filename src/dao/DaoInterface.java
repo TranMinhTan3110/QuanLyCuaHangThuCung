@@ -12,6 +12,5 @@ public interface DaoInterface<T> {
     public ArrayList<T> getAll() throws SQLException;
     public  T selectByID(T t) throws SQLException;
     public ArrayList<T> selectByCondition(String condition);
-
     ArrayList<Product> selectByConditon(String condition);
 }
