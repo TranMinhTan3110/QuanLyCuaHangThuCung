@@ -1,6 +1,7 @@
 package controller;
 
 import dao.LoginDAO.implement.UserResposittoryImpl;
+import model.entity.Role;
 import model.entity.User;
 import model.request.LoginRequest;
 import model.response.LoginResponse;
@@ -41,7 +42,7 @@ public class LoginController {
         String password = views.getPassword();
         String userName = views.getUsername();
     boolean check =     authService.checkLogin(userName,password);
-      if(check==true){
+      if(check==true ){
           System.out.println("Đăng nhập thành công!");
 
       }

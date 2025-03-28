@@ -1,13 +1,16 @@
 package test;
 
+//import controller.LoginController;
 import controller.LoginController;
 import dao.LoginDAO.implement.UserResposittoryImpl;
-import respository.userRespositorty;
 import service.AuthService;
 import view.LoginView;
 
-public class Test {
+import javax.swing.*;
+
+public class   TestView {
     public static void main(String[] args) {
+//        SwingUtilities.invokeLater(LoginView::new);
         UserResposittoryImpl user = new UserResposittoryImpl();
         AuthService authService = new AuthService(user);
         LoginView loginView = new LoginView(authService);

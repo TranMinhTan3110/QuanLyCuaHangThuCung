@@ -1,7 +1,6 @@
 package dao.LoginDAO.implement;
 
 import dao.DatabaseConnection;
-import model.entity.Role;
 import model.entity.User;
 import model.request.LoginRequest;
 import respository.userRespositorty;
@@ -13,11 +12,15 @@ public class UserResposittoryImpl implements userRespositorty {
     @Override
     public User getUserWithUserNameAndPassWord(LoginRequest loginRequest) {
 
-        String query = "SELECT * FROM qltc.NhanVien WHERE userName = ? AND password = ?";
+        // Không dùng roleId, JOIN trực tiếp bằng roleName
+        String query = "SELECT u.username, u.password, u.roleName " +
+                "FROM [User] u " +
+                "JOIN Role r ON u.roleName = r.roleName " +
+                "WHERE u.username = ? AND u.password = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            System.out.println("Kết nối thành công!");
+//            System.out.println("Kết nối thành công!");
 
             // Gán giá trị vào câu lệnh SQL
             stmt.setString(1, loginRequest.getUsername());
@@ -27,35 +30,25 @@ public class UserResposittoryImpl implements userRespositorty {
             ResultSet rs = stmt.executeQuery();
 
             // Nếu có dữ liệu trả về
-
-
             if (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("userName"));
-                user.setPassword(rs.getString("password"));
-                user.setName(rs.getString("name"));
-                user.setAddress(rs.getString("address"));
-                user.setPhone(rs.getString("phone"));
-                String role = rs.getString("role");
-                Role roleEnum = StringToEnum(role);
-                user.setRole(roleEnum);
-                return user;
+                String role = rs.getString("roleName"); // Lấy role từ bảng User
+
+                if ("admin".equalsIgnoreCase(role)) {  // Kiểm tra role phải là "admin"
+                    User user = new User();
+                    user.setUsername(rs.getString("username"));
+                    user.setPassword(rs.getString("password"));
+                    return user;
+                } else {
+                    System.out.println("Tài khoản không phải admin!");
+                    return null; // Nếu không phải admin thì không cho đăng nhập
+                }
             }
-            return null;
+
         } catch (SQLException e) {
             System.out.println("Kết nối thất bại!");
             e.printStackTrace();
         }
+
         return null; // Không tìm thấy user
-    }
-    private Role StringToEnum(String role) {
-        if("admin".equals(role)) {
-            return Role.admin;
-        }
-        if("user".equals(role)) {
-            return Role.employee;
-        }
-        return Role.employee;
     }
 }
