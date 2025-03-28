@@ -3,7 +3,7 @@ package model.entity;
 public class Pet {
     private int petID;
     private String name;
-    private String species;//loại thú cưng(chó mèo)
+    private String species;// loại thú cưng(chó mèo)
     private String breed;//giống loài
     private int age;
     private double price;
