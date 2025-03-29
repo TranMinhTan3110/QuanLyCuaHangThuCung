@@ -4,6 +4,7 @@ import dao.DatabaseConnection;
 import model.entity.User;
 import model.request.LoginRequest;
 import respository.userRespositorty;
+import utils.RoleUtil;
 
 import java.sql.*;
 
@@ -33,17 +34,19 @@ public class UserResposittoryImpl implements userRespositorty {
             if (rs.next()) {
                 String role = rs.getString("roleName"); // Lấy role từ bảng User
 
-                if ("admin".equalsIgnoreCase(role)) {  // Kiểm tra role phải là "admin"
+                if ("admin".equalsIgnoreCase(role) || "employee".equalsIgnoreCase(role)) {  // Kiểm tra role phải là "admin" or "employee"
                     User user = new User();
+                    RoleUtil roleUtil = new RoleUtil();
                     user.setUsername(rs.getString("username"));
                     user.setPassword(rs.getString("password"));
+                    user.setRole(roleUtil.parseRole(rs.getString("roleName")));
+                    System.out.println("Tai khoan " + rs.getString("roleName"));
                     return user;
                 } else {
-                    System.out.println("Tài khoản không phải admin!");
+                    System.out.println("Tài khoản không tồn tại");
                     return null; // Nếu không phải admin thì không cho đăng nhập
                 }
             }
-
         } catch (SQLException e) {
             System.out.println("Kết nối thất bại!");
             e.printStackTrace();

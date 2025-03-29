@@ -1,4 +1,56 @@
 package controller;
 
+import dao.LoginDAO.implement.UserResposittoryImpl;
+import respository.userRespositorty;
+import service.AuthService;
+import view.LoginView;
+import view.MainView;
+import view.UserView;
+
+import java.awt.event.ActionListener;
+
 public class MainController {
+    private MainView view;
+
+    public MainController(MainView view) {
+        this.view = view;
+
+        // Đăng ký lắng nghe sự kiện từ MainView
+        this.view.addPetsListener(e -> onPetsClicked());
+        this.view.addUsersListener(e -> onUsersClicked());
+        this.view.addCustomersListener(e -> onCustomersClicked());
+        this.view.addBillingsListener(e -> onBillingsClicked());
+        this.view.addLogoutListener(e -> onLogoutClicked());
+    }
+
+    private void onPetsClicked() {
+        System.out.println("Pets button clicked!");
+        view.showPanel("Pets");
+    }
+
+    private void onUsersClicked() {
+        System.out.println("Users button clicked!");
+        view.showPanel("Users");
+    }
+
+    private void onCustomersClicked() {
+        System.out.println("Customers button clicked!");
+        view.showPanel("Customers");
+    }
+
+    private void onBillingsClicked() {
+        System.out.println("Billings button clicked!");
+        view.showPanel("Billings");
+    }
+
+    private void onLogoutClicked() {
+        System.out.println("Logout clicked!");
+        view.dispose(); // Đóng MainView hiện tại
+
+        // Tạo LoginView và đăng ký LoginController mới để quay lại màn hình đăng nhập
+        LoginView loginView = new LoginView();
+        userRespositorty user = new UserResposittoryImpl();
+        new LoginController(loginView,new AuthService(user));
+        loginView.setVisible(true);
+    }
 }

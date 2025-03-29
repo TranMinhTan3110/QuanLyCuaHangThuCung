@@ -99,7 +99,7 @@ public class UserDAO implements DaoInterface<User>{
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, user.getId());
-            return stmt.executeUpdate(sql) > 0;
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -115,7 +115,7 @@ public class UserDAO implements DaoInterface<User>{
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery(sql)) {
+             ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 userList.add(new User(
@@ -146,7 +146,7 @@ public class UserDAO implements DaoInterface<User>{
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 // Tạo đối tượng User từ dữ liệu lấy ra
