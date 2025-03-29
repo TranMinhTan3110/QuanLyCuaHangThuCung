@@ -11,12 +11,15 @@ import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class UserView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final JPanel panel = new JPanel();
+	private JLabel lblEmployeeName;
+	private JLabel lblEmployeeID;
 
 	/**
 	 * Launch the application.
@@ -63,6 +66,7 @@ public class UserView extends JFrame {
 		panel.setLayout(null);
 		
 		JButton btnPets = new JButton("Pets");
+		btnPets.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnPets.setBackground(new Color(255, 255, 204));
 		btnPets.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/pets_Icon.png")));
 		btnPets.addActionListener(new ActionListener() {
@@ -72,37 +76,40 @@ public class UserView extends JFrame {
 		btnPets.setBorder(null);
 		btnPets.setFocusPainted(false);
 		btnPets.setIconTextGap(20);
-		btnPets.setBounds(10, 328, 146, 31);
+		btnPets.setBounds(14, 322, 146, 31);
 		addHoverEffect(btnPets, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnPets);
 		
 		
 		
-		JButton btnUsers = new JButton("Users");
+		JButton btnUsers = new JButton("Admin");
+		btnUsers.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
 		btnUsers.setIconTextGap(20);
-		btnUsers.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_Icon.png")));
+		btnUsers.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user1_Icon.png")));
 		btnUsers.setFocusPainted(false);
 		btnUsers.setBorder(null);
 		btnUsers.setBackground(new Color(255, 255, 204));
-		btnUsers.setBounds(10, 391, 146, 31);
+		btnUsers.setBounds(23, 384, 146, 31);
 		addHoverEffect(btnUsers, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnUsers);
 		
 		JButton btnCusTomers = new JButton("Customers");
+		btnCusTomers.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnCusTomers.setIconTextGap(20);
 		btnCusTomers.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/users_Icon.png")));
 		btnCusTomers.setFocusPainted(false);
 		btnCusTomers.setBorder(null);
 		btnCusTomers.setBackground(new Color(255, 255, 204));
-		btnCusTomers.setBounds(22, 453, 146, 31);
+		btnCusTomers.setBounds(40, 448, 146, 31);
 		addHoverEffect(btnCusTomers, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnCusTomers);
 		
 		JButton btnBills = new JButton("Bills");
+		btnBills.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnBills.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -112,13 +119,14 @@ public class UserView extends JFrame {
 		btnBills.setFocusPainted(false);
 		btnBills.setBorder(null);
 		btnBills.setBackground(new Color(255, 255, 204));
-		btnBills.setBounds(10, 507, 137, 31);
+		btnBills.setBounds(21, 512, 137, 31);
 		addHoverEffect(btnBills, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnBills);
 		
 		JButton btnLogout = new JButton("Logout");
+		btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
 		btnLogout.setIconTextGap(20);
-		btnLogout.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/bill_Icon.png")));
+		btnLogout.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/logout_Icon.png")));
 		btnLogout.setFocusPainted(false);
 		btnLogout.setBorder(null);
 		btnLogout.setBackground(new Color(255, 255, 204));
@@ -126,6 +134,25 @@ public class UserView extends JFrame {
 		addHoverEffect(btnLogout, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnLogout);
 		
-	
+		JLabel lblNewLabel = new JLabel("New label");
+		lblNewLabel.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_main_Icon.png")));
+		lblNewLabel.setBounds(55, 81, 131, 135);
+		panel.add(lblNewLabel);
+		
+		lblEmployeeName = new JLabel("Name: ");
+		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblEmployeeName.setBounds(23, 226, 163, 25);
+		panel.add(lblEmployeeName);
+
+		lblEmployeeID = new JLabel("ID: ");
+		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblEmployeeID.setBounds(23, 261, 163, 25);
+		panel.add(lblEmployeeID);
 	}
+	public void setEmployeeInfo(String name, String id) {
+	    lblEmployeeName.setText("Name: " + name);
+	    lblEmployeeID.setText("ID: " + id);
+	}
+
+	
 }
