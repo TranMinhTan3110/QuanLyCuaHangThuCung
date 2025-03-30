@@ -34,13 +34,13 @@ public class LoginView extends JFrame {
         this.setLocationRelativeTo(null);
 
         // Tạo icon
-        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/icon_Login.png"));
+        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/Icon/icon_Login.png"));
         this.setIconImage(appIcon.getImage());
         // Giao diện chính
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // ===== Sidebar (Bên trái) =====
-        JPanel sidebar = new BackgroundPanel("/view/background_Login.png");
+        JPanel sidebar = new BackgroundPanel("/view/Icon/background_Login.png");
         sidebar.setPreferredSize(new Dimension(250, 350));
         sidebar.setBackground(new Color(255, 224, 102));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
@@ -75,7 +75,7 @@ public class LoginView extends JFrame {
 
         // Ảnh logo
         gbc.gridy = 1;
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/view/logo_Login.png"));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/view/Icon/logo_Login.png"));
         Image scaledImage = originalIcon.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
         JLabel loginLogo = new JLabel(new ImageIcon(scaledImage));
         gbc.insets = new Insets(-10, 0, 30, 0);
