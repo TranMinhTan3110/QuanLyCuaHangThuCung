@@ -1,8 +1,8 @@
 package controller;
 
-import dao.UserDAO;
 import model.entity.Role;
 import model.entity.User;
+import service.UserService;
 import utils.RoleUtil;
 import view.UserView;
 
@@ -11,11 +11,11 @@ import java.util.ArrayList;
 
 public class UserController {
     private UserView userView;
-    private UserDAO userDAO; // Sử dụng DAOUser để thao tác với database
+    private UserService userService; // Sử dụng DAOUser để thao tác với database
 
-    public UserController(UserView userView) {
+    public UserController(UserView userView,  UserService userService) {
         this.userView = userView;
-        this.userDAO = new UserDAO();
+        this.userService = userService;
         initController();
         loadEmployeesFromDB();
     }
@@ -25,7 +25,6 @@ public class UserController {
         userView.getBtnAdd().addActionListener(e -> addEmployee());
         userView.getBtnEdit().addActionListener(e -> editEmployee());
         userView.getBtnDelete().addActionListener(e -> deleteEmployee());
-
         // Khi chọn dòng trong bảng, load dữ liệu vào form
         userView.getTable().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && userView.getTable().getSelectedRow() != -1) {
@@ -36,7 +35,7 @@ public class UserController {
 
     // Load danh sách nhân viên từ database và hiển thị lên bảng của userView
     private void loadEmployeesFromDB() {
-        ArrayList<User> users = userDAO.getAll();
+        ArrayList<User> users = userService.getAll();
         for (User user : users) {
             // Sử dụng RoleUtil.formatRole() để chuyển enum Role thành chuỗi theo định dạng mong muốn (ví dụ "ADMIN" nếu cần)
             userView.addEmployeeToTable(
@@ -64,7 +63,7 @@ public class UserController {
             Role role = RoleUtil.parseRole(roleStr);
 
             User user = new User(id, name, phone, address, username, password, role);
-            if (userDAO.insert(user)) {
+            if (userService.insert(user)) {
                 userView.addEmployeeToTable(String.valueOf(id), name, phone, address, username, password, RoleUtil.formatRole(role));
                 JOptionPane.showMessageDialog(userView, "Thêm nhân viên thành công!");
                 userView.clearForm();
@@ -95,7 +94,7 @@ public class UserController {
             Role role = RoleUtil.parseRole(roleStr);
 
             User user = new User(id, name, phone, address, username, password, role);
-            if (userDAO.update(user)) {
+            if (userService.update(user)) {
                 userView.updateEmployeeInTable(selectedRow, String.valueOf(id), name, phone, address, username, password, RoleUtil.formatRole(role));
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thành công!");
                 userView.clearForm();
@@ -120,7 +119,7 @@ public class UserController {
             int id = Integer.parseInt(idStr);
             User user = new User();
             user.setId(id);
-            if (userDAO.delete(user)) {
+            if (userService.delete(user)) {
                 userView.removeEmployeeFromTable(selectedRow);
                 JOptionPane.showMessageDialog(userView, "Xóa nhân viên thành công!");
                 userView.clearForm();

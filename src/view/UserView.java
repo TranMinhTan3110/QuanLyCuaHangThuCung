@@ -1,5 +1,7 @@
 package view;
 
+import service.UserService;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -22,7 +24,7 @@ public class UserView extends JPanel {
     // Bảng hiển thị danh sách nhân viên
     private DefaultTableModel tableModel;
     private JTable table;
-
+    private UserService userService;
     public UserView() {
         setLayout(new BorderLayout());
 

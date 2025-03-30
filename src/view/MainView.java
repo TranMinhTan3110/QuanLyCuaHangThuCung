@@ -1,5 +1,7 @@
 package view;
 
+import service.UserService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -15,7 +17,7 @@ public class MainView extends JFrame {
     private JButton btnCustomers;
     private JButton btnBillings;
     private JButton btnLogout;
-
+    private UserService userService;
     public MainView(String role) { // 🟢 Thêm tham số role
         setTitle("Manage Pets");
         setSize(900, 600);
@@ -87,7 +89,7 @@ public class MainView extends JFrame {
         // Tạo EmployeeView
         UserView employeeView = new UserView();
         // Khởi tạo EmployeeController, đảm nhiệm xử lý CRUD cho EmployeeView
-        new controller.UserController(employeeView);
+        new controller.UserController(employeeView,userService);
         return employeeView;
     }
 

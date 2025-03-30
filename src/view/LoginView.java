@@ -117,6 +117,7 @@ public class LoginView extends JFrame {
 
         gbc.gridx = 1;
          txtUser = new JTextField(15);
+//        txtUser.setPreferredSize(new Dimension(200, 30));
         txtUser.setBorder(BorderFactory.createLineBorder(new Color(139, 69, 19), 2));
         //focus viền
         txtUser.addFocusListener(new FocusAdapter() {
@@ -174,6 +175,7 @@ public class LoginView extends JFrame {
 
         gbc.gridx = 1;
         txtPass = new JPasswordField(15);
+//        txtPass.setPreferredSize(new Dimension(200, 30));
         txtPass.setBorder(BorderFactory.createLineBorder(new Color(139, 69, 19), 2));
         //focus viền
         txtPass.addFocusListener(new FocusAdapter() {
@@ -305,6 +307,7 @@ public class LoginView extends JFrame {
     public String getPassword() {
         return new String(txtPass.getPassword());
     }
+
     //phương thức lắng nghe  sự kiện
     public void addLoginListener(ActionListener listener){
         btnLogin.addActionListener(listener);
