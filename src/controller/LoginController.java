@@ -29,23 +29,23 @@ public class LoginController {
         String password = views.getPassword();
         String userName = views.getUsername();
 
-    //Kiểm tra username và password không được bỏ trống
-        if (LoginUtil.isEmpty(userName, password)) {
-            new Notification("Tài khoản và mật khẩu không được bỏ trống.", this);
-            return false;
-        }
-
-        // Kiểm tra username có đúng định dạng không
-        if (!LoginUtil.isValidUsername(userName)) {
-            new Notification("Tên đăng nhập chỉ được chứa chữ và số.", this);
-            return false;
-        }
-
-        // Kiểm tra độ mạnh của mật khẩu
-        if (!LoginUtil.isStrongPassword(password)) {
-            new Notification("Mật khẩu phải có ít nhất 6 ký tự, gồm một chữ hoa và một số.", this);
-            return false;
-        }
+//    //Kiểm tra username và password không được bỏ trống
+//        if (LoginUtil.isEmpty(userName, password)) {
+//            new Notification("Tài khoản và mật khẩu không được bỏ trống.", this);
+//            return false;
+//        }
+//
+//        // Kiểm tra username có đúng định dạng không
+//        if (!LoginUtil.isValidUsername(userName)) {
+//            new Notification("Tên đăng nhập chỉ được chứa chữ và số.", this);
+//            return false;
+//        }
+//
+//        // Kiểm tra độ mạnh của mật khẩu
+//        if (!LoginUtil.isStrongPassword(password)) {
+//            new Notification("Mật khẩu phải có ít nhất 6 ký tự, gồm một chữ hoa và một số.", this);
+//            return false;
+//        }
         // Kiểm tra thông tin tài khoản
         User check = authService.checkLogin(userName, password);
         if (check != null) {

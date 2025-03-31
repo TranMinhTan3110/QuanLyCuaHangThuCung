@@ -1,5 +1,9 @@
 package view;
 
+import dao.DaoInterface;
+import dao.ProductDAO;
+import dao.UserDAO;
+import service.ProductService;
 import service.UserService;
 
 import javax.swing.*;
@@ -16,8 +20,10 @@ public class MainView extends JFrame {
     private JButton btnUsers;
     private JButton btnCustomers;
     private JButton btnBillings;
+    private JButton btnProduct; // Thêm nút Product
     private JButton btnLogout;
     private UserService userService;
+
     public MainView(String role) { // 🟢 Thêm tham số role
         setTitle("Manage Pets");
         setSize(900, 600);
@@ -35,6 +41,7 @@ public class MainView extends JFrame {
         btnUsers     = new JButton("Users");
         btnCustomers = new JButton("Customers");
         btnBillings  = new JButton("Billings");
+        btnProduct   = new JButton("Product"); // Khởi tạo nút Product
         btnLogout    = new JButton("Logout");
 
         // Ẩn nút Users nếu không phải admin
@@ -55,6 +62,8 @@ public class MainView extends JFrame {
         sidebar.add(btnCustomers);
         sidebar.add(Box.createVerticalStrut(10));
         sidebar.add(btnBillings);
+        sidebar.add(Box.createVerticalStrut(10));
+        sidebar.add(btnProduct); // Thêm nút Product vào sidebar
         sidebar.add(Box.createVerticalGlue());
         sidebar.add(btnLogout);
         sidebar.add(Box.createVerticalStrut(20));
@@ -72,6 +81,7 @@ public class MainView extends JFrame {
 
         centerPanel.add(createCustomersPanel(),  "Customers");
         centerPanel.add(createBillingsPanel(),   "Billings");
+        centerPanel.add(createProductPanel(),    "Product"); // Thêm panel Product
 
         // ========== Thêm sidebar và centerPanel vào Frame ==========
         add(sidebar, BorderLayout.WEST);
@@ -81,15 +91,14 @@ public class MainView extends JFrame {
     private JPanel createPetsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Manage Pets Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        // ... Thêm form, bảng, v.v. cho chức năng Pets
         return panel;
     }
 
     private JPanel createUsersPanel() {
-        // Tạo EmployeeView
         UserView employeeView = new UserView();
-        // Khởi tạo EmployeeController, đảm nhiệm xử lý CRUD cho EmployeeView
-        new controller.UserController(employeeView,userService);
+        DaoInterface userRepo = new UserDAO();
+        UserService userService = new UserService(userRepo);
+        new controller.UserController(employeeView, userService);
         return employeeView;
     }
 
@@ -104,14 +113,23 @@ public class MainView extends JFrame {
         panel.add(new JLabel("Manage Billings Panel", SwingConstants.CENTER), BorderLayout.NORTH);
         return panel;
     }
-    // 🟢 Cập nhật Controller khi khởi tạo MainView
+
+    private ProductView createProductPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JLabel("Manage Products Panel", SwingConstants.CENTER), BorderLayout.NORTH);
+        ProductView productView = new ProductView();
+        DaoInterface productRepo = new ProductDAO();
+        ProductService productService = new ProductService(productRepo);
+//        new controller.ProductController(productService,productView);
+        return productView;
+    }
+
     public void addUsersListener(ActionListener listener) {
-        if (btnUsers.isVisible()) { // Chỉ đăng ký sự kiện nếu nút hiện
+        if (btnUsers.isVisible()) {
             btnUsers.addActionListener(listener);
         }
     }
 
-    // ======== Các hàm cho phép Controller đăng ký lắng nghe sự kiện ========
     public void addPetsListener(ActionListener listener) {
         btnPets.addActionListener(listener);
     }
@@ -124,11 +142,14 @@ public class MainView extends JFrame {
         btnBillings.addActionListener(listener);
     }
 
+    public void addProductListener(ActionListener listener) { // Gắn sự kiện cho nút Product
+        btnProduct.addActionListener(listener);
+    }
+
     public void addLogoutListener(ActionListener listener) {
         btnLogout.addActionListener(listener);
     }
 
-    // ======== Cho phép controller gọi để chuyển panel ========
     public void showPanel(String panelName) {
         cardLayout.show(centerPanel, panelName);
     }

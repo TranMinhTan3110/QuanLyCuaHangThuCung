@@ -10,7 +10,7 @@ public class UserService {
 
     // Constructor nhận vào một repository để dễ dàng thay đổi hoặc kiểm thử
     public UserService(DaoInterface  userRepo) {
-        this.daoInterface = daoInterface;
+        this.daoInterface = userRepo;
     }
 
     // Lấy danh sách user
