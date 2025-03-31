@@ -1,8 +1,11 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class UserView extends JPanel {
     //bản test *****************************************************************************
@@ -160,6 +163,7 @@ public class UserView extends JPanel {
         tableModel.removeRow(row);
     }
 
+
     public JTable getTable() {
         return table;
     }
@@ -172,6 +176,7 @@ public class UserView extends JPanel {
         txtUsername.setText("");
         txtPassword.setText("");
         comboRole.setSelectedIndex(0);
+
     }
 
     // Các getter cho nút để Controller đăng ký sự kiện

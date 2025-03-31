@@ -310,5 +310,4 @@ public class LoginView extends JFrame {
         btnLogin.addActionListener(listener);
     }
 
-
 }

@@ -22,7 +22,7 @@ public class Notification extends JFrame {
 
         //tạo thông báo
         JLabel notification  = new JLabel("Đăng nhập thất bại.Vui lòng kiểm tra lại!");
-        notification.setFont(new Font("Serif", Font.BOLD, 16));
+        notification.setFont(new Font("Serif", Font.BOLD, 18));
         notification.setForeground(Color.black);
         notification.setHorizontalAlignment(SwingConstants.LEFT);
         notification.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 0)); // Trên:10px, Trái:15px
@@ -62,9 +62,9 @@ public class Notification extends JFrame {
     }
 
     //hàm trả về nut button để làm lắng nghe sự kiện(khaaa)
-public JButton getButton(){
+    public JButton getButton(){
         return button;
-}
+    }
 
     public static void main(String[] args) {
         new Notification();

@@ -17,6 +17,7 @@ public class UserController {
         this.userView = userView;
         this.userDAO = new UserDAO();
         initController();
+
         loadEmployeesFromDB();
     }
 
@@ -25,6 +26,7 @@ public class UserController {
         userView.getBtnAdd().addActionListener(e -> addEmployee());
         userView.getBtnEdit().addActionListener(e -> editEmployee());
         userView.getBtnDelete().addActionListener(e -> deleteEmployee());
+
 
         // Khi chọn dòng trong bảng, load dữ liệu vào form
         userView.getTable().getSelectionModel().addListSelectionListener(e -> {
@@ -156,3 +158,4 @@ public class UserController {
         }
     }
 }
+
