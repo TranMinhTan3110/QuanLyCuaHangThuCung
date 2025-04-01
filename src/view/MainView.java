@@ -120,7 +120,7 @@ public class MainView extends JFrame {
         ProductView productView = new ProductView();
         DaoInterface productRepo = new ProductDAO();
         ProductService productService = new ProductService(productRepo);
-//        new controller.ProductController(productService,productView);
+        new controller.ProductController(productService,productView);
         return productView;
     }
 

@@ -1,7 +1,5 @@
 package view.notificationView;
 
-import controller.LoginController;
-
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -10,36 +8,32 @@ import static view.LoginView.getPrimaryColor;
 
 public class Notification extends JFrame {
     JButton button;
-
-    public Notification(String notificationTitle, LoginController loginController) {
-        this.setSize(400, 150);
+    public Notification(){
+        this.setSize(400,150);
         this.setTitle("Thông báo");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
-
-        // Tạo màu nền
+        //tạo màu nền
         getContentPane().setBackground(new Color(255, 228, 181));
 
-        // Tạo icon
+        //tạo icon
         ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/icon_Login.png"));
         this.setIconImage(appIcon.getImage());
 
-        // Tạo thông báo
-        JLabel notification = new JLabel(notificationTitle);
-        notification.setFont(new Font("Serif", Font.BOLD, 16));
+        //tạo thông báo
+        JLabel notification  = new JLabel("Đăng nhập thất bại.Vui lòng kiểm tra lại!");
+        notification.setFont(new Font("Serif", Font.BOLD, 18));
         notification.setForeground(Color.black);
         notification.setHorizontalAlignment(SwingConstants.LEFT);
         notification.setBorder(BorderFactory.createEmptyBorder(10, 15, 0, 0)); // Trên:10px, Trái:15px
-
-        // Tạo button
+        //tạo button
         button = new JButton("OK");
         button.setFocusable(false);
         button.setBackground(Color.white);
         button.setForeground(getPrimaryColor());
         button.setBorder(new LineBorder(getPrimaryColor(), 2));
-        button.setBounds(20, 30, 60, 30);
-
-        // Hover effect
+        button.setBounds(20,30,60,30);
+        //hover
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -53,15 +47,7 @@ public class Notification extends JFrame {
                 button.setForeground(getPrimaryColor());
             }
         });
-
-        // Xử lý sự kiện khi ấn OK
-        button.addActionListener(e -> {
-            this.dispose(); // Đóng thông báo
-
-            loginController.showLoginView(); // Quay lại màn hình đăng nhập
-        });
-
-        // Panel chứa button
+        //panel chứa button
         JPanel panel = new JPanel();
         panel.setBackground(new Color(255, 228, 181));
         panel.setLayout(null);
@@ -69,7 +55,20 @@ public class Notification extends JFrame {
         panel.add(button);
         this.add(panel, BorderLayout.EAST);
 
+
         this.add(notification, BorderLayout.NORTH);
+
         this.setVisible(true);
     }
+
+    //hàm trả về nut button để làm lắng nghe sự kiện(khaaa)
+    public JButton getButton(){
+        return button;
+    }
+
+    public static void main(String[] args) {
+        new Notification();
+    }
+
+
 }

@@ -3,20 +3,19 @@ package view;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
-public class ProductView extends JFrame {
+public class ProductView extends JPanel {
     private JTextField txtProductID, txtProductName, txtPrice, txtCategoryID;
     private JButton btnAdd, btnEdit, btnDelete;
     private JTable table;
     private DefaultTableModel tableModel;
 
     public ProductView() {
-        setTitle("Quản lý Sản phẩm");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        JPanel panel = new JPanel(new GridLayout(5, 2));
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         panel.add(new JLabel("Mã sản phẩm:"));
         txtProductID = new JTextField();
@@ -52,37 +51,27 @@ public class ProductView extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    public JTextField getTxtProductID() {
-        return txtProductID;
+    // ===== Thêm phương thức để đăng ký sự kiện =====
+    public void addAddProductListener(ActionListener listener) {
+        btnAdd.addActionListener(listener);
     }
 
-    public JTextField getTxtProductName() {
-        return txtProductName;
+    public void addEditProductListener(ActionListener listener) {
+        btnEdit.addActionListener(listener);
     }
 
-    public JTextField getTxtPrice() {
-        return txtPrice;
+    public void addDeleteProductListener(ActionListener listener) {
+        btnDelete.addActionListener(listener);
     }
 
-    public JTextField getTxtCategoryID() {
-        return txtCategoryID;
-    }
-
-    public JButton getBtnAdd() {
-        return btnAdd;
-    }
-
-    public JButton getBtnEdit() {
-        return btnEdit;
-    }
-
-    public JButton getBtnDelete() {
-        return btnDelete;
-    }
-
-    public JTable getTable() {
-        return table;
-    }
+    public JTextField getTxtProductID() { return txtProductID; }
+    public JTextField getTxtProductName() { return txtProductName; }
+    public JTextField getTxtPrice() { return txtPrice; }
+    public JTextField getTxtCategoryID() { return txtCategoryID; }
+    public JButton getBtnAdd() { return btnAdd; }
+    public JButton getBtnEdit() { return btnEdit; }
+    public JButton getBtnDelete() { return btnDelete; }
+    public JTable getTable() { return table; }
 
     public void addProductToTable(String id, String name, String price, String categoryID) {
         tableModel.addRow(new Object[]{id, name, price, categoryID});
@@ -104,5 +93,9 @@ public class ProductView extends JFrame {
         txtProductName.setText("");
         txtPrice.setText("");
         txtCategoryID.setText("");
+    }
+
+    public void showMessage(String message) {
+        JOptionPane.showMessageDialog(this, message);
     }
 }

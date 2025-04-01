@@ -21,6 +21,7 @@ public class MainController {
         this.view.addCustomersListener(e -> onCustomersClicked());
         this.view.addBillingsListener(e -> onBillingsClicked());
         this.view.addLogoutListener(e -> onLogoutClicked());
+        this.view.addProductListener(e -> onProductClicked());
     }
 
     private void onPetsClicked() {
@@ -43,6 +44,10 @@ public class MainController {
         view.showPanel("Billings");
     }
 
+    private void onProductClicked() {
+        System.out.println("Product button clicked!");
+        view.showPanel("Product");
+    }
     private void onLogoutClicked() {
         System.out.println("Logout clicked!");
         view.dispose(); // Đóng MainView hiện tại

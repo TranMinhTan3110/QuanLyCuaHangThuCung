@@ -47,7 +47,7 @@ public class LoginController {
 //            return false;
 //        }
         // Kiểm tra thông tin tài khoản
-        User check = authService.checkLogin(userName, password);
+        User check = authService.   checkLogin(userName, password);
         if (check != null) {
             // Đăg nhập thành công
             System.out.println("Đăng nhập thành công!");
