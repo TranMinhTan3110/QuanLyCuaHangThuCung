@@ -7,6 +7,7 @@ import utils.RoleUtil;
 import view.UserView;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 
 public class UserController {
@@ -17,7 +18,6 @@ public class UserController {
         this.userView = userView;
         this.userDAO = new UserDAO();
         initController();
-
         loadEmployeesFromDB();
     }
 
@@ -32,9 +32,27 @@ public class UserController {
         userView.getTable().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && userView.getTable().getSelectedRow() != -1) {
                 loadSelectedEmployeeIntoForm();
+                mouseClicked();
             }
         });
     }
+
+        public void mouseClicked() {
+            int selectedRow = userView.getTable().getSelectedRow();
+            if (selectedRow != -1) { // Kiểm tra xem có dòng nào được chọn không
+                String id = userView.getTable().getValueAt(selectedRow, 0).toString();
+                String name = userView.getTable().getValueAt(selectedRow, 1).toString();
+                String phone = userView.getTable().getValueAt(selectedRow, 2).toString();
+                String address = userView.getTable().getValueAt(selectedRow, 3).toString();
+                String username = userView.getTable().getValueAt(selectedRow, 4).toString();
+                String password = userView.getTable().getValueAt(selectedRow, 5).toString();
+                String role = userView.getTable().getValueAt(selectedRow, 6).toString();
+
+                userView.setEmployeeData(id, name, phone, address, username, password, role);
+            }
+        }
+
+
 
     // Load danh sách nhân viên từ database và hiển thị lên bảng của userView
     private void loadEmployeesFromDB() {
@@ -51,6 +69,7 @@ public class UserController {
                     RoleUtil.formatRole(user.getRole()));
         }
     }
+
 
     private void addEmployee() {
         try {
@@ -110,7 +129,6 @@ public class UserController {
             JOptionPane.showMessageDialog(userView, "Lỗi chuyển đổi role: " + ex.getMessage());
         }
     }
-
     private void deleteEmployee() {
         int selectedRow = userView.getTable().getSelectedRow();
         if (selectedRow == -1) {

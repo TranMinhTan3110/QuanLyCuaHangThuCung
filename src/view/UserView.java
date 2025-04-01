@@ -149,6 +149,16 @@ public class UserView extends JPanel {
         tableModel.addRow(new Object[]{id, name, phone, address, username, password, role});
     }
 
+    public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
+        txtId.setText(id);
+        txtName.setText(name);
+        txtPhone.setText(phone);
+        txtAddress.setText(address);
+        txtUsername.setText(username);
+        txtPassword.setText(password);
+        comboRole.setSelectedItem(role);
+    }
+
     public void updateEmployeeInTable(int row, String id, String name, String phone, String address, String username, String password, String role) {
         tableModel.setValueAt(id, row, 0);
         tableModel.setValueAt(name, row, 1);
