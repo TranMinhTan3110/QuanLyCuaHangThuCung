@@ -341,7 +341,7 @@ public class UserView extends JFrame {
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
-		String[] columnNames = { "ID", "Name", "Phone", "Username", "Address", "Role" };
+		String[] columnNames = { "ID", "Name", "Phone", "Username","Password", "Address", "Role" };
 		DefaultTableModel model = new DefaultTableModel(columnNames,0);
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
@@ -353,6 +353,7 @@ public class UserView extends JFrame {
 		        String name = textField_3.getText();
 		        String phone = textField_1.getText();
 		        String username = textField_2.getText();
+		        String password=textField_5.getText();
 		        String address = textField_4.getText();
 		        String role = comboBox.getSelectedItem().toString();
 		        
