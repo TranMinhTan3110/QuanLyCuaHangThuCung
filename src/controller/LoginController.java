@@ -4,7 +4,8 @@ import model.entity.User;
 import service.AuthService;
 import utils.RoleUtil;
 import view.LoginView;
-import view.MainView;
+//import view.MainView;
+import view.UserView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,9 +30,9 @@ public class LoginController {
             views.setVisible(false);
             // Tạo MainView và khởi tạo MainController
             RoleUtil roleUtil = new RoleUtil();
-            MainView mainView = new MainView(roleUtil.formatRole(check.getRole()));
-            new MainController(mainView);
-            mainView.setVisible(true);
+            UserView userView = new UserView(roleUtil.formatRole(check.getRole()));
+            new UserController(userView);
+            userView.setVisible(true);
             return true;
         } else {
             System.out.println("Đăng nhập thất bại!");
