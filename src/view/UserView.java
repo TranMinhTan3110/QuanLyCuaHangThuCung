@@ -360,7 +360,13 @@ public class UserView extends JFrame {
 
 		table = new JTable();
 		String[] columnNames = {"ID", "Name", "Phone", "Username", "Password", "Address", "Role"};
-		model = new DefaultTableModel(columnNames, 0);
+		model = new DefaultTableModel(columnNames, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
 //		currenUsser = textField_2.getText();
