@@ -1,5 +1,9 @@
 package view;
 
+import controller.LoginController;
+import dao.LoginDAO.implement.UserResposittoryImpl;
+import service.AuthService;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -26,6 +30,7 @@ import java.awt.Toolkit;
 
 public class UserView extends JFrame {
 
+	public static String currenUser;
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private final JPanel panel = new JPanel();
@@ -41,7 +46,7 @@ public class UserView extends JFrame {
     DefaultTableModel model;
 	private JComboBox comboBox;
 	private JButton btnUsers;
-
+	JButton btnLogout;
 	//ba nút thao tác
  	 private JButton btnEdit;
     private  JButton btnDel;
@@ -135,10 +140,9 @@ public class UserView extends JFrame {
 		btnPets.setBounds(13, 316, 173, 31);
 		addHoverEffect(btnPets, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnPets);
-		
-		
-		
-		 btnUsers = new JButton("Admin");
+
+
+		btnUsers = new JButton("Admin");
 		btnUsers.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnUsers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -152,7 +156,7 @@ public class UserView extends JFrame {
 		btnUsers.setBounds(18, 371, 173, 31);
 		addHoverEffect(btnUsers, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnUsers);
-		
+
 		JButton btnCusTomers = new JButton("Customers");
 		btnCusTomers.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -167,7 +171,7 @@ public class UserView extends JFrame {
 		btnCusTomers.setBounds(34, 478, 173, 31);
 		addHoverEffect(btnCusTomers, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnCusTomers);
-		
+
 		JButton btnBills = new JButton("Bills");
 		btnBills.setFont(new Font("Tahoma", Font.BOLD, 16));
 		btnBills.addActionListener(new ActionListener() {
@@ -182,8 +186,8 @@ public class UserView extends JFrame {
 		btnBills.setBounds(12, 532, 173, 31);
 		addHoverEffect(btnBills, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnBills);
-		
-		JButton btnLogout = new JButton("Logout");
+
+		btnLogout = new JButton("Logout");
 		btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
 		btnLogout.setIconTextGap(20);
 		btnLogout.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/logout_Icon.png")));
@@ -193,22 +197,22 @@ public class UserView extends JFrame {
 		btnLogout.setBounds(0, 688, 112, 31);
 		addHoverEffect(btnLogout, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnLogout);
-		
+
 		JLabel lblNewLabel = new JLabel("New label");
 		lblNewLabel.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_main_Icon.png")));
 		lblNewLabel.setBounds(55, 81, 131, 135);
 		panel.add(lblNewLabel);
-		
+
 		lblEmployeeName = new JLabel("Name: ");
 		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
 		lblEmployeeName.setBounds(23, 226, 163, 25);
 		panel.add(lblEmployeeName);
 
-		lblEmployeeID = new JLabel("ID: ");
-		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEmployeeID.setBounds(23, 261, 163, 25);
-		panel.add(lblEmployeeID);
-		
+//		lblEmployeeID = new JLabel("ID: ");
+//		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblEmployeeID.setBounds(23, 261, 163, 25);
+//		panel.add(lblEmployeeID);
+
 		JButton btnCategory = new JButton("Category");
 		btnCategory.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -223,91 +227,91 @@ public class UserView extends JFrame {
 		btnCategory.setBounds(28, 426, 173, 31);
 		addHoverEffect(btnCategory, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnCategory);
-		
+
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 223));
 		panel_1.setBounds(237, 0, 949, 244);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
-		
+
 		JLabel lblNewLabel_1 = new JLabel("ID:");
 		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1.setBounds(95, 46, 67, 21);
 		panel_1.add(lblNewLabel_1);
-		
+
 		textField = new JTextField();
 		textField.setBounds(203, 43, 125, 32);
 		addPlaceholder(textField, "Enter ID");
 		panel_1.add(textField);
 		textField.setColumns(10);
-		
+
 		JLabel lblNewLabel_1_1 = new JLabel("Phone:");
 		lblNewLabel_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_1.setBounds(95, 96, 68, 21);
 		panel_1.add(lblNewLabel_1_1);
-		
+
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
 		textField_1.setBounds(203, 93, 125, 32);
 		addPlaceholder(textField_1, "Enter Phone");
 		panel_1.add(textField_1);
-		
+
 		JLabel lblNewLabel_1_1_1 = new JLabel("UserName:");
 		lblNewLabel_1_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_1_1.setBounds(95, 148, 88, 21);
 		panel_1.add(lblNewLabel_1_1_1);
-		
+
 		textField_2 = new JTextField();
 		textField_2.setColumns(10);
 		textField_2.setBounds(203, 145, 125, 32);
 		addPlaceholder(textField_2, "Enter Username");
 		panel_1.add(textField_2);
-		
+
 		JLabel lblNewLabel_1_2 = new JLabel("Name:");
 		lblNewLabel_1_2.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_2.setBounds(419, 46, 67, 21);
 		panel_1.add(lblNewLabel_1_2);
-		
+
 		textField_3 = new JTextField();
 		textField_3.setColumns(10);
 		textField_3.setBounds(530, 43, 125, 32);
 		addPlaceholder(textField_3, "Enter Name");
 		panel_1.add(textField_3);
-		
+
 		JLabel lblNewLabel_1_1_2 = new JLabel("Address:");
 		lblNewLabel_1_1_2.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_1_2.setBounds(419, 96, 68, 21);
 		panel_1.add(lblNewLabel_1_1_2);
-		
+
 		textField_4 = new JTextField();
 		textField_4.setColumns(10);
 		textField_4.setBounds(530, 93, 125, 32);
 		addPlaceholder(textField_4, "Enter Address");
 		panel_1.add(textField_4);
-		
+
 		JLabel lblNewLabel_1_1_2_1 = new JLabel("Password:");
 		lblNewLabel_1_1_2_1.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_1_2_1.setBounds(419, 148, 88, 21);
 		panel_1.add(lblNewLabel_1_1_2_1);
-		
+
 		textField_5 = new JTextField();
 		textField_5.setColumns(10);
 		textField_5.setBounds(530, 145, 125, 32);
 		addPlaceholder(textField_5, "Enter Password");
 		panel_1.add(textField_5);
-		
-		 comboBox = new JComboBox();
+
+		comboBox = new JComboBox();
 		comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Admin", "User"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[]{"Admin", "User"}));
 		comboBox.setBounds(203, 192, 76, 32);
 		panel_1.add(comboBox);
-		
+
 		JLabel lblNewLabel_1_1_1_1 = new JLabel("Role");
 		lblNewLabel_1_1_1_1.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblNewLabel_1_1_1_1.setBounds(95, 190, 88, 21);
 		panel_1.add(lblNewLabel_1_1_1_1);
-		
-        btnAdd = new JButton("Add");
+
+		btnAdd = new JButton("Add");
 		btnAdd.setBackground(new Color(255, 255, 204));
 		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnAdd.addActionListener(new ActionListener() {
@@ -318,10 +322,10 @@ public class UserView extends JFrame {
 		btnAdd.setFocusPainted(false);
 		addHoverEffect(btnAdd, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel_1.add(btnAdd);
-		
-		 btnEdit = new JButton("Edit");
+
+		btnEdit = new JButton("Edit");
 		btnEdit.setBackground(new Color(255, 255, 204));
-		
+
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -331,70 +335,68 @@ public class UserView extends JFrame {
 		btnEdit.setFocusPainted(false);
 		addHoverEffect(btnEdit, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel_1.add(btnEdit);
-		
-        btnDel = new JButton("Delete");
+
+		btnDel = new JButton("Delete");
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnDel.setBounds(727, 145, 88, 32);
 		btnDel.setFocusPainted(false);
 		addHoverEffect(btnDel, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel_1.add(btnDel);
-		
+
 		//tạo  table
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
 		scrollPane.setBounds(237, 242, 949, 471);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(
-		        BorderFactory.createLineBorder(Color.BLACK),  
-		        "Manager Users",                            
-		        TitledBorder.CENTER,                        
-		        TitledBorder.TOP,                           
-		        new Font("Arial", Font.BOLD, 16),           
-		        Color.BLACK                                  
+				BorderFactory.createLineBorder(Color.BLACK),
+				"Manager Users",
+				TitledBorder.CENTER,
+				TitledBorder.TOP,
+				new Font("Arial", Font.BOLD, 16),
+				Color.BLACK
 		));
 		contentPane.add(scrollPane);
-		
+
 		table = new JTable();
-		String[] columnNames = { "ID", "Name", "Phone", "Username","Password", "Address", "Role" };        model = new DefaultTableModel(columnNames,0);
+		String[] columnNames = {"ID", "Name", "Phone", "Username", "Password", "Address", "Role"};
+		model = new DefaultTableModel(columnNames, 0);
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
-
+//		currenUsser = textField_2.getText();
 		btnAdd.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        // Lấy dữ liệu từ các ô nhập liệu
-		        String id = textField.getText();
-		        String name = textField_3.getText();
-		        String phone = textField_1.getText();
-		        String username = textField_2.getText();
-				String password=textField_5.getText();
-		        String address = textField_4.getText();
-		        String role = comboBox.getSelectedItem().toString();
-		        
-		        // Thêm dữ liệu vào bảng
-		        model.addRow(new Object[]{id, name, phone, username, address, role});
+			public void actionPerformed(ActionEvent e) {
+				// Lấy dữ liệu từ các ô nhập liệu
+				String id = textField.getText();
+				String name = textField_3.getText();
+				String phone = textField_1.getText();
+				String username = textField_2.getText();
+				String password = textField_5.getText();
+				String address = textField_4.getText();
+				String role = comboBox.getSelectedItem().toString();
 
-		        // Xóa nội dung các ô nhập liệu sau khi thêm
-		        textField.setText("");
-		        textField_3.setText("");
-		        textField_1.setText("");
-		        textField_2.setText("");
-		        textField_4.setText("");
+				// Thêm dữ liệu vào bảng
+				model.addRow(new Object[]{id, name, phone, username, address, role});
+
+				// Xóa nội dung các ô nhập liệu sau khi thêm
+				textField.setText("");
+				textField_3.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
+				textField_4.setText("");
 				textField_5.setText("");
-		    }
+			}
 		});
-		
+
 		//Logout
-		btnLogout.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        dispose();
-		        LoginView loginView = new LoginView();
-		        loginView.setVisible(true);
-		    }
-		});
+
 	}
-	public void setEmployeeInfo(String name, String id) {
-	    lblEmployeeName.setText("Name: " + name);
-	    lblEmployeeID.setText("ID: " + id);
+	public void addLogoutActionListener (ActionListener listener){
+		btnLogout.addActionListener(listener);
+	}
+	public void setEmployeeInfo() {
+	    lblEmployeeName.setText("Name: " + getCurrenUser());
+//	    lblEmployeeID.setText("ID: " + id);
 	}
 
 
@@ -431,18 +433,26 @@ public class UserView extends JFrame {
         return table;
     }
 
-    // Các hàm thao tác bảng
-    public void addEmployeeToTable(String id, String name, String phone, String address, String username, String password, String role) {
-        model.addRow(new Object[]{id, name, phone, address, username, password, role});
+	public static String getCurrenUser() {
+		return currenUser;
+	}
+
+	public static void setCurrenUser(String currenUsser) {
+		UserView.currenUser = currenUsser;
+	}
+
+	// Các hàm thao tác bảng
+    public void addEmployeeToTable(String id, String name, String phone,String username ,String password, String address, String role) {
+        model.addRow(new Object[]{id, name, phone,username , password,address, role});
     }
 
-    public void updateEmployeeInTable(int row, String id, String name, String phone, String address, String username, String password, String role) {
+    public void updateEmployeeInTable(int row, String id, String name, String phone,String username , String password,String address , String role) {
         model.setValueAt(id, row, 0);
         model.setValueAt(name, row, 1);
         model.setValueAt(phone, row, 2);
-        model.setValueAt(address, row, 3);
-        model.setValueAt(username, row, 4);
-        model.setValueAt(password, row, 5);
+        model.setValueAt(username, row, 3);
+        model.setValueAt(password, row, 4);
+        model.setValueAt(address, row, 5);
         model.setValueAt(role, row, 6);
     }
 
@@ -450,6 +460,7 @@ public class UserView extends JFrame {
         model.removeRow(row);
     }
 	public void setEmployeeData(String id,String name,String  phone,String address,String username,String password,String role){
+
 			textField.setText(id);
             textField_1.setText(phone);
         	textField_2.setText(username);

@@ -285,7 +285,9 @@ public class LoginView extends JFrame {
         btnCancel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose(); // Đóng cửa sổ
+                dispose();
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
+                // Đóng cửa sổ
             }
         });
 

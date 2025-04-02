@@ -9,7 +9,7 @@ import view.LoginView;
 
 import javax.swing.*;
 
-public class   TestView {
+public class    TestView {
     public static void main(String[] args) {
 //        SwingUtilities.invokeLater(LoginView::new);
         UserResposittoryImpl user = new UserResposittoryImpl();

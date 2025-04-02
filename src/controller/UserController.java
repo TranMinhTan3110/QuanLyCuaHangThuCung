@@ -1,14 +1,19 @@
 package controller;
 
+import dao.LoginDAO.implement.UserResposittoryImpl;
 import dao.UserDAO;
 import model.entity.Role;
 import model.entity.User;
+import service.AuthService;
 import utils.RoleUtil;
+import view.LoginView;
 import view.UserView;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
+
+import static com.sun.org.apache.xerces.internal.util.DOMUtil.setVisible;
 
 public class UserController {
     private UserView userView;
@@ -18,7 +23,11 @@ public class UserController {
         this.userView = userView;
         this.userDAO = new UserDAO();
         initController();
+        userView.setEmployeeInfo();
         loadEmployeesFromDB();
+        //sự kiện logout
+        this.userView.addLogoutActionListener(e -> handleLogout());
+
     }
 
     private void initController() {
@@ -32,28 +41,25 @@ public class UserController {
         userView.getTable().getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && userView.getTable().getSelectedRow() != -1) {
                 loadSelectedEmployeeIntoForm();
-                mouseClicked();
             }
         });
     }
 
-        public void mouseClicked() {
-            int selectedRow = userView.getTable().getSelectedRow();
-            if (selectedRow != -1) { // Kiểm tra xem có dòng nào được chọn không
-                String id = userView.getTable().getValueAt(selectedRow, 0).toString();
-                String name = userView.getTable().getValueAt(selectedRow, 1).toString();
-                String phone = userView.getTable().getValueAt(selectedRow, 2).toString();
-                String address = userView.getTable().getValueAt(selectedRow, 3).toString();
-                String username = userView.getTable().getValueAt(selectedRow, 4).toString();
-                String password = userView.getTable().getValueAt(selectedRow, 5).toString();
-                String role = userView.getTable().getValueAt(selectedRow, 6).toString();
+        //logout
+    public void handleLogout(){
+        userView.setVisible(false);
+        // Xóa thông tin đăng nhập hiện tại
+//        userView.setcurrenUser(null) = null;
+        userView.clearForm();
 
-                userView.setEmployeeData(id, name, phone, address, username, password, role);
-            }
-        }
-
-
-
+        // Khởi tạo lại LoginView và liên kết với LoginController
+        LoginView loginView = new LoginView();
+        UserResposittoryImpl user = new UserResposittoryImpl();
+        AuthService authService = new AuthService(user); // Đảm bảo đối tượng này vẫn hoạt động
+        new LoginController(loginView, authService); // Gán lại controller
+        // Hiển thị màn hình đăng nhập
+        loginView.setVisible(true);
+    }
     // Load danh sách nhân viên từ database và hiển thị lên bảng của userView
     private void loadEmployeesFromDB() {
         ArrayList<User> users = userDAO.getAll();
@@ -63,9 +69,9 @@ public class UserController {
                     String.valueOf(user.getId()),
                     user.getName(),
                     user.getPhone(),
-                    user.getAddress(),
                     user.getUsername(),
                     user.getPassword(),
+                    user.getAddress(),
                     RoleUtil.formatRole(user.getRole()));
         }
     }
@@ -76,9 +82,9 @@ public class UserController {
             int id = Integer.parseInt(userView.getEmployeeId());
             String name = userView.getEmployeeName();
             String phone = userView.getEmployeePhone();
-            String address = userView.getEmployeeAddress();
             String username = userView.getEmployeeUsername();
             String password = userView.getEmployeePassword();
+            String address = userView.getEmployeeAddress();
             String roleStr = userView.getEmployeeRole(); // Ví dụ trả về "ADMIN"
 
             // Sử dụng RoleUtil để chuyển đổi thành enum Role (ví dụ "ADMIN" -> "Admin")
@@ -109,15 +115,15 @@ public class UserController {
             int id = Integer.parseInt(userView.getEmployeeId());
             String name = userView.getEmployeeName();
             String phone = userView.getEmployeePhone();
-            String address = userView.getEmployeeAddress();
             String username = userView.getEmployeeUsername();
             String password = userView.getEmployeePassword();
+            String address = userView.getEmployeeAddress();
             String roleStr = userView.getEmployeeRole();
             Role role = RoleUtil.parseRole(roleStr);
 
             User user = new User(id, name, phone, address, username, password, role);
             if (userDAO.update(user)) {
-                userView.updateEmployeeInTable(selectedRow, String.valueOf(id), name, phone, address, username, password, RoleUtil.formatRole(role));
+                userView.updateEmployeeInTable(selectedRow, String.valueOf(id), name, phone,username , password,address , RoleUtil.formatRole(role));
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thành công!");
                 userView.clearForm();
             } else {
@@ -159,20 +165,11 @@ public class UserController {
             String id = userView.getTable().getValueAt(selectedRow, 0).toString();
             String name = userView.getTable().getValueAt(selectedRow, 1).toString();
             String phone = userView.getTable().getValueAt(selectedRow, 2).toString();
-            String address = userView.getTable().getValueAt(selectedRow, 3).toString();
-            String username = userView.getTable().getValueAt(selectedRow, 4).toString();
-            String password = userView.getTable().getValueAt(selectedRow, 5).toString();
+            String username = userView.getTable().getValueAt(selectedRow, 3).toString();
+            String password = userView.getTable().getValueAt(selectedRow, 4).toString();
+            String address = userView.getTable().getValueAt(selectedRow, 5).toString();
             String role = userView.getTable().getValueAt(selectedRow, 6).toString();
-
-            // Nếu userView có các setter, bạn có thể cập nhật dữ liệu vào form.
-            // Ví dụ:
-            // userView.setEmployeeId(id);
-            // userView.setEmployeeName(name);
-            // userView.setEmployeePhone(phone);
-            // userView.setEmployeeAddress(address);
-            // userView.setEmployeeUsername(username);
-            // userView.setEmployeePassword(password);
-            // userView.setEmployeeRole(role);
+            userView.setEmployeeData(id, name, phone, address, username, password, role);
         }
     }
 }

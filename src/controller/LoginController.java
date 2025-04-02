@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 public class LoginController {
     private LoginView views;
     private AuthService authService;
+    private  UserView userView;
 
     public LoginController(LoginView view, AuthService authService) {
         this.views = view;
@@ -28,9 +29,8 @@ public class LoginController {
 //            if()
             System.out.println("Đăng nhập thành công!");
             views.setVisible(false);
-            // Tạo MainView và khởi tạo MainController
             RoleUtil roleUtil = new RoleUtil();
-            UserView userView = new UserView(roleUtil.formatRole(check.getRole()));
+            this.userView = new UserView(roleUtil.formatRole(check.getRole()));
             new UserController(userView);
             userView.setVisible(true);
             return true;
