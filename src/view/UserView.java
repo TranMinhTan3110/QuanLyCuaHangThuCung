@@ -1,197 +1,184 @@
 package view;
 
-import service.UserService;
-
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class UserView extends JPanel {
-    //bản test *****************************************************************************
-    // Các trường nhập liệu
-    private JTextField txtId;
-    private JTextField txtName;
-    private JTextField txtPhone;
-    private JTextField txtAddress;
-    private JTextField txtUsername;
-    private JPasswordField txtPassword;
-    private JComboBox<String> comboRole;
-
-    private JButton btnAdd;
-    private JButton btnEdit;
-    private JButton btnDelete;
-
-    // Bảng hiển thị danh sách nhân viên
-    private DefaultTableModel tableModel;
+    private static final long serialVersionUID = 1L;
+    private JTextField idField, phoneField, usernameField, nameField, addressField, passwordField;
     private JTable table;
-    private UserService userService;
+    private DefaultTableModel model;
+    private JComboBox<String> roleComboBox;
+    private JButton addButton, editButton, deleteButton;
+
     public UserView() {
-        setLayout(new BorderLayout());
-
-        // ===== Header =====
-        JLabel header = new JLabel("Manage Employees", SwingConstants.CENTER);
-        header.setFont(new Font("Arial", Font.BOLD, 20));
-        add(header, BorderLayout.NORTH);
-
-        // ===== Form nhập liệu =====
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5,5,5,5);
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-
-        // Hàng 0: ID
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        formPanel.add(new JLabel("ID:"), gbc);
-        gbc.gridx = 1;
-        txtId = new JTextField(10);
-        formPanel.add(txtId, gbc);
-
-        // Hàng 0: Name
-        gbc.gridx = 2;
-        formPanel.add(new JLabel("Name:"), gbc);
-        gbc.gridx = 3;
-        txtName = new JTextField(10);
-        formPanel.add(txtName, gbc);
-
-        // Hàng 1: Phone
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        formPanel.add(new JLabel("Phone:"), gbc);
-        gbc.gridx = 1;
-        txtPhone = new JTextField(10);
-        formPanel.add(txtPhone, gbc);
-
-        // Hàng 1: Address
-        gbc.gridx = 2;
-        formPanel.add(new JLabel("Address:"), gbc);
-        gbc.gridx = 3;
-        txtAddress = new JTextField(10);
-        formPanel.add(txtAddress, gbc);
-
-        // Hàng 2: Username
-        gbc.gridx = 0;
-        gbc.gridy = 2;
-        formPanel.add(new JLabel("Username:"), gbc);
-        gbc.gridx = 1;
-        txtUsername = new JTextField(10);
-        formPanel.add(txtUsername, gbc);
-
-        // Hàng 2: Password
-        gbc.gridx = 2;
-        formPanel.add(new JLabel("Password:"), gbc);
-        gbc.gridx = 3;
-        txtPassword = new JPasswordField(10);
-        formPanel.add(txtPassword, gbc);
-
-        // Hàng 3: Role
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        formPanel.add(new JLabel("Role:"), gbc);
-        gbc.gridx = 1;
-        comboRole = new JComboBox<>(new String[]{"ADMIN", "EMPLOYEE"});
-        formPanel.add(comboRole, gbc);
-
-        // Hàng 3: Các nút CRUD
-        gbc.gridx = 2;
-        gbc.gridy = 3;
-        btnAdd = new JButton("Add");
-        formPanel.add(btnAdd, gbc);
-        gbc.gridx = 3;
-        btnEdit = new JButton("Edit");
-        formPanel.add(btnEdit, gbc);
-        gbc.gridx = 4;
-        btnDelete = new JButton("Delete");
-        formPanel.add(btnDelete, gbc);
-
-        add(formPanel, BorderLayout.SOUTH);
-
-        // ===== Bảng hiển thị nhân viên =====
-        String[] columns = {"ID", "Name", "Phone", "Address", "Username", "Password", "Role"};
-        tableModel = new DefaultTableModel(columns, 0);
-        table = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(table);
-        add(scrollPane, BorderLayout.CENTER);
+        setupUI();
     }
 
-    // Các getter cho các trường nhập liệu
-    public String getEmployeeId() {
-        return txtId.getText().trim();
+    private void setupUI() {
+        setLayout(null);
+        setBounds(0, 0, 950, 750);
+        setupTopPanel();
+        setupTable();
     }
 
-    public String getEmployeeName() {
-        return txtName.getText().trim();
+    private void setupTopPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setBackground(new Color(255, 255, 223));
+        panel.setBounds(0, 0, 950, 240);
+        add(panel);
+
+        String[] labels = {"ID:", "Phone:", "Username:", "Name:", "Address:", "Password:", "Role:"};
+        JTextField[] fields = new JTextField[6];
+        String[] placeholders = {"Enter ID", "Enter Phone", "Enter Username", "Enter Name", "Enter Address", "Enter Password"};
+
+        int x1 = 95, x2 = 203, y = 46, width = 125, height = 32, gap = 50;
+        for (int i = 0; i < 6; i++) {
+            JLabel label = new JLabel(labels[i]);
+            label.setFont(new Font("Arial", Font.PLAIN, 16));
+            label.setBounds(x1, y, 100, 25);
+            panel.add(label);
+
+            fields[i] = new JTextField();
+            fields[i].setBounds(x2, y, width, height);
+            addPlaceholder(fields[i], placeholders[i]);
+            panel.add(fields[i]);
+
+            y += (i == 2) ? -100 : gap;
+            if (i == 2) {
+                x1 = 419;
+                x2 = 530;
+            }
+        }
+        idField = fields[0]; phoneField = fields[1]; usernameField = fields[2];
+        nameField = fields[3]; addressField = fields[4]; passwordField = fields[5];
+
+        JLabel roleLabel = new JLabel(labels[6]);
+        roleLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        roleLabel.setBounds(95, 190, 100, 25);
+        panel.add(roleLabel);
+
+        roleComboBox = new JComboBox<>(new String[]{"Admin", "User"});
+        roleComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+        roleComboBox.setBounds(203, 190, 125, 32);
+        panel.add(roleComboBox);
+
+        addButton = createButton("Add", 727, 40);
+        editButton = createButton("Edit", 727, 93);
+        deleteButton = createButton("Delete", 727, 146);
+
+        panel.add(addButton);
+        panel.add(editButton);
+        panel.add(deleteButton);
     }
 
-    public String getEmployeePhone() {
-        return txtPhone.getText().trim();
+    private JButton createButton(String text, int x, int y) {
+        JButton button = new JButton(text);
+        button.setFont(new Font("Arial", Font.PLAIN, 16));
+        button.setBackground(new Color(255, 255, 204));
+        button.setBounds(x, y, 88, 32);
+        button.setFocusPainted(false);
+        addHoverEffect(button, new Color(128, 128, 100), new Color(255, 255, 204));
+        return button;
     }
 
-    public String getEmployeeAddress() {
-        return txtAddress.getText().trim();
+    private void setupTable() {
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
+        scrollPane.setBounds(0, 244, 950, 500);
+        scrollPane.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(Color.BLACK),
+                "Manager Users",
+                TitledBorder.CENTER,
+                TitledBorder.TOP,
+                new Font("Arial", Font.BOLD, 16),
+                Color.BLACK
+        ));
+        add(scrollPane);
+
+        model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
+        table = new JTable(model);
+        scrollPane.setViewportView(table);
     }
 
-    public String getEmployeeUsername() {
-        return txtUsername.getText().trim();
+    private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) { button.setBackground(hoverColor); }
+            public void mouseExited(java.awt.event.MouseEvent evt) { button.setBackground(defaultColor); }
+        });
     }
 
-    public String getEmployeePassword() {
-        return new String(txtPassword.getPassword());
+    private void addPlaceholder(JTextField textField, String placeholder) {
+        textField.setText(placeholder);
+        textField.setForeground(Color.GRAY);
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
-    public String getEmployeeRole() {
-        return (String) comboRole.getSelectedItem();
+    // Getters for Controller
+    public String getIdField() { return idField.getText(); }
+    public String getPhoneField() { return phoneField.getText(); }
+    public String getUsernameField() { return usernameField.getText(); }
+    public String getNameField() { return nameField.getText(); }
+    public String getAddressField() { return addressField.getText(); }
+    public String getPasswordField() { return passwordField.getText(); }
+    public String getRoleField() { return roleComboBox.getSelectedItem().toString(); }
+    public int getSelectedRow() { return table.getSelectedRow(); }
+    public String getSelectedUserId() {
+        int row = getSelectedRow();
+        if (row != -1) return table.getValueAt(row, 0).toString();
+        return null;
     }
 
-    // Các hàm thao tác bảng
-    public void addEmployeeToTable(String id, String name, String phone, String address, String username, String password, String role) {
-        tableModel.addRow(new Object[]{id, name, phone, address, username, password, role});
+    public void clearFields() {
+        JTextField[] fields = {idField, phoneField, usernameField, nameField, addressField, passwordField};
+        for (JTextField field : fields) field.setText("");
+        roleComboBox.setSelectedIndex(0);
     }
 
-    public void updateEmployeeInTable(int row, String id, String name, String phone, String address, String username, String password, String role) {
-        tableModel.setValueAt(id, row, 0);
-        tableModel.setValueAt(name, row, 1);
-        tableModel.setValueAt(phone, row, 2);
-        tableModel.setValueAt(address, row, 3);
-        tableModel.setValueAt(username, row, 4);
-        tableModel.setValueAt(password, row, 5);
-        tableModel.setValueAt(role, row, 6);
+    // Methods to manipulate JTable
+    public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
+        model.addRow(new Object[]{id, name, phone, username, password, address, role});
     }
 
-    public void removeEmployeeFromTable(int row) {
-        tableModel.removeRow(row);
+    public void updateUserInTable(int row, String id, String name, String phone, String username, String password, String address, String role) {
+        model.setValueAt(id, row, 0);
+        model.setValueAt(name, row, 1);
+        model.setValueAt(phone, row, 2);
+        model.setValueAt(username, row, 3);
+        model.setValueAt(password, row, 4);
+        model.setValueAt(address, row, 5);
+        model.setValueAt(role, row, 6);
     }
 
-
-    public JTable getTable() {
-        return table;
+    public void removeUserFromTable(int row) {
+        model.removeRow(row);
     }
 
-    public void clearForm() {
-        txtId.setText("");
-        txtName.setText("");
-        txtPhone.setText("");
-        txtAddress.setText("");
-        txtUsername.setText("");
-        txtPassword.setText("");
-        comboRole.setSelectedIndex(0);
-
-    }
-
-    // Các getter cho nút để Controller đăng ký sự kiện
-    public JButton getBtnAdd() {
-        return btnAdd;
-    }
-
-    public JButton getBtnEdit() {
-        return btnEdit;
-    }
-
-    public JButton getBtnDelete() {
-        return btnDelete;
-    }
-    //đóng bản test *****************************************************************************
+    // Setters for controller to attach action listeners
+    public void setAddButtonListener(ActionListener listener) { addButton.addActionListener(listener); }
+    public void setEditButtonListener(ActionListener listener) { editButton.addActionListener(listener); }
+    public void setDeleteButtonListener(ActionListener listener) { deleteButton.addActionListener(listener); }
 }
