@@ -1,0 +1,144 @@
+package view;
+
+import java.awt.Color;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JLabel;
+import java.awt.Rectangle;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+import javax.swing.JTextField;
+import javax.swing.JButton;
+
+public class CustomerView extends JPanel {
+
+	private static final long serialVersionUID = 1L;
+	private JTable table;
+	private JTextField Name_textField;
+	private JTextField Address_textField;
+	private JTextField Phone_textField;
+
+	/**
+	 * Create the panel.
+	 */
+	public CustomerView() {
+		setLayout(null);
+		setBounds(0,0,950,750);
+		
+		JPanel panel = new JPanel();
+		panel.setBackground(new Color(255, 255, 223));
+		panel.setBounds(0, 0, 950, 240);
+		add(panel);
+		panel.setLayout(null);
+		
+		JLabel lblName= new JLabel("Name");
+		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblName.setBounds(new Rectangle(176, 54, 55, 21));
+		panel.add(lblName);
+		
+		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblAddress.setBounds(new Rectangle(176, 54, 55, 21));
+		lblAddress.setBounds(370, 54, 97, 21);
+		panel.add(lblAddress);
+		
+		JLabel lblPhone = new JLabel("Phone");
+		lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPhone.setBounds(new Rectangle(176, 54, 55, 21));
+		lblPhone.setBounds(603, 54, 55, 21);
+		panel.add(lblPhone);
+		
+		Name_textField = new JTextField();
+		Name_textField.setBounds(176, 85, 109, 25);
+		panel.add(Name_textField);
+		Name_textField.setColumns(10);
+		
+		Address_textField = new JTextField();
+		Address_textField.setColumns(10);
+		Address_textField.setBounds(370, 85, 137, 25);
+		panel.add(Address_textField);
+		
+		Phone_textField = new JTextField();
+		Phone_textField.setColumns(10);
+		Phone_textField.setBounds(603, 85, 102, 25);
+		panel.add(Phone_textField);
+		
+		JButton Edit_Button = new JButton("Edit");
+		Edit_Button.setFont(new Font("Arial", Font.PLAIN, 16));
+		Edit_Button.setBounds(222, 153, 113, 30);
+		panel.add(Edit_Button);
+		
+		JButton Save_Button = new JButton("Save");
+		Save_Button.setFont(new Font("Arial", Font.PLAIN, 16));
+		Save_Button.setBounds(384, 153, 113, 30);
+		panel.add(Save_Button);
+		
+		JButton Delete_Button = new JButton("Delete");
+		Delete_Button.setFont(new Font("Arial", Font.PLAIN, 16));
+		Delete_Button.setBounds(545, 153, 113, 30);
+		panel.add(Delete_Button);
+		
+		JScrollPane cus_List = new JScrollPane();
+		cus_List.setBounds(0, 244, 950, 500);
+		add(cus_List);
+		cus_List.setFont(new Font("Arial", Font.PLAIN, 16));
+		// tạo title cho table
+		cus_List.setBorder(BorderFactory.createTitledBorder(
+		           BorderFactory.createLineBorder(Color.BLACK),
+		           "Customer List",
+		           TitledBorder.CENTER,
+		           TitledBorder.TOP,
+		           new Font("Arial", Font.BOLD, 16),
+		           Color.BLACK
+		        ));
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Customer_Id", "Customer_Name", "Customer_Address", "Customer_Phone"
+			}
+		));
+		cus_List.setViewportView(table);
+
+	}
+	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(hoverColor);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(defaultColor);
+            }
+        });
+    }
+
+    private void addPlaceholder(JTextField textField, String placeholder) {
+        textField.setText(placeholder);
+        textField.setForeground(Color.GRAY);
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(placeholder)) {
+                    textField.setText("");
+                    textField.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(placeholder);
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+        });
+    }
+}
