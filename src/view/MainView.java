@@ -9,92 +9,118 @@ import service.UserService;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class MainView extends JFrame {
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane, panel, centerPanel;
-    private JLabel lblEmployeeName, lblEmployeeID;
-    private JButton btnPets, btnAdmin, btnCustomers, btnBills, btnLogout, btnHome, btnProduct;
+    private JPanel contentPane;
+    private JPanel panel;
+    private JLabel lblEmployeeName;
+    private JLabel lblEmployeeID;
+
+    // Thêm các button ở cấp lớp để dùng ở các phương thức khác
+    private JButton btnPets;
+    private JButton btnAdmin;
+    private JButton btnCustomers;
+    private JButton btnBills;
+    private JButton btnLogout;
+    private JButton btnProduct;
+    private JButton btnHome;
+
+    private JPanel centerPanel;
     private CardLayout cardLayout;
 
     public MainView(String role) {
-        // Cài đặt cửa sổ chính
-        setTitle("PetShop");
         setIconImage(Toolkit.getDefaultToolkit().getImage(UserView.class.getResource("/view/Icon/users_Icon.png")));
-        setFont(new Font("Arial", Font.PLAIN, 14));
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("PetShop");
         setBounds(100, 100, 1200, 750);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Khởi tạo content pane
         contentPane = new JPanel();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-        contentPane.setLayout(new BorderLayout());
         setContentPane(contentPane);
+        contentPane.setLayout(null);
 
-        // Panel bên trái
         panel = new JPanel();
         panel.setBackground(new Color(255, 255, 204));
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        contentPane.add(panel, BorderLayout.WEST);
+        panel.setBounds(0, 0, 250, 750);
+        contentPane.add(panel);
+        panel.setLayout(null);
 
-        // Thêm các nút chức năng
-        btnPets = addMenuButton("Pets", "/view/Icon/pets_Icon.png", panel);
-        if ("admin".equalsIgnoreCase(role)) {
-            btnAdmin = addMenuButton("Admin", "/view/Icon/user1_Icon.png", panel);
+        // Các nút điều hướng
+        btnPets = createButton("Pets", "/view/Icon/pets_Icon.png", 316);
+        panel.add(btnPets);
+
+        // Kiểm tra role, nếu là "admin" thì hiển thị nút Admin
+        if ("admin".equals(role)) {
+            btnAdmin = createButton("Admin", "/view/Icon/user1_Icon.png", 371);
+            panel.add(btnAdmin);
         }
-        btnCustomers = addMenuButton("Customers", "/view/Icon/users_Icon.png", panel);
-        btnBills = addMenuButton("Bills", "/view/Icon/bill_Icon.png", panel);
-        btnProduct = addMenuButton("Product", "/view/Icon/product_Icon.png", panel);
-        btnHome = addMenuButton("Home", "/view/Icon/Category_Icon.png", panel);
-        btnLogout = addLogoutButton(panel);
+        btnProduct = createButton("Product", "/view/Icon/Category_Icon.png", 426);
+        panel.add(btnProduct);
 
-        // Ảnh đại diện người dùng
-        JLabel lblUserIcon = new JLabel("");
-        lblUserIcon.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_main_Icon.png")));
-        panel.add(lblUserIcon);
+        btnCustomers = createButton("Customers", "/view/Icon/users_Icon.png", 481);
+        panel.add(btnCustomers);
 
-        // Panel trung tâm với CardLayout
+        btnBills = createButton("Bills", "/view/Icon/bill_Icon.png", 536);
+        panel.add(btnBills);
+
+        btnHome = createButton("Home", "/view/Icon/Category_Icon.png", 582);
+        panel.add(btnHome);
+
+        btnLogout = createButton("Logout", "/view/Icon/logout_Icon.png", 688);
+        btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
+        panel.add(btnLogout);
+
+        JLabel lblNewLabel = new JLabel();
+        lblNewLabel.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_main_Icon.png")));
+        lblNewLabel.setBounds(55, 81, 131, 135);
+        panel.add(lblNewLabel);
+
+        lblEmployeeName = new JLabel("Name: ");
+        lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblEmployeeName.setBounds(23, 226, 163, 25);
+        panel.add(lblEmployeeName);
+
+        lblEmployeeID = new JLabel("ID: ");
+        lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
+        lblEmployeeID.setBounds(23, 261, 163, 25);
+        panel.add(lblEmployeeID);
+
+        // Center panel + card layout
         cardLayout = new CardLayout();
         centerPanel = new JPanel(cardLayout);
-        contentPane.add(centerPanel, BorderLayout.CENTER);
+        centerPanel.setBounds(250, 0, 950, 750);
+        contentPane.add(centerPanel);
 
-        // Thêm các panel con vào centerPanel
-        centerPanel.add(createPetsPanel(), "Pets");
-        if ("admin".equalsIgnoreCase(role)) {
-            centerPanel.add(createUsersPanel(), "Admin");
-        }
-        centerPanel.add(createCustomersPanel(), "Customers");
-        centerPanel.add(createBillingsPanel(), "Bills");
-        centerPanel.add(createProductPanel(), "Product");
-        centerPanel.add(createHomePanel(), "Home");
+        // Thêm các panel vào card layout
+        centerPanel.add(createHomePanel(), "home");
+        centerPanel.add(createPetsPanel(), "pets");
+        centerPanel.add(createUsersPanel(), "admin");
+        centerPanel.add(createCustomersPanel(), "customers");
+        centerPanel.add(createBillingsPanel(), "bills");
+
+        // Product panel tạm thời
+        JPanel productPanel = new JPanel(new BorderLayout());
+        productPanel.add(new JLabel("Manage Products Panel", SwingConstants.CENTER), BorderLayout.NORTH);
+        centerPanel.add(productPanel, "product");
+
+        showPanel("home"); // Mặc định mở Home
     }
 
-    private JButton addMenuButton(String text, String iconPath, JPanel panel) {
+    private JButton createButton(String text, String iconPath, int y) {
         JButton button = new JButton(text);
         button.setFont(new Font("Tahoma", Font.BOLD, 16));
-        button.setIcon(new ImageIcon(UserView.class.getResource(iconPath)));
         button.setBackground(new Color(255, 255, 204));
-        button.setBorder(null);
-        button.setFocusPainted(false);
+        button.setIcon(new ImageIcon(UserView.class.getResource(iconPath)));
         button.setIconTextGap(20);
+        button.setFocusPainted(false);
+        button.setBorder(null);
+        button.setBounds(18, y, 200, 31);
         addHoverEffect(button, new Color(128, 128, 100), new Color(255, 255, 204));
-        panel.add(button);
         return button;
-    }
-
-    private JButton addLogoutButton(JPanel panel) {
-        JButton btnLogout = new JButton("Logout");
-        btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
-        btnLogout.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/logout_Icon.png")));
-        btnLogout.setBackground(new Color(255, 255, 204));
-        btnLogout.setBorder(null);
-        btnLogout.setFocusPainted(false);
-        btnLogout.setIconTextGap(20);
-        addHoverEffect(btnLogout, new Color(128, 128, 100), new Color(255, 255, 204));
-        panel.add(btnLogout);
-        return btnLogout;
     }
 
     private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
@@ -102,6 +128,7 @@ public class MainView extends JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(hoverColor);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(defaultColor);
             }
@@ -134,16 +161,6 @@ public class MainView extends JFrame {
         return panel;
     }
 
-    private ProductView createProductPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Manage Products Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        ProductView productView = new ProductView();
-        DaoInterface productRepo = new ProductDAO();
-        ProductService productService = new ProductService(productRepo);
-        new controller.ProductController(productService,productView);
-        return productView;
-    }
-
     private JPanel createHomePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
@@ -151,9 +168,7 @@ public class MainView extends JFrame {
     }
 
     public void addUsersListener(ActionListener listener) {
-        if (btnAdmin.isVisible()) {
-            btnAdmin.addActionListener(listener);
-        }
+        btnAdmin.addActionListener(listener);
     }
 
     public void addPetsListener(ActionListener listener) {
@@ -168,7 +183,7 @@ public class MainView extends JFrame {
         btnBills.addActionListener(listener);
     }
 
-    public void addProductListener(ActionListener listener) { // Gắn sự kiện cho nút Product
+    public void addProductListener(ActionListener listener) {
         btnProduct.addActionListener(listener);
     }
 
@@ -176,7 +191,17 @@ public class MainView extends JFrame {
         btnLogout.addActionListener(listener);
     }
 
+    public void addHomeListener(ActionListener listener) {
+        btnHome.addActionListener(listener);
+    }
+
     public void showPanel(String panelName) {
         cardLayout.show(centerPanel, panelName);
+    }
+
+    // Thêm phương thức cập nhật tên/ID
+    public void setEmployeeInfo(String name, String id) {
+        lblEmployeeName.setText("Name: " + name);
+        lblEmployeeID.setText("ID: " + id);
     }
 }

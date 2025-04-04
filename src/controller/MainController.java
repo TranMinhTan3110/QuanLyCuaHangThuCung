@@ -31,7 +31,7 @@ public class MainController {
 
     private void onUsersClicked() {
         System.out.println("Users button clicked!");
-        view.showPanel("Users");
+        view.showPanel("admin");
     }
 
     private void onCustomersClicked() {

@@ -2,183 +2,213 @@ package view;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.event.*;
 
 public class UserView extends JPanel {
-    private static final long serialVersionUID = 1L;
-    private JTextField idField, phoneField, usernameField, nameField, addressField, passwordField;
-    private JTable table;
-    private DefaultTableModel model;
-    private JComboBox<String> roleComboBox;
-    private JButton addButton, editButton, deleteButton;
 
-    public UserView() {
-        setupUI();
-    }
+	private static final long serialVersionUID = 1L;
+	private JTextField idField, phoneField, usernameField, nameField, addressField, passwordField;
+	private JComboBox<String> roleComboBox;
+	private JTable table;
+	private DefaultTableModel model;
+	private JButton addButton, editButton, deleteButton;
 
-    private void setupUI() {
-        setLayout(null);
-        setBounds(0, 0, 950, 750);
-        setupTopPanel();
-        setupTable();
-    }
+	public UserView() {
+		setLayout(null);
+		setBounds(0, 0, 950, 750);
 
-    private void setupTopPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(null);
-        panel.setBackground(new Color(255, 255, 223));
-        panel.setBounds(0, 0, 950, 240);
-        add(panel);
+		JPanel panel_top = new JPanel();
+		panel_top.setBackground(new Color(255, 255, 223));
+		panel_top.setBounds(0, 0, 950, 240);
+		panel_top.setLayout(null);
+		add(panel_top);
 
-        String[] labels = {"ID:", "Phone:", "Username:", "Name:", "Address:", "Password:", "Role:"};
-        JTextField[] fields = new JTextField[6];
-        String[] placeholders = {"Enter ID", "Enter Phone", "Enter Username", "Enter Name", "Enter Address", "Enter Password"};
+		JLabel lblId = new JLabel("ID:");
+		lblId.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblId.setBounds(95, 46, 67, 21);
+		panel_top.add(lblId);
 
-        int x1 = 95, x2 = 203, y = 46, width = 125, height = 32, gap = 50;
-        for (int i = 0; i < 6; i++) {
-            JLabel label = new JLabel(labels[i]);
-            label.setFont(new Font("Arial", Font.PLAIN, 16));
-            label.setBounds(x1, y, 100, 25);
-            panel.add(label);
+		idField = new JTextField();
+		idField.setBounds(203, 43, 125, 32);
+		addPlaceholder(idField, "Enter ID");
+		panel_top.add(idField);
 
-            fields[i] = new JTextField();
-            fields[i].setBounds(x2, y, width, height);
-            addPlaceholder(fields[i], placeholders[i]);
-            panel.add(fields[i]);
+		JLabel lblPhone = new JLabel("Phone:");
+		lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPhone.setBounds(95, 96, 68, 21);
+		panel_top.add(lblPhone);
 
-            y += (i == 2) ? -100 : gap;
-            if (i == 2) {
-                x1 = 419;
-                x2 = 530;
-            }
-        }
-        idField = fields[0]; phoneField = fields[1]; usernameField = fields[2];
-        nameField = fields[3]; addressField = fields[4]; passwordField = fields[5];
+		phoneField = new JTextField();
+		phoneField.setBounds(203, 93, 125, 32);
+		addPlaceholder(phoneField, "Enter Phone");
+		panel_top.add(phoneField);
 
-        JLabel roleLabel = new JLabel(labels[6]);
-        roleLabel.setFont(new Font("Arial", Font.PLAIN, 16));
-        roleLabel.setBounds(95, 190, 100, 25);
-        panel.add(roleLabel);
+		JLabel lblUsername = new JLabel("UserName:");
+		lblUsername.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblUsername.setBounds(95, 148, 88, 21);
+		panel_top.add(lblUsername);
 
-        roleComboBox = new JComboBox<>(new String[]{"Admin", "User"});
-        roleComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-        roleComboBox.setBounds(203, 190, 125, 32);
-        panel.add(roleComboBox);
+		usernameField = new JTextField();
+		usernameField.setBounds(203, 145, 125, 32);
+		addPlaceholder(usernameField, "Enter Username");
+		panel_top.add(usernameField);
 
-        addButton = createButton("Add", 727, 40);
-        editButton = createButton("Edit", 727, 93);
-        deleteButton = createButton("Delete", 727, 146);
+		JLabel lblName = new JLabel("Name:");
+		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblName.setBounds(419, 46, 67, 21);
+		panel_top.add(lblName);
 
-        panel.add(addButton);
-        panel.add(editButton);
-        panel.add(deleteButton);
-    }
+		nameField = new JTextField();
+		nameField.setBounds(530, 43, 125, 32);
+		addPlaceholder(nameField, "Enter Name");
+		panel_top.add(nameField);
 
-    private JButton createButton(String text, int x, int y) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 16));
-        button.setBackground(new Color(255, 255, 204));
-        button.setBounds(x, y, 88, 32);
-        button.setFocusPainted(false);
-        addHoverEffect(button, new Color(128, 128, 100), new Color(255, 255, 204));
-        return button;
-    }
+		JLabel lblAddress = new JLabel("Address:");
+		lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblAddress.setBounds(419, 96, 68, 21);
+		panel_top.add(lblAddress);
 
-    private void setupTable() {
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
-        scrollPane.setBounds(0, 244, 950, 500);
-        scrollPane.setBorder(BorderFactory.createTitledBorder(
-                BorderFactory.createLineBorder(Color.BLACK),
-                "Manager Users",
-                TitledBorder.CENTER,
-                TitledBorder.TOP,
-                new Font("Arial", Font.BOLD, 16),
-                Color.BLACK
-        ));
-        add(scrollPane);
+		addressField = new JTextField();
+		addressField.setBounds(530, 93, 125, 32);
+		addPlaceholder(addressField, "Enter Address");
+		panel_top.add(addressField);
 
-        model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
-        table = new JTable(model);
-        scrollPane.setViewportView(table);
-    }
+		JLabel lblPassword = new JLabel("Password:");
+		lblPassword.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPassword.setBounds(419, 148, 88, 21);
+		panel_top.add(lblPassword);
 
-    private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) { button.setBackground(hoverColor); }
-            public void mouseExited(java.awt.event.MouseEvent evt) { button.setBackground(defaultColor); }
-        });
-    }
+		passwordField = new JTextField();
+		passwordField.setBounds(530, 145, 125, 32);
+		addPlaceholder(passwordField, "Enter Password");
+		panel_top.add(passwordField);
 
-    private void addPlaceholder(JTextField textField, String placeholder) {
-        textField.setText(placeholder);
-        textField.setForeground(Color.GRAY);
-        textField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(placeholder)) {
-                    textField.setText("");
-                    textField.setForeground(Color.BLACK);
-                }
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setText(placeholder);
-                    textField.setForeground(Color.GRAY);
-                }
-            }
-        });
-    }
+		JLabel lblRole = new JLabel("Role");
+		lblRole.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblRole.setBounds(95, 190, 88, 21);
+		panel_top.add(lblRole);
 
-    // Getters for Controller
-    public String getIdField() { return idField.getText(); }
-    public String getPhoneField() { return phoneField.getText(); }
-    public String getUsernameField() { return usernameField.getText(); }
-    public String getNameField() { return nameField.getText(); }
-    public String getAddressField() { return addressField.getText(); }
-    public String getPasswordField() { return passwordField.getText(); }
-    public String getRoleField() { return roleComboBox.getSelectedItem().toString(); }
-    public int getSelectedRow() { return table.getSelectedRow(); }
-    public String getSelectedUserId() {
-        int row = getSelectedRow();
-        if (row != -1) return table.getValueAt(row, 0).toString();
-        return null;
-    }
+		roleComboBox = new JComboBox<>(new String[]{"Admin", "Employee"});
+		roleComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		roleComboBox.setBounds(203, 192, 125, 32);
+		panel_top.add(roleComboBox);
 
-    public void clearFields() {
-        JTextField[] fields = {idField, phoneField, usernameField, nameField, addressField, passwordField};
-        for (JTextField field : fields) field.setText("");
-        roleComboBox.setSelectedIndex(0);
-    }
+		addButton = new JButton("Add");
+		addButton.setBackground(new Color(255, 255, 204));
+		addButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		addButton.setBounds(727, 40, 88, 32);
+		addButton.setFocusPainted(false);
+		addHoverEffect(addButton, new Color(128, 128, 100), new Color(255, 255, 204));
+		panel_top.add(addButton);
 
-    // Methods to manipulate JTable
-    public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
-        model.addRow(new Object[]{id, name, phone, username, password, address, role});
-    }
+		editButton = new JButton("Edit");
+		editButton.setBackground(new Color(255, 255, 204));
+		editButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		editButton.setBounds(727, 93, 88, 32);
+		editButton.setFocusPainted(false);
+		addHoverEffect(editButton, new Color(128, 128, 100), new Color(255, 255, 204));
+		panel_top.add(editButton);
 
-    public void updateUserInTable(int row, String id, String name, String phone, String username, String password, String address, String role) {
-        model.setValueAt(id, row, 0);
-        model.setValueAt(name, row, 1);
-        model.setValueAt(phone, row, 2);
-        model.setValueAt(username, row, 3);
-        model.setValueAt(password, row, 4);
-        model.setValueAt(address, row, 5);
-        model.setValueAt(role, row, 6);
-    }
+		deleteButton = new JButton("Delete");
+		deleteButton.setBackground(new Color(255, 255, 204));
+		deleteButton.setFont(new Font("Arial", Font.PLAIN, 16));
+		deleteButton.setBounds(727, 145, 88, 32);
+		deleteButton.setFocusPainted(false);
+		addHoverEffect(deleteButton, new Color(128, 128, 100), new Color(255, 255, 204));
+		panel_top.add(deleteButton);
 
-    public void removeUserFromTable(int row) {
-        model.removeRow(row);
-    }
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
+		scrollPane.setBounds(0, 244, 950, 500);
+		scrollPane.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder(Color.BLACK),
+				"Manager Users",
+				TitledBorder.CENTER,
+				TitledBorder.TOP,
+				new Font("Arial", Font.BOLD, 16),
+				Color.BLACK
+		));
+		add(scrollPane);
 
-    // Setters for controller to attach action listeners
-    public void setAddButtonListener(ActionListener listener) { addButton.addActionListener(listener); }
-    public void setEditButtonListener(ActionListener listener) { editButton.addActionListener(listener); }
-    public void setDeleteButtonListener(ActionListener listener) { deleteButton.addActionListener(listener); }
+		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
+		table = new JTable(model);
+		scrollPane.setViewportView(table);
+	}
+
+	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
+		button.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				button.setBackground(hoverColor);
+			}
+			public void mouseExited(MouseEvent evt) {
+				button.setBackground(defaultColor);
+			}
+		});
+	}
+
+	private void addPlaceholder(JTextField textField, String placeholder) {
+		textField.setText(placeholder);
+		textField.setForeground(Color.GRAY);
+		textField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (textField.getText().equals(placeholder)) {
+					textField.setText("");
+					textField.setForeground(Color.BLACK);
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (textField.getText().isEmpty()) {
+					textField.setText(placeholder);
+					textField.setForeground(Color.GRAY);
+				}
+			}
+		});
+	}
+
+	// Getters for Controller
+	public String getIdField() { return idField.getText(); }
+	public String getPhoneField() { return phoneField.getText(); }
+	public String getUsernameField() { return usernameField.getText(); }
+	public String getNameField() { return nameField.getText(); }
+	public String getAddressField() { return addressField.getText(); }
+	public String getPasswordField() { return passwordField.getText(); }
+	public String getRoleField() { return roleComboBox.getSelectedItem().toString(); }
+	public int getSelectedRow() { return table.getSelectedRow(); }
+	public String getSelectedUserId() {
+		int row = getSelectedRow();
+		if (row != -1) return table.getValueAt(row, 0).toString();
+		return null;
+	}
+
+	public void clearFields() {
+		JTextField[] fields = {idField, phoneField, usernameField, nameField, addressField, passwordField};
+		for (JTextField field : fields) field.setText("");
+		roleComboBox.setSelectedIndex(0);
+	}
+
+	public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
+		model.addRow(new Object[]{id, name, phone, username, password, address, role});
+	}
+
+	public void updateUserInTable(int row, String id, String name, String phone, String username, String password, String address, String role) {
+		model.setValueAt(id, row, 0);
+		model.setValueAt(name, row, 1);
+		model.setValueAt(phone, row, 2);
+		model.setValueAt(username, row, 3);
+		model.setValueAt(password, row, 4);
+		model.setValueAt(address, row, 5);
+		model.setValueAt(role, row, 6);
+	}
+
+	public void removeUserFromTable(int row) {
+		model.removeRow(row);
+	}
+
+	public void setAddButtonListener(ActionListener listener) { addButton.addActionListener(listener); }
+	public void setEditButtonListener(ActionListener listener) { editButton.addActionListener(listener); }
+	public void setDeleteButtonListener(ActionListener listener) { deleteButton.addActionListener(listener); }
 }
