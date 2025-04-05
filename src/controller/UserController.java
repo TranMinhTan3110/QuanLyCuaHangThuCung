@@ -17,7 +17,18 @@ public class UserController {
         this.userView = userView;
         this.userService = userService;
         setupListeners();
+        initController();
         loadEmployeesFromDB();
+        loadSelectedEmployeeIntoForm();
+    }
+
+    private void initController() {
+        // Khi chọn dòng trong bảng, load dữ liệu vào form
+        userView.getTable().getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && userView.getTable().getSelectedRow() != -1) {
+                loadSelectedEmployeeIntoForm();
+            }
+        });
     }
 
     // Load danh sách nhân viên từ database
@@ -36,6 +47,19 @@ public class UserController {
         }
     }
 
+    private void loadSelectedEmployeeIntoForm() {
+        int selectedRow = userView.getTable().getSelectedRow();
+        if (selectedRow != -1) {
+            String id = userView.getTable().getValueAt(selectedRow, 0).toString();
+            String name = userView.getTable().getValueAt(selectedRow, 1).toString();
+            String phone = userView.getTable().getValueAt(selectedRow, 2).toString();
+            String username = userView.getTable().getValueAt(selectedRow, 3).toString();
+            String password = userView.getTable().getValueAt(selectedRow, 4).toString();
+            String address = userView.getTable().getValueAt(selectedRow, 5).toString();
+            String role = userView.getTable().getValueAt(selectedRow, 6).toString();
+            userView.setEmployeeData(id, name, phone, address, username, password, role);
+        }
+    }
     private void setupListeners() {
         userView.setAddButtonListener(e -> addEmployee());
         userView.setEditButtonListener(e -> editEmployee());

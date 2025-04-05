@@ -132,7 +132,16 @@ public class UserView extends JPanel {
 		));
 		add(scrollPane);
 
-		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
+//		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
+		String[] columnNames = {"ID", "Name", "Phone", "Username", "Password", "Address", "Role"};
+		model = new DefaultTableModel(columnNames, 0) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+
+
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
 	}
@@ -142,6 +151,7 @@ public class UserView extends JPanel {
 			public void mouseEntered(MouseEvent evt) {
 				button.setBackground(hoverColor);
 			}
+
 			public void mouseExited(MouseEvent evt) {
 				button.setBackground(defaultColor);
 			}
@@ -159,6 +169,7 @@ public class UserView extends JPanel {
 					textField.setForeground(Color.BLACK);
 				}
 			}
+
 			@Override
 			public void focusLost(FocusEvent e) {
 				if (textField.getText().isEmpty()) {
@@ -170,14 +181,38 @@ public class UserView extends JPanel {
 	}
 
 	// Getters for Controller
-	public String getIdField() { return idField.getText(); }
-	public String getPhoneField() { return phoneField.getText(); }
-	public String getUsernameField() { return usernameField.getText(); }
-	public String getNameField() { return nameField.getText(); }
-	public String getAddressField() { return addressField.getText(); }
-	public String getPasswordField() { return passwordField.getText(); }
-	public String getRoleField() { return roleComboBox.getSelectedItem().toString(); }
-	public int getSelectedRow() { return table.getSelectedRow(); }
+	public String getIdField() {
+		return idField.getText();
+	}
+
+	public String getPhoneField() {
+		return phoneField.getText();
+	}
+
+	public String getUsernameField() {
+		return usernameField.getText();
+	}
+
+	public String getNameField() {
+		return nameField.getText();
+	}
+
+	public String getAddressField() {
+		return addressField.getText();
+	}
+
+	public String getPasswordField() {
+		return passwordField.getText();
+	}
+
+	public String getRoleField() {
+		return roleComboBox.getSelectedItem().toString();
+	}
+
+	public int getSelectedRow() {
+		return table.getSelectedRow();
+	}
+
 	public String getSelectedUserId() {
 		int row = getSelectedRow();
 		if (row != -1) return table.getValueAt(row, 0).toString();
@@ -208,7 +243,30 @@ public class UserView extends JPanel {
 		model.removeRow(row);
 	}
 
-	public void setAddButtonListener(ActionListener listener) { addButton.addActionListener(listener); }
-	public void setEditButtonListener(ActionListener listener) { editButton.addActionListener(listener); }
-	public void setDeleteButtonListener(ActionListener listener) { deleteButton.addActionListener(listener); }
+	public void setAddButtonListener(ActionListener listener) {
+		addButton.addActionListener(listener);
+	}
+
+	public void setEditButtonListener(ActionListener listener) {
+		editButton.addActionListener(listener);
+	}
+
+	public void setDeleteButtonListener(ActionListener listener) {
+		deleteButton.addActionListener(listener);
+	}
+
+	public JTable getTable() {
+		return table;
+	}
+
+	public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
+
+		idField.setText(id);
+		phoneField.setText(phone);
+		usernameField.setText(username);
+		nameField.setText(name);
+		addressField.setText(address);
+		passwordField.setText(password);
+		roleComboBox.setSelectedItem(role);
+	}
 }
