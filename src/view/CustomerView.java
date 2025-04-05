@@ -126,7 +126,7 @@ public class CustomerView extends JPanel {
 			new Object[][] {
 			},
 			new String[] {
-				"Id", "Name", "Address", "Phone"
+				"Id", "Name", "Address", "Phone","Rank","Score"
 			}
 		));
 		cus_List.setViewportView(table);
