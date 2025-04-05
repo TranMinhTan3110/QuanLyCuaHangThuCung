@@ -122,7 +122,7 @@ public class MainView extends JFrame {
 		btnUsers.setFocusPainted(false);
 		btnUsers.setBorder(null);
 		btnUsers.setBackground(new Color(255, 255, 204));
-		btnUsers.setBounds(18, 371, 173, 31);
+		btnUsers.setBounds(13, 591, 173, 31);
 		addHoverEffect(btnUsers, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnUsers);
 		
@@ -204,7 +204,7 @@ public class MainView extends JFrame {
 		btnHome.setFocusPainted(false);
 		btnHome.setBorder(null);
 		btnHome.setBackground(new Color(255, 255, 204));
-		btnHome.setBounds(12, 582, 173, 31);
+		btnHome.setBounds(13, 370, 173, 31);
 		panel.add(btnHome);
 
 	}

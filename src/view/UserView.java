@@ -25,7 +25,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import java.awt.Toolkit;
-
+import view.UI.Hover;
 public class UserView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
@@ -55,7 +55,7 @@ public class UserView extends JPanel {
 
         textField = new JTextField();
         textField.setBounds(203, 43, 125, 32);
-        addPlaceholder(textField, "Enter ID");
+        Hover.addPlaceholder(textField, "Enter ID");
         panel_top.add(textField);
         textField.setColumns(10);
 
@@ -67,7 +67,7 @@ public class UserView extends JPanel {
         textField_1 = new JTextField();
         textField_1.setColumns(10);
         textField_1.setBounds(203, 93, 125, 32);
-        addPlaceholder(textField_1, "Enter Phone");
+        Hover.addPlaceholder(textField_1, "Enter Phone");
         panel_top.add(textField_1);
 
         JLabel lblNewLabel_1_1_1 = new JLabel("UserName:");
@@ -78,7 +78,7 @@ public class UserView extends JPanel {
         textField_2 = new JTextField();
         textField_2.setColumns(10);
         textField_2.setBounds(203, 145, 125, 32);
-        addPlaceholder(textField_2, "Enter Username");
+        Hover.addPlaceholder(textField_2, "Enter Username");
         panel_top.add(textField_2);
 
         JLabel lblNewLabel_1_2 = new JLabel("Name:");
@@ -89,7 +89,7 @@ public class UserView extends JPanel {
         textField_3 = new JTextField();
         textField_3.setColumns(10);
         textField_3.setBounds(530, 43, 125, 32);
-        addPlaceholder(textField_3, "Enter Name");
+        Hover.addPlaceholder(textField_3, "Enter Name");
         panel_top.add(textField_3);
 
         JLabel lblNewLabel_1_1_2 = new JLabel("Address:");
@@ -100,7 +100,7 @@ public class UserView extends JPanel {
         textField_4 = new JTextField();
         textField_4.setColumns(10);
         textField_4.setBounds(530, 93, 125, 32);
-        addPlaceholder(textField_4, "Enter Address");
+        Hover.addPlaceholder(textField_4, "Enter Address");
         panel_top.add(textField_4);
 
         JLabel lblNewLabel_1_1_2_1 = new JLabel("Password:");
@@ -111,7 +111,7 @@ public class UserView extends JPanel {
         textField_5 = new JTextField();
         textField_5.setColumns(10);
         textField_5.setBounds(530, 145, 125, 32);
-        addPlaceholder(textField_5, "Enter Password");
+        Hover.addPlaceholder(textField_5, "Enter Password");
         panel_top.add(textField_5);
 
         JComboBox comboBox = new JComboBox();
@@ -130,7 +130,7 @@ public class UserView extends JPanel {
         btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
         btnAdd.setBounds(727, 40, 88, 32);
         btnAdd.setFocusPainted(false);
-        addHoverEffect(btnAdd, new Color(128, 128, 100), new Color(255, 255, 204));
+        Hover.addHoverEffect(btnAdd, new Color(128, 128, 100), new Color(255, 255, 204));
         panel_top.add(btnAdd);
 
         JButton btnEdit = new JButton("Edit");
@@ -143,7 +143,7 @@ public class UserView extends JPanel {
         btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
         btnEdit.setBounds(727, 93, 88, 32);
         btnEdit.setFocusPainted(false);
-        addHoverEffect(btnEdit, new Color(128, 128, 100), new Color(255, 255, 204));
+        Hover.addHoverEffect(btnEdit, new Color(128, 128, 100), new Color(255, 255, 204));
         panel_top.add(btnEdit);
 
         JButton btnDel = new JButton("Delete");
@@ -151,7 +151,7 @@ public class UserView extends JPanel {
         btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
         btnDel.setBounds(727, 145, 88, 32);
         btnDel.setFocusPainted(false);
-        addHoverEffect(btnDel, new Color(128, 128, 100), new Color(255, 255, 204));
+        Hover.addHoverEffect(btnDel, new Color(128, 128, 100), new Color(255, 255, 204));
         panel_top.add(btnDel);
 
         // Table to display user data.
@@ -193,36 +193,5 @@ public class UserView extends JPanel {
         });
     }
 
-    // Helper method to add a hover effect to buttons.
-    private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
-        button.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(hoverColor);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                button.setBackground(defaultColor);
-            }
-        });
-    }
-
-    private void addPlaceholder(JTextField textField, String placeholder) {
-        textField.setText(placeholder);
-        textField.setForeground(Color.GRAY);
-        textField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (textField.getText().equals(placeholder)) {
-                    textField.setText("");
-                    textField.setForeground(Color.BLACK);
-                }
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (textField.getText().isEmpty()) {
-                    textField.setText(placeholder);
-                    textField.setForeground(Color.GRAY);
-                }
-            }
-        });
-    }
+    
 }
