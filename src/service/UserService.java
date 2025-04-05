@@ -9,7 +9,7 @@ public class UserService {
     private DaoInterface daoInterface;
 
     // Constructor nhận vào một repository để dễ dàng thay đổi hoặc kiểm thử
-    public UserService(DaoInterface  userRepo) {
+    public UserService(DaoInterface userRepo) {
         this.daoInterface = userRepo;
     }
 

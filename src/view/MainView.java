@@ -86,7 +86,7 @@ public class MainView extends JFrame {
 
         // Thêm các panel
         centerPanel.add(createPetsPanel(), "Pets");
-        centerPanel.add(createUsersPanel(), "Admin");
+
         centerPanel.add(createCustomersPanel(), "Customers");
         centerPanel.add(createBillingsPanel(), "Bills");
         centerPanel.add(createHomePanel(), "Home");
@@ -109,6 +109,7 @@ public class MainView extends JFrame {
 
         // Nếu là admin thì mới hiển thị nút Admin
         if ("admin".equals(role)) {
+            centerPanel.add(createUsersPanel(), "Admin");
             btnAdmin = new JButton("Admin");
             btnAdmin.setFont(new Font("Tahoma", Font.BOLD, 16));
             btnAdmin.setIconTextGap(20);
@@ -116,7 +117,7 @@ public class MainView extends JFrame {
             btnAdmin.setFocusPainted(false);
             btnAdmin.setBorder(null);
             btnAdmin.setBackground(new Color(255, 255, 204));
-            btnAdmin.setBounds(18, 371, 173, 31);
+            btnAdmin.setBounds(13, 591, 173, 31);
             addHoverEffect(btnAdmin, new Color(128, 128, 100), new Color(255, 255, 204));
             panel.add(btnAdmin);
         }
@@ -187,12 +188,13 @@ public class MainView extends JFrame {
         btnHome.setFocusPainted(false);
         btnHome.setBorder(null);
         btnHome.setBackground(new Color(255, 255, 204));
-        btnHome.setBounds(12, 582, 173, 31);
+        btnHome.setBounds(13,370, 173, 31);
         panel.add(btnHome);
 
         centerPanel.setVisible(true);
 
     }
+
 
 
     private JPanel createPetsPanel() {
@@ -229,9 +231,11 @@ public class MainView extends JFrame {
     }
 
     public void addUsersListener(ActionListener listener) {
-        btnAdmin.addActionListener(listener);
+        // Kiểm tra xem btnAdmin có null không trước khi thêm ActionListener
+        if (btnAdmin != null) {
+            btnAdmin.addActionListener(listener);
+        }
     }
-
     public void addPetsListener(ActionListener listener) {
         btnPets.addActionListener(listener);
     }

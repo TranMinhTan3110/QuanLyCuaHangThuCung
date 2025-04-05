@@ -11,11 +11,11 @@ public class ProductService {
     private DaoInterface daoProduct;
 
     // Constructor nhận vào một repository để dễ dàng thay đổi hoặc kiểm thử
-    public ProductService(DaoInterface  productRepo) {
+    public ProductService(DaoInterface productRepo) {
         this.daoProduct = productRepo;
     }
 
-    // Lấy danh sách user
+    // Lấy danh sách product
     public ArrayList<Product> getAll() {
         return daoProduct.getAll();
     }
