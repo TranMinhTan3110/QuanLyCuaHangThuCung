@@ -29,6 +29,8 @@ public class CustomerView extends JPanel {
 	private JTextField Name_textField;
 	private JTextField Address_textField;
 	private JTextField Phone_textField;
+	private JTextField Score_textField;
+	private JTextField Rank_textField;
 
 	/**
 	 * Create the panel.
@@ -45,23 +47,35 @@ public class CustomerView extends JPanel {
 		
 		JLabel lblName= new JLabel("Name");
 		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblName.setBounds(new Rectangle(176, 54, 55, 21));
+		lblName.setBounds(new Rectangle(176, 36, 55, 21));
 		panel_top.add(lblName);
 		
 		JLabel lblAddress = new JLabel("Address");
 		lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblAddress.setBounds(new Rectangle(176, 54, 55, 21));
-		lblAddress.setBounds(370, 54, 97, 21);
+		lblAddress.setBounds(370, 36, 97, 21);
 		panel_top.add(lblAddress);
 		
 		JLabel lblPhone = new JLabel("Phone");
 		lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblPhone.setBounds(new Rectangle(176, 54, 55, 21));
-		lblPhone.setBounds(603, 54, 55, 21);
+		lblPhone.setBounds(575, 36, 55, 21);
 		panel_top.add(lblPhone);
 		
+		JLabel lblScore = new JLabel("Score");
+		lblScore.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblScore.setBounds(new Rectangle(176, 36, 55, 21));
+		lblScore.setBounds(176, 121, 55, 21);
+		panel_top.add(lblScore);
+		
+		JLabel lblRank = new JLabel("Rank");
+		lblRank.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblRank.setBounds(new Rectangle(176, 36, 55, 21));
+		lblRank.setBounds(370, 126, 55, 21);
+		panel_top.add(lblRank);
+		
 		Name_textField = new JTextField();
-		Name_textField.setBounds(176, 85, 109, 25);
+		Name_textField.setBounds(176, 67, 109, 25);
 		panel_top.add(Name_textField);
 		Hover.addPlaceholder(Name_textField, "Enter Name");
 		Name_textField.setColumns(10);
@@ -69,20 +83,32 @@ public class CustomerView extends JPanel {
 		
 		Address_textField = new JTextField();
 		Address_textField.setColumns(10);
-		Address_textField.setBounds(370, 85, 137, 25);
+		Address_textField.setBounds(370, 67, 137, 25);
 		panel_top.add(Address_textField);
 		Hover.addPlaceholder(Address_textField, "Enter Address");
 		
 		Phone_textField = new JTextField();
 		Phone_textField.setColumns(10);
-		Phone_textField.setBounds(603, 85, 102, 25);
+		Phone_textField.setBounds(575, 67, 102, 25);
 		panel_top.add(Phone_textField);
 		Hover.addPlaceholder(Phone_textField, "Enter Phone");
+		
+		Score_textField = new JTextField();
+		Score_textField.setColumns(10);
+		Score_textField.setBounds(176, 152, 109, 25);
+		panel_top.add(Score_textField);
+		Hover.addPlaceholder(Score_textField, "Enter Score");
+		
+		Rank_textField = new JTextField();
+		Rank_textField.setColumns(10);
+		Rank_textField.setBounds(370, 152, 109, 25);
+		panel_top.add(Rank_textField);
+		Hover.addPlaceholder(Rank_textField, "Enter Rank");
 		
 		JButton Edit_Button = new JButton("Edit");
 		Edit_Button.setBackground(new Color(255, 255, 204));
 		Edit_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-		Edit_Button.setBounds(222, 153, 113, 30);
+		Edit_Button.setBounds(720, 62, 113, 30);
 		Edit_Button.setFocusPainted(false);
 		panel_top.add(Edit_Button);
 		Hover.addHoverEffect(Edit_Button, new Color(128, 128, 100), new Color(255, 255, 204));
@@ -90,7 +116,7 @@ public class CustomerView extends JPanel {
 		JButton Save_Button = new JButton("Save");
 		Save_Button.setBackground(new Color(255, 255, 204));
 		Save_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-		Save_Button.setBounds(384, 153, 113, 30);
+		Save_Button.setBounds(720, 121, 113, 30);
 		Save_Button.setFocusPainted(false);
 		panel_top.add(Save_Button);
 		Hover.addHoverEffect(Save_Button, new Color(128, 128, 100), new Color(255, 255, 204));
@@ -102,10 +128,14 @@ public class CustomerView extends JPanel {
 			}
 		});
 		Delete_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-		Delete_Button.setBounds(545, 153, 113, 30);
+		Delete_Button.setBounds(720, 175, 113, 30);
 		Delete_Button.setFocusPainted(false);
 		panel_top.add(Delete_Button);
 		Hover.addHoverEffect(Delete_Button, new Color(128, 128, 100), new Color(255, 255, 204));
+		
+		
+		
+		
 		
 		JScrollPane cus_List = new JScrollPane();
 		cus_List.setBounds(0, 244, 950, 500);
@@ -132,5 +162,4 @@ public class CustomerView extends JPanel {
 		cus_List.setViewportView(table);
 
 	}
-	
 }
