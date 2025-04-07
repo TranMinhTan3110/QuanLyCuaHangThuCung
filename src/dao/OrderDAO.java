@@ -143,5 +143,10 @@ public class OrderDAO implements DaoInterface<Order>{
         }
         return null; // Không tìm thấy đơn hàng
     }
+
+    @Override
+    public Order selectByName(String name) {
+        return null;
     }
+}
 

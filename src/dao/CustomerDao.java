@@ -70,4 +70,9 @@ public class CustomerDao implements  DaoInterface<Customer> {
     public Customer selectByID(int id) {
         return null;
     }
+
+    @Override
+    public Customer selectByName(String name) {
+        return null;
+    }
 }

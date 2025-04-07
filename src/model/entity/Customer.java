@@ -10,6 +10,14 @@ public class Customer extends Person {
         this.membershipLevel = "Basic";
     }
 
+    public void setLoyaltyPoints(int loyaltyPoints) {
+        this.loyaltyPoints = loyaltyPoints;
+    }
+
+    public void setMembershipLevel(String membershipLevel) {
+        this.membershipLevel = membershipLevel;
+    }
+
     public Customer(int id, String name, String phone, String email, String address) {
         super(id, name, phone, address); // Gọi constructor của Person
         this.loyaltyPoints = 0;
@@ -32,9 +40,9 @@ public class Customer extends Person {
     }
 
     private void updateMembershipLevel() {
-        if (loyaltyPoints >= 1000) membershipLevel = "Platinum";
-        else if (loyaltyPoints >= 500) membershipLevel = "Gold";
-        else if (loyaltyPoints >= 100) membershipLevel = "Silver";
+        if (loyaltyPoints >= 10000) membershipLevel = "Platinum";
+        else if (loyaltyPoints >= 5000) membershipLevel = "Gold";
+        else if (loyaltyPoints >= 1000) membershipLevel = "Silver";
         else membershipLevel = "Basic";
     }
 

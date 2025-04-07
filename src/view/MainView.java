@@ -171,6 +171,7 @@ public class MainView extends JFrame {
         panel.add(lblEmployeeID);
 
         btnProduct = new JButton("Product");
+        centerPanel.add(createProductPanel(), "Product");
         btnProduct.setIconTextGap(20);
         btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Category_Icon.png")));
         btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -224,6 +225,13 @@ public class MainView extends JFrame {
         return panel;
     }
 
+    private JPanel createProductPanel() {
+        ProductView productView = new ProductView();
+        DaoInterface productRepo = new ProductDAO();
+        ProductService productService = new ProductService(productRepo);
+        new controller.ProductController(productService,productView);
+        return productView;
+    }
     private JPanel createHomePanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);

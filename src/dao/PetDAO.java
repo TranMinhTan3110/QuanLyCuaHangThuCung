@@ -18,7 +18,7 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setString(1, pet.getName());
             st.setString(2, pet.getSpecies());
             st.setString(3, pet.getBreed());
-            st.setInt(4, pet.getAge());
+            st.setFloat(4, pet.getAge());
             st.setDouble(5, pet.getPrice());
 
             int check = st.executeUpdate();
@@ -38,7 +38,7 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setString(1,pet.getName());
             st.setString(2,pet.getSpecies());
             st.setString(3,pet.getBreed());
-            st.setInt(4,pet.getAge());
+            st.setFloat(4,pet.getAge());
             st.setDouble(5,pet.getPrice());
 
             int check = st.executeUpdate();
@@ -116,6 +116,11 @@ public class PetDAO implements DaoInterface<Pet>{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return null;
+    }
+
+    @Override
+    public Pet selectByName(String name) {
         return null;
     }
 

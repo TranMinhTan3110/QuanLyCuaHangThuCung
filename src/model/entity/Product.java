@@ -4,47 +4,46 @@ public class Product {
     private int productID;
     private String name;
     private double price;
-    private int categoryID; // Lưu ID của danh mục thay vì object
-
-    public Product(int productID, String name, double price, int categoryID) {
-        this.productID = productID;
-        this.name = name;
-        this.price = price;
-        this.categoryID = categoryID;
-    }
-    public Product(String name, double price, int categoryID) {
-        this.name = name;
-        this.price = price;
-        this.categoryID = categoryID;
-    }
+    private int quantity;
+    private Category category;
 
     public int getProductID() {
         return productID;
+    }
+
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public double getPrice() {
         return price;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public void setPrice(double price) {
+        this.price = price;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public int getQuantity() {
+        return quantity;
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "productID=" + productID +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", categoryID=" + categoryID +
-                '}';
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
