@@ -19,7 +19,6 @@ public class UserController {
         setupListeners();
         initController();
         loadEmployeesFromDB();
-        loadSelectedEmployeeIntoForm();
     }
 
     private void initController() {

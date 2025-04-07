@@ -1,8 +1,10 @@
 package view;
 
+import dao.CustomerDao;
 import dao.DaoInterface;
 import dao.ProductDAO;
 import dao.UserDAO;
+import service.CustomerService;
 import service.ProductService;
 import service.UserService;
 
@@ -213,9 +215,12 @@ public class MainView extends JFrame {
     }
 
     private JPanel createCustomersPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Manage Customers Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        return panel;
+        System.out.println("Tạo Customer Panel");
+        CustomerView customerView = new CustomerView();
+        DaoInterface userRepo = new CustomerDao();
+        CustomerService customerService = new CustomerService(userRepo);
+        new controller.CustomerController(customerView, customerService);
+        return customerView;
     }
 
     private JPanel createBillingsPanel() {
