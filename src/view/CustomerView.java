@@ -122,15 +122,17 @@ public class CustomerView extends JPanel {
         panel_top.add(Name_textField);
         Hover.addPlaceholder(Name_textField, "Enter Name");
 
+        // Sửa vị trí của Phone_textField
         Phone_textField = new JTextField();
         Phone_textField.setColumns(10);
-        Phone_textField.setBounds(176, 152, 109, 25);  // Đặt Phone ở vị trí ban đầu của Score
+        Phone_textField.setBounds(575, 67, 109, 25); // Cùng vị trí X với JLabel "Phone", Y có thể điều chỉnh
         panel_top.add(Phone_textField);
         Hover.addPlaceholder(Phone_textField, "Enter Phone");
 
+        // Sửa vị trí của Address_textField
         Address_textField = new JTextField();
         Address_textField.setColumns(10);
-        Address_textField.setBounds(575, 67, 102, 25);  // Đặt Address ở vị trí ban đầu của Phone
+        Address_textField.setBounds(176, 152, 102, 25); // Cùng vị trí X với JLabel "Address" (gần đúng), Y có thể điều chỉnh
         panel_top.add(Address_textField);
         Hover.addPlaceholder(Address_textField, "Enter Address");
 
@@ -190,7 +192,7 @@ public class CustomerView extends JPanel {
 
 
 //		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
-        String[] columnNames = {"Id", "Name", "Address", "Phone","Rank","Score"};
+        String[] columnNames = {"Id", "Name", "Phone", "Address","Score","Rank"};
         model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -203,7 +205,7 @@ public class CustomerView extends JPanel {
     }
 
 
-    public void removeUserFromTable(int row) {
+    public void removeCustomerFromTable(int row) {
         model.removeRow(row);
     }
 
@@ -222,6 +224,9 @@ public class CustomerView extends JPanel {
     public JTable getTable() {
         return table;
     }
+    public int getSeclectedRow(){
+        return table.getSelectedRow();
+    }
     public void clear(){
         Name_textField.setText("");
         Address_textField.setText("");
@@ -229,26 +234,26 @@ public class CustomerView extends JPanel {
         ID_textField.setText("");
         Score_textField.setText("");
     }
-    public void addCustomerToTable(String id, String name,String address , String phone,int loyaltyPoints,String membershipLevels) {
-        model.addRow(new Object[]{id, name, address,phone, loyaltyPoints,membershipLevels});
+    public void addCustomerToTable(String id, String name,String  phone, String address ,int loyaltyPoints,String membershipLevels) {
+        model.addRow(new Object[]{id, name,phone ,address, loyaltyPoints,membershipLevels});
     }
 
-    public void updateCustomerInTable(int row, String id, String name, String phone, String address, int loyaltyPoints,String membershipLevel  ) {
+    public void updateCustomerInTable(int row, String id, String name, String phone, String address  ) {
         model.setValueAt(id, row, 0);
         model.setValueAt(name, row, 1);
         model.setValueAt(phone, row, 2);
         model.setValueAt(address, row, 3);
-        model.setValueAt(loyaltyPoints, row, 4);
-        model.setValueAt(membershipLevel , row, 5);
+
+
     }
 
 
-    public void setEmployeeData(String id, String name,String address ,String phone,int Score) {
+    public void setEmployeeData(String id, String name ,String phone,String address) {
         ID_textField.setText(id);
-        Phone_textField.setText(phone);
         Name_textField.setText(name);
+        Phone_textField.setText(phone);
         Address_textField.setText(address);
-        Score_textField.setText(String.valueOf(Score));
+//        Score_textField.setText(String.valueOf(Score));
 
     }
 }

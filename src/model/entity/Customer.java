@@ -15,6 +15,10 @@ public class Customer extends Person {
         this.loyaltyPoints  =loyaltyPoints;
         this.membershipLevel = membershipLevel;
     }
+    public Customer(int id, String name, String phone, String address) {
+        super(id, name, phone, address); // Gọi constructor của Person
+
+    }
 
     public int getLoyaltyPoints() {
         return loyaltyPoints;

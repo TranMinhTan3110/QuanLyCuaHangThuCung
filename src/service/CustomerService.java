@@ -1,5 +1,6 @@
 package service;
 
+import dao.CustomerDao;
 import dao.DaoInterface;
 import model.entity.Customer;
 import model.entity.User;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 
     public class CustomerService {
         private DaoInterface daoInterface;
+        private CustomerDao customerDao;
 
         public CustomerService(DaoInterface userRepo) {
             this.daoInterface = userRepo;
@@ -35,6 +37,9 @@ import java.util.ArrayList;
 
         public String getRank(Customer customer){
             return customer.getMembershipLevel();
+        }
+        public boolean checkPhone(String phone){
+            return customerDao.findByPhone(phone);
         }
     }
 

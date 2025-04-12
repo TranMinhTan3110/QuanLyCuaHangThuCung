@@ -46,10 +46,29 @@ public class CustomerDao implements  DaoInterface<Customer> {
 
     @Override
     public boolean update(Customer customer) {
-        String sql = "UPDATE Customer set loyaltyPoints = ?, membershipLevel = ?";
+        // SQL để cập nhật các thông tin của khách hàng (thuộc Person)
+        String sql = "UPDATE Person SET name = ?, phone = ?, address = ? WHERE id = ?";
 
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)
+        ) {
+            // Set các giá trị vào câu lệnh SQL
+            st.setString(1, customer.getName());
+            st.setString(2, customer.getPhone());
+            st.setString(3, customer.getAddress());
+            st.setInt(4, customer.getId());  // Lưu ý lấy ID từ Customer
+
+            // Thực hiện câu lệnh SQL
+            return st.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return false;
     }
+
+
+
 
     @Override
     public boolean delete(Customer customer) {
@@ -133,5 +152,26 @@ public class CustomerDao implements  DaoInterface<Customer> {
         }
         return null;
     }
+
+
+    public boolean findByPhone(String phone) {
+        String sql = "SELECT 1 FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.phone = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setString(1, phone);
+
+            try (ResultSet rs = st.executeQuery()) {
+                return rs.next(); // Nếu có kết quả, trả về true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Nếu không tìm thấy
+    }
+
+
 
 }
