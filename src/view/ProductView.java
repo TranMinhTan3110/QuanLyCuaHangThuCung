@@ -1,197 +1,272 @@
 package view;
 
-import model.entity.Category;
-import model.entity.Product;
+import javax.swing.JPanel;
 
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import model.entity.Category;
+import view.UI.Hover;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 
 public class ProductView extends JPanel {
-    private JTextField txtName, txtPrice, txtSearch;
-    private JSpinner spinnerQuantity;
-    private JComboBox<Category> comboCategory;
-    private JButton btnAdd, btnDelete, btnUpdate, btnSearch;
-    private JTable productTable;
-    private DefaultTableModel tableModel;
 
-    public ProductView() {
-        setLayout(new BorderLayout(10, 10));
-        setBackground(Color.WHITE);
+	private static final long serialVersionUID = 1L;
+	private JTextField Quan_textField;
+	private JTextField ProName_textField;
+	private JTextField Price_textField;
+	private JTable Pro_table;
+	private JTextField Search_textField;
+	private JButton btnAdd, btnEdit, btnDel;
+	private JButton btnPlus, btnMinus;
+	private JComboBox<String> CateName_comboBox;
 
-        initTopPanel();       // Form input
-        initMiddlePanel();    // Buttons + Search
-        initTablePanel();     // Table
-    }
+	public ProductView() {
+		setLayout(null);
+		setBounds(0,0,950,750);
 
-    private void initTopPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(Color.WHITE);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 10, 5, 10);
+		JPanel panel_top = new JPanel();
+		panel_top.setBackground(new Color(255, 255, 223));
+		panel_top.setBounds(0, 0, 950, 240);
+		add(panel_top);
+		panel_top.setLayout(null);
 
-        JLabel lblName = new JLabel("Tên sản phẩm:");
-        txtName = new JTextField(10);
+		JLabel lblQuanti = new JLabel("Quantity");
+		lblQuanti.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblQuanti.setBounds(444, 61, 77, 24);
+		panel_top.add(lblQuanti);
 
-        JLabel lblPrice = new JLabel("Giá:");
-        txtPrice = new JTextField(10);
+		JPanel quantityPanel = new JPanel();
+		quantityPanel.setLayout(new BorderLayout());
+		quantityPanel.setBounds(596, 61, 132, 34);
+		quantityPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-        JLabel lblQuantity = new JLabel("Số lượng:");
-        spinnerQuantity = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 1));
+		btnMinus = new JButton("−");
+		btnMinus.setBackground(new Color(232, 150, 89));
+		btnMinus.setMargin(new Insets(0, 5, 0, 5));
+		btnMinus.setFocusPainted(false);
+		btnMinus.setFont(new Font("Arial", Font.BOLD, 12));
 
-        JLabel lblCategory = new JLabel("Loại hàng:");
-        comboCategory = new JComboBox<>();
-        comboCategory.addItem(new Category(1, "Đồ ăn"));
-        comboCategory.addItem(new Category(2, "Thức uống"));
-        comboCategory.addItem(new Category(3, "Đồ dùng"));
-        // Row 1
-        gbc.gridx = 0; gbc.gridy = 0;
-        panel.add(lblName, gbc);
-        gbc.gridx = 1;
-        panel.add(txtName, gbc);
-        gbc.gridx = 2;
-        panel.add(lblQuantity, gbc);
-        gbc.gridx = 3;
-        panel.add(spinnerQuantity, gbc);
+		Quan_textField = new JTextField("0");
+		Quan_textField.setHorizontalAlignment(JTextField.CENTER);
+		Quan_textField.setFont(new Font("Arial", Font.PLAIN, 14));
+		Quan_textField.setBorder(null);
 
-        // Row 2
-        gbc.gridx = 0; gbc.gridy = 1;
-        panel.add(lblPrice, gbc);
-        gbc.gridx = 1;
-        panel.add(txtPrice, gbc);
-        gbc.gridx = 2;
-        panel.add(lblCategory, gbc);
-        gbc.gridx = 3;
-        panel.add(comboCategory, gbc);
+		btnPlus = new JButton("+");
+		btnPlus.setBackground(new Color(232, 150, 89));
+		btnPlus.setMargin(new Insets(0, 5, 0, 5));
+		btnPlus.setFocusPainted(false);
+		btnPlus.setFont(new Font("Arial", Font.BOLD, 12));
 
-        add(panel, BorderLayout.NORTH);
-    }
+		quantityPanel.add(btnMinus, BorderLayout.WEST);
+		quantityPanel.add(Quan_textField, BorderLayout.CENTER);
+		quantityPanel.add(btnPlus, BorderLayout.EAST);
+		Hover.roundPanel(quantityPanel, 15, Color.WHITE, Color.GRAY);
+		panel_top.add(quantityPanel);
 
-    private void initMiddlePanel() {
-        JPanel middlePanel = new JPanel(new BorderLayout());
-        middlePanel.setBackground(Color.WHITE);
+		JLabel lblPro_Name = new JLabel("Product Name");
+		lblPro_Name.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPro_Name.setBounds(78, 58, 122, 24);
+		panel_top.add(lblPro_Name);
 
-        // Buttons
-        JPanel btnPanel = new JPanel();
-        btnPanel.setBackground(Color.WHITE);
-        btnAdd = createButton("Thêm", "plus.png");
-        btnDelete = createButton("Xóa", "delete.png");
-        btnUpdate = createButton("Sửa", "edit.png");
+		ProName_textField = new JTextField();
+		ProName_textField.setColumns(10);
+		ProName_textField.setBounds(210, 56, 132, 34);
+		panel_top.add(ProName_textField);
+		Hover.addPlaceholder(ProName_textField, "Enter Name");
+		Hover.roundTextField(ProName_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-        btnPanel.add(btnAdd);
-        btnPanel.add(btnDelete);
-        btnPanel.add(btnUpdate);
-        middlePanel.add(btnPanel, BorderLayout.WEST);
+		JLabel lblPrice = new JLabel("Price");
+		lblPrice.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPrice.setBounds(78, 120, 77, 24);
+		panel_top.add(lblPrice);
 
-        // Search
-        JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        searchPanel.setBackground(Color.WHITE);
-        txtSearch = new JTextField(15);
-        btnSearch = createButton("", "search.png");
-        searchPanel.add(new JLabel("Tìm kiếm:"));
-        searchPanel.add(txtSearch);
-        searchPanel.add(btnSearch);
-        middlePanel.add(searchPanel, BorderLayout.EAST);
+		Price_textField = new JTextField();
+		Price_textField.setColumns(10);
+		Price_textField.setBounds(210, 118, 132, 34);
+		panel_top.add(Price_textField);
+		Hover.addPlaceholder(Price_textField, "Enter Price");
+		Hover.roundTextField(Price_textField, 10, Color.WHITE, Color.LIGHT_GRAY);
 
-        add(middlePanel, BorderLayout.CENTER);
-    }
+		JLabel lblCate_Name = new JLabel("Category Name");
+		lblCate_Name.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblCate_Name.setBounds(444, 120, 120, 24);
+		panel_top.add(lblCate_Name);
 
-    private void initTablePanel() {
-        JPanel tablePanel = new JPanel(new BorderLayout());
-        tablePanel.setBackground(Color.WHITE);
-        JLabel lblTitle = new JLabel("📋 Danh sách sản phẩm");
-        lblTitle.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitle.setHorizontalAlignment(JLabel.CENTER);
+		CateName_comboBox = new JComboBox<>(new String[] {"Thức ăn", "Thức uống", "Đồ dùng"});
+		CateName_comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
+		CateName_comboBox.setBounds(596, 118, 132, 34);
+		panel_top.add(CateName_comboBox);
+		Hover.roundComboBox(CateName_comboBox, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-        tableModel = new DefaultTableModel(new String[]{"ID", "Tên", "Giá", "Số lượng", "Loại hàng"}, 0);
-        productTable = new JTable(tableModel);
-        JScrollPane scrollPane = new JScrollPane(productTable);
+		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		btnEdit.setBackground(new Color(255, 255, 204));
+		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEdit.setBounds(110, 167, 69, 63);
+		btnEdit.setFocusPainted(false);
+		btnEdit.setBorderPainted(false);
+		btnEdit.setContentAreaFilled(false);
+		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnEdit);
+		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
-        tablePanel.add(lblTitle, BorderLayout.NORTH);
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
+		btnAdd = new JButton("Add");
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setBackground(new Color(255, 255, 223));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnAdd.setBounds(20, 167, 69, 63);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setBorderPainted(false);
+		btnAdd.setContentAreaFilled(false);
+		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnAdd);
+		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
 
-        add(tablePanel, BorderLayout.SOUTH);
-    }
+		btnDel = new JButton("Delete");
+		btnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setBackground(new Color(255, 255, 204));
+		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnDel.setBounds(189, 167, 87, 63);
+		btnDel.setFocusPainted(false);
+		btnDel.setBorderPainted(false);
+		btnDel.setContentAreaFilled(false);
+		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnDel);
+		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-    private JButton createButton(String text, String iconFileName) {
-        JButton button = new JButton(text);
-        try {
-            ImageIcon icon = new ImageIcon("src/icon/" + iconFileName);
-            button.setIcon(icon);
-        } catch (Exception e) {
-            System.out.println("Không tìm thấy icon: " + iconFileName);
-        }
-        button.setFocusPainted(false);
-        return button;
-    }
+		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
+		JPanel searchPanel = new JPanel(new BorderLayout());
+		searchPanel.setBounds(684, 187, 234, 24);
+		searchPanel.setBackground(Color.WHITE);
 
-    // ========== Getter cho controller dùng ==========
-    public String getProductName() { return txtName.getText().trim(); }
+		JLabel searchLabel = new JLabel(searchIcon);
+		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		searchPanel.add(searchLabel, BorderLayout.WEST);
 
-    public double getProductPrice() {
-        try {
-            return Double.parseDouble(txtPrice.getText().trim());
-        } catch (Exception e) {
-            return 0;
-        }
-    }
+		Search_textField = new JTextField();
+		Search_textField.setBorder(null);
+		Search_textField.setColumns(10);
+		searchPanel.add(Search_textField, BorderLayout.CENTER);
+		Hover.addPlaceholder(Search_textField,"search...");
+		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
-    public int getQuantity() {
-        return (int) spinnerQuantity.getValue();
-    }
+		panel_top.add(searchPanel);
 
-    public Category getSelectedCategory() {
-        return (Category) comboCategory.getSelectedItem();
-    }
+		JScrollPane Pro_list = new JScrollPane();
+		Pro_list.setBounds(0, 244, 950, 500);
+		add(Pro_list);
 
-    public String getSearchText() {
-        return txtSearch.getText().trim();
-    }
+		Pro_table = new JTable();
+		Pro_table.setModel(new DefaultTableModel(
+				new Object[][] {},
+				new String[] {"ID", "Name", "Price","Quantity", "Category"}
+		));
+		Pro_list.setViewportView(Pro_table);
+	}
 
-    public JTable getProductTable() {
-        return productTable;
-    }
+	public String getProductName() {
+		return ProName_textField.getText();
+	}
 
-    public JButton getBtnAdd() { return btnAdd; }
+	public String getPrice() {
+		return Price_textField.getText();
+	}
 
-    public JButton getBtnDelete() { return btnDelete; }
+	public String getQuantity() {
+		return Quan_textField.getText();
+	}
 
-    public JButton getBtnUpdate() { return btnUpdate; }
+	public Category getCategory() {
+		return (Category) CateName_comboBox.getSelectedItem();
+	}
+	public void setCategory(String cateName) {
+		CateName_comboBox.setSelectedItem(cateName);
+	}
 
-    public JButton getBtnSearch() { return btnSearch; }
+	public String getSearchKeyword() {
+		return Search_textField.getText();
+	}
 
-    // ========== Dùng để hiển thị dữ liệu và thông báo ==========
-    public void updateProductTable(List<Product> list) {
-        tableModel.setRowCount(0);
-        for (Product p : list) {
-            tableModel.addRow(new Object[]{
-                    p.getProductID(),
-                    p.getName(),
-                    p.getPrice(),
-                    p.getQuantity(),
-                    p.getCategory().getCategoryName()
-            });
-        }
-    }
+	public JTable getProductTable() {
+		return Pro_table;
+	}
 
-    public void setCategoryList(List<Category> categories) {
-        comboCategory.removeAllItems();
-        for (Category c : categories) {
-            comboCategory.addItem(c);
-        }
-    }
+	public void setProductName(String name) {
+		ProName_textField.setText(name);
+	}
 
-    public void clearFields() {
-        txtName.setText("");
-        txtPrice.setText("");
-        spinnerQuantity.setValue(0);
-        if (comboCategory.getItemCount() > 0) {
-            comboCategory.setSelectedIndex(0);
-        }
-    }
+	public void setPrice(String price) {
+		Price_textField.setText(price);
+	}
 
-    public void showMessage(String message) {
-        JOptionPane.showMessageDialog(this, message);
-    }
+	public void setQuantity(String quantity) {
+		Quan_textField.setText(quantity);
+	}
+
+	public void clearFields() {
+		ProName_textField.setText("");
+		Price_textField.setText("");
+		Quan_textField.setText("0");
+		CateName_comboBox.setSelectedIndex(0);
+		Search_textField.setText("");
+	}
+
+	public void addAddButtonListener(ActionListener listener) {
+		btnAdd.addActionListener(listener);
+	}
+
+	public void addEditButtonListener(ActionListener listener) {
+		btnEdit.addActionListener(listener);
+	}
+
+	public void addDeleteButtonListener(ActionListener listener) {
+		btnDel.addActionListener(listener);
+	}
+
+	public void addPlusButtonListener(ActionListener listener) {
+		btnPlus.addActionListener(listener);
+	}
+
+	public void addMinusButtonListener(ActionListener listener) {
+		btnMinus.addActionListener(listener);
+	}
+
+	public void addSearchKeyListener(java.awt.event.KeyListener listener) {
+		Search_textField.addKeyListener(listener);
+	}
+
+
+	public void showMessage(String s) {
+	}
 }

@@ -36,6 +36,9 @@ public class ProductService {
         return daoProduct.delete(product);
     }
 
+    public Product selectByID(int productID) {
+        return (Product) daoProduct.selectByID(productID);
+    }
     public ArrayList<Product> searchByName(String name) {
         if (daoProduct instanceof ProductDAO) {
             return ((ProductDAO) daoProduct).selectByNameLike(name);

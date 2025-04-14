@@ -7,6 +7,17 @@ public class Product {
     private int quantity;
     private Category category;
 
+    // Constructor không tham số
+    public Product() {}
+
+    // Constructor đầy đủ
+    public Product(int productID, String name, double price, int quantity, Category category) {
+        this.productID = productID;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.category = category;
+    }
     public int getProductID() {
         return productID;
     }
@@ -45,5 +56,21 @@ public class Product {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    // Chuyển sang Object[] để dễ add vào JTable
+    public Object[] toObject() {
+        return new Object[] {
+                productID,
+                name,
+                price,
+                quantity,
+                category != null ? category.getCategoryName() : ""
+        };
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + price + "đ, SL: " + quantity + ")";
     }
 }

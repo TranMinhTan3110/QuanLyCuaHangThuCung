@@ -98,7 +98,6 @@ public class ProductDAO implements DaoInterface<Product> {
                 product.setPrice(price);
                 product.setQuantity(quantity);
                 product.setCategory(category);
-
                 products.add(product);
             }
 
