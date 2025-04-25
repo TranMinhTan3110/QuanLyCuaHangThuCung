@@ -22,6 +22,12 @@ public class MainController {
         this.view.addBillingsListener(e -> onBillingsClicked());
         this.view.addLogoutListener(e -> onLogoutClicked());
         this.view.addProductListener(e -> onProductClicked());
+        this.view.addHomeListener(e -> onHomeClicked());
+    }
+
+    private void onHomeClicked() {
+        System.out.println("Home button clicked!");
+        view.showPanel("Home");
     }
 
     private void onPetsClicked() {

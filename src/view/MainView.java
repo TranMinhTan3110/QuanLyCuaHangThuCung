@@ -230,9 +230,11 @@ public class MainView extends JFrame {
     }
 
     private JPanel createHomePanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        return panel;
+//        JPanel panel = new JPanel(new BorderLayout());
+        HomeView homeView = new HomeView();
+        return homeView;
+//        panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
+//        return panel;
     }
 
     public void addUsersListener(ActionListener listener) {
