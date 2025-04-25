@@ -94,14 +94,15 @@ public class inputUtil {
         return true;
     }
 
-    public static boolean isValidName(String name) {
-        if (name == null || name.trim().isEmpty()) {
+    public static boolean isValidName(String name){
+        if(name.trim().isEmpty() || name == null){
             return false;
         }
-        // Cho phép chữ cái có dấu và dấu cách
-        return name.matches("^[\\p{L}\\s]+$");
+        if (!name.matches("[a-zA-Z]+")) {
+            return false;
+        }
+        return true;
     }
-
 
 }
 

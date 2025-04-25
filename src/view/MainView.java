@@ -91,7 +91,7 @@ public class MainView extends JFrame {
 
         centerPanel.add(createCustomersPanel(), "Customers");
         centerPanel.add(createBillingsPanel(), "Bills");
-        centerPanel.add(createHomePanel(), "Home");
+//        centerPanel.add(createHomePanel(), "Home");
 
         panel.setBackground(new Color(255, 255, 204));
         panel.setBounds(0, -16, 250, 750);
@@ -229,13 +229,13 @@ public class MainView extends JFrame {
         return panel;
     }
 
-    private JPanel createHomePanel() {
+//    private JPanel createHomePanel() {
 //        JPanel panel = new JPanel(new BorderLayout());
-        HomeView homeView = new HomeView();
-        return homeView;
+//        HomeView homeView = new HomeView();
+//        return homeView;
 //        panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
 //        return panel;
-    }
+//    }
 
     public void addUsersListener(ActionListener listener) {
         // Kiểm tra xem btnAdmin có null không trước khi thêm ActionListener

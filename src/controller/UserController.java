@@ -173,7 +173,7 @@ public class UserController {
             return;
         }
         try {
-            int id = Integer.parseInt(userView.getIdField());
+            String id = userView.getIdField();
             String name = userView.getNameField();
             String phone = userView.getPhoneField();
             String username = userView.getUsernameField();
@@ -182,7 +182,67 @@ public class UserController {
             String roleStr = userView.getRoleField();
             Role role = RoleUtil.parseRole(roleStr);
 
-            User user = new User(id, name, phone, address, username, password, role);
+            int idStr = Integer.parseInt(id);
+            if (!inputUtil.isValidID(id)) {
+                JOptionPane.showMessageDialog(userView, "ID không hợp lệ! Phải là số nguyên dương.");
+                return;
+            }
+
+            // Kiểm tra các trường bắt buộc còn lại không được để trống
+            if (name.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(userView, "Tên không được để trống!");
+                return;
+            }
+            if (phone.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(userView, "Số điện thoại không được để trống!");
+                return;
+            }
+            if (username.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(userView, "Tên đăng nhập không được để trống!");
+                return;
+            }
+            if (password.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(userView, "Mật khẩu không được để trống!");
+                return;
+            }
+            if (address.trim().isEmpty()) {
+                JOptionPane.showMessageDialog(userView, "Địa chỉ không được để trống!");
+                return;
+            }
+
+            // Kiểm tra số điện thoại hợp lệ
+            if (!inputUtil.isValidPhoneNumber(phone)) {
+                JOptionPane.showMessageDialog(userView, "Số điện thoại không hợp lệ!");
+                return;
+            }
+
+            // Kiểm tra tên đăng nhập hợp lệ
+            if (!inputUtil.isValidUserName(username)) {
+                JOptionPane.showMessageDialog(userView, "Tên đăng nhập không hợp lệ!");
+                return;
+            }
+
+            // Kiểm tra nếu ID, tên đăng nhập hoặc số điện thoại đã tồn tại trong DB
+            if (userService.isIdExists(idStr)) {
+                JOptionPane.showMessageDialog(userView, "ID đã tồn tại!");
+                return;
+            }
+            if (userService.isPhoneExists(phone)) {
+                JOptionPane.showMessageDialog(userView, "Số điện thoại đã tồn tại!");
+                return;
+            }
+            if (userService.isUsernameExists(username)) {
+                JOptionPane.showMessageDialog(userView, "Tên đăng nhập đã tồn tại!");
+                return;
+            }
+
+            // Chuyển đổi và kiểm tra role
+//            Role role = RoleUtil.parseRole(roleStr);
+            if (role == null) {
+                JOptionPane.showMessageDialog(userView, "Role không hợp lệ!");
+                return;
+            }
+            User user = new User(idStr, name, phone, address, username, password, role);
             if (userService.update(user)) {
                 userView.updateUserInTable(selectedRow, String.valueOf(id), name, phone, username, password, address, RoleUtil.formatRole(role));
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thành công!");
