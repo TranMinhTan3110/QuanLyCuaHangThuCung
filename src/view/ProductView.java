@@ -195,6 +195,7 @@ public class ProductView extends JPanel {
 		add(Pro_list);
 
 		Pro_table = new JTable();
+		Pro_table.getTableHeader().setBackground(new Color(255,255,159));
 		Pro_table.setModel(new DefaultTableModel(
 				new Object[][] {
 				},
