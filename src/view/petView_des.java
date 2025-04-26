@@ -1,41 +1,38 @@
 package view;
 
-import javax.swing.JPanel;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
+
+import javax.swing.JPanel;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import view.UI.Hover;
 
+import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
-public class ProductView extends JPanel {
+public class petView_des extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField Quan_textField;
-	private JTextField ProName_textField;
+	private JTextField Name_textField;
+	private JTextField Species_textField;
 	private JTextField Price_textField;
-	private JTextField CateID_textField;
-	private JTable Pro_table;
+	private JTextField Age_textField;
 	private JTextField Search_textField;
 
 	/**
 	 * Create the panel.
 	 */
-	public ProductView() {
+	public petView_des() {
 		setLayout(null);
 		setBounds(0,0,950,750);
 
@@ -44,82 +41,67 @@ public class ProductView extends JPanel {
 		panel_top.setBounds(0, 0, 950, 240);
 		add(panel_top);
 		panel_top.setLayout(null);
-
-		JLabel lblQuanti = new JLabel("Quantity");
-		lblQuanti.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblQuanti.setBounds(444, 61, 77, 24);
-		panel_top.add(lblQuanti);
-
-		// Tạo panel chứa nút -, text field, nút +
-		JPanel quantityPanel = new JPanel();
-		quantityPanel.setLayout(new BorderLayout());
-		quantityPanel.setBounds(596, 61, 132, 34);
-		quantityPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-
-		// Nút giảm
-		JButton btnMinus = new JButton("−");
-		btnMinus.setBackground(new Color(232, 150, 89));
-		btnMinus.setMargin(new Insets(0, 5, 0, 5));
-		btnMinus.setFocusPainted(false);
-		btnMinus.setFont(new Font("Arial", Font.BOLD, 12));
-
-		// Text field
-		JTextField Quan_textField = new JTextField("0");
-		Quan_textField.setHorizontalAlignment(JTextField.CENTER);
-		Quan_textField.setFont(new Font("Arial", Font.PLAIN, 14));
-		Quan_textField.setBorder(null);
-
-		// Nút tăng
-		JButton btnPlus = new JButton("+");
-		btnPlus.setBackground(new Color(232, 150, 89));
-		btnPlus.setMargin(new Insets(0, 5, 0, 5));
-		btnPlus.setFocusPainted(false);
-		btnPlus.setFont(new Font("Arial", Font.BOLD, 12));
-
-		// Thêm vào panel theo BorderLayout
-		quantityPanel.add(btnMinus, BorderLayout.WEST);
-		quantityPanel.add(Quan_textField, BorderLayout.CENTER);
-		quantityPanel.add(btnPlus, BorderLayout.EAST);
-		Hover.roundPanel(quantityPanel, 15, Color.WHITE, Color.GRAY);
-		panel_top.add(quantityPanel);
-
-
-		JLabel lblPro_Name = new JLabel("Product Name");
-		lblPro_Name.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPro_Name.setBounds(78, 58, 122, 24);
-		panel_top.add(lblPro_Name);
-
-		ProName_textField = new JTextField();
-		ProName_textField.setColumns(10);
-		ProName_textField.setBounds(210, 56, 132, 34);
-		panel_top.add(ProName_textField);
-		Hover.addPlaceholder(ProName_textField, "Enter Name");
-		Hover.roundTextField(ProName_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
-
+		
+		JLabel lblName = new JLabel("Name");
+		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblName.setBounds(97, 42, 56, 33);
+		panel_top.add(lblName);
+		
+		Name_textField = new JTextField();
+		Name_textField.setFont(new Font("Arial", Font.PLAIN, 16));
+		Name_textField.setBounds(163, 42, 120, 33);
+		panel_top.add(Name_textField);
+		Name_textField.setColumns(10);
+		Hover.addPlaceholder(Name_textField, "Enter Name");
+		Hover.roundTextField(Name_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+		
+		JLabel lblSpecies = new JLabel("Species");
+		lblSpecies.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblSpecies.setBounds(325, 42, 76, 33);
+		panel_top.add(lblSpecies);
+		
+		Species_textField = new JTextField();
+		Species_textField.setFont(new Font("Arial", Font.PLAIN, 16));
+		Species_textField.setColumns(10);
+		Species_textField.setBounds(411, 42, 120, 33);
+		panel_top.add(Species_textField);
+		Hover.addPlaceholder(Species_textField, "Enter Species");
+		Hover.roundTextField(Species_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+		
 		JLabel lblPrice = new JLabel("Price");
 		lblPrice.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPrice.setBounds(78, 120, 77, 24);
+		lblPrice.setBounds(583, 42, 56, 33);
 		panel_top.add(lblPrice);
-
+		
 		Price_textField = new JTextField();
+		Price_textField.setFont(new Font("Arial", Font.PLAIN, 16));
 		Price_textField.setColumns(10);
-		Price_textField.setBounds(210, 118, 132, 34);
+		Price_textField.setBounds(657, 42, 120, 33);
 		panel_top.add(Price_textField);
 		Hover.addPlaceholder(Price_textField, "Enter Price");
-		Hover.roundTextField(Price_textField, 10, Color.WHITE, Color.LIGHT_GRAY);
-
-		JLabel lblCate_ID_1 = new JLabel("Category ID");
-		lblCate_ID_1.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblCate_ID_1.setBounds(444, 120, 94, 24);
-		panel_top.add(lblCate_ID_1);
-
-		CateID_textField = new JTextField();
-		CateID_textField.setColumns(10);
-		CateID_textField.setBounds(596, 118, 132, 34);
-		panel_top.add(CateID_textField);
-		Hover.addPlaceholder(CateID_textField, "Enter ID");
-		Hover.roundTextField(CateID_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
-
+		
+		JLabel lblBreed = new JLabel("Breed");
+		lblBreed.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblBreed.setBounds(222, 107, 76, 33);
+		panel_top.add(lblBreed);
+		
+		JComboBox Breed_comboBox = new JComboBox();
+		Breed_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
+		Breed_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		Breed_comboBox.setBounds(307, 107, 120, 33);
+		panel_top.add(Breed_comboBox);
+		
+		JLabel lblAge = new JLabel("Age");
+		lblAge.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblAge.setBounds(493, 107, 76, 33);
+		panel_top.add(lblAge);
+		
+		Age_textField = new JTextField();
+		Age_textField.setFont(new Font("Arial", Font.PLAIN, 16));
+		Age_textField.setColumns(10);
+		Age_textField.setBounds(560, 107, 120, 33);
+		panel_top.add(Age_textField);
+		Hover.addPlaceholder(Age_textField, "Enter Age");
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
@@ -170,7 +152,8 @@ public class ProductView extends JPanel {
 		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		panel_top.add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
-
+		
+		
 		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
 
 		JPanel searchPanel = new JPanel(new BorderLayout());
@@ -189,20 +172,5 @@ public class ProductView extends JPanel {
 		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
 		panel_top.add(searchPanel);
-
-		JScrollPane Pro_list = new JScrollPane();
-		Pro_list.setBounds(0, 244, 950, 500);
-		add(Pro_list);
-
-		Pro_table = new JTable();
-		Pro_table.getTableHeader().setBackground(new Color(255,255,159));
-		Pro_table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-						"ID", "Name", "Price","Quantity", "Category"
-				}
-		));
-		Pro_list.setViewportView(Pro_table);
 	}
 }
