@@ -3,26 +3,23 @@ package view;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.management.StringValueExp;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.management.StringValueExp;
+
 import view.UI.Hover;
 
 import javax.swing.JLabel;
 import java.awt.Rectangle;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-public class customerView extends JPanel {
+public class CustomerView extends JPanel {
 
 
 	
@@ -67,7 +64,7 @@ public class customerView extends JPanel {
     /**
      * Create the panel.
      */
-    public customerView() {
+    public CustomerView() {
         setLayout(null);
         setBounds(0, 0, 950, 750);
 
