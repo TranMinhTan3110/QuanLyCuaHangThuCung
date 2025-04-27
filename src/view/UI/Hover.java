@@ -2,6 +2,7 @@ package view.UI;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -15,10 +16,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.table.JTableHeader;
 import javax.swing.text.JTextComponent;
 
 public class Hover {
@@ -129,5 +134,20 @@ public class Hover {
                 g2.drawRoundRect(x + 1, y + 1, width - 3, height - 3, arcRadius, arcRadius);
             }
         });
+        }
+    public static void customizeTableHeader(JTable table) {
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setFont(new Font("Arial", Font.BOLD, 16));
+        tableHeader.setBackground(new Color(135,206,250));
+        tableHeader.setForeground(Color.WHITE);
+    }
+
+
+    public static void customizeTableHeader(JTable table, Font font, Color background, Color foreground) {
+        JTableHeader tableHeader = table.getTableHeader();
+        tableHeader.setFont(font);
+        tableHeader.setBackground(background);
+        tableHeader.setForeground(foreground);
     }
 }
+    

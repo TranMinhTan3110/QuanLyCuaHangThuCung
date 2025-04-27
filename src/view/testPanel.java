@@ -8,7 +8,7 @@ public class testPanel {
         JFrame frame = new JFrame("Manage Users");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(950, 750);
-        frame.add(new petView_des());
+        frame.add(new petView());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }

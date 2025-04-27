@@ -19,8 +19,11 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
-public class petView_des extends JPanel {
+public class petView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField Name_textField;
@@ -28,11 +31,12 @@ public class petView_des extends JPanel {
 	private JTextField Price_textField;
 	private JTextField Age_textField;
 	private JTextField Search_textField;
+	private JTable Pet_Table;
 
 	/**
 	 * Create the panel.
 	 */
-	public petView_des() {
+	public petView() {
 		setLayout(null);
 		setBounds(0,0,950,750);
 
@@ -79,6 +83,7 @@ public class petView_des extends JPanel {
 		Price_textField.setBounds(657, 42, 120, 33);
 		panel_top.add(Price_textField);
 		Hover.addPlaceholder(Price_textField, "Enter Price");
+		Hover.roundTextField(Price_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		
 		JLabel lblBreed = new JLabel("Breed");
 		lblBreed.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -102,6 +107,8 @@ public class petView_des extends JPanel {
 		Age_textField.setBounds(560, 107, 120, 33);
 		panel_top.add(Age_textField);
 		Hover.addPlaceholder(Age_textField, "Enter Age");
+		Hover.roundTextField(Age_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+		
 		JButton btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
@@ -172,5 +179,21 @@ public class petView_des extends JPanel {
 		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
 		panel_top.add(searchPanel);
+
+		JScrollPane Pet_ScrollPane = new JScrollPane();
+		Pet_ScrollPane.setBounds(0, 240, 950, 510);
+		add(Pet_ScrollPane);
+		
+		Pet_Table = new JTable();
+		Pet_Table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Name", "Species", "Price", "Breed", "Age"
+			}
+		));
+		Pet_Table.setFont(new Font("Arial", Font.PLAIN, 16));
+		Hover.customizeTableHeader(Pet_Table);
+		Pet_ScrollPane.setViewportView(Pet_Table);
 	}
 }
