@@ -22,7 +22,7 @@ import javax.swing.JButton;
 import view.UI.Hover;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-public class CustomerView extends JPanel {
+public class customerView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTable table;
@@ -34,7 +34,7 @@ public class CustomerView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CustomerView() {
+	public customerView() {
 		setLayout(null);
 		setBounds(0,0,950,750);
 		
