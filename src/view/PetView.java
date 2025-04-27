@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class PetView extends JPanel {
+public class petView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField Name_textField;
@@ -36,7 +36,7 @@ public class PetView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PetView() {
+	public petView() {
 		setLayout(null);
 		setBounds(0,0,950,750);
 
