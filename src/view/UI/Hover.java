@@ -1,5 +1,7 @@
 package view.UI;
 
+import model.entity.Category;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -32,6 +34,7 @@ public class Hover {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(hoverColor);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(defaultColor);
             }
@@ -49,6 +52,7 @@ public class Hover {
                     textField.setForeground(Color.BLACK);
                 }
             }
+
             @Override
             public void focusLost(FocusEvent e) {
                 if (textField.getText().isEmpty()) {
@@ -58,6 +62,7 @@ public class Hover {
             }
         });
     }
+
     public static void addHoverButtonEffect(JButton button, Color textHoverColor, float iconhover) {
         // Lưu lại icon gốc
         Icon orIcon = button.getIcon();
@@ -84,8 +89,9 @@ public class Hover {
             }
         });
     }
+
     public static void roundTextField(JTextField textField, int arcRadius, Color bgColor, Color borderColor) {
-    	
+
         textField.setBackground(bgColor);
         textField.setBorder(new Border() {
             @Override
@@ -107,6 +113,7 @@ public class Hover {
             }
         });
     }
+
     public static void roundPanel(JPanel panel, int arcRadius, Color bgColor, Color borderColor) {
         panel.setOpaque(false); // Đảm bảo không vẽ nền mặc định
         panel.setBackground(bgColor);
@@ -135,11 +142,12 @@ public class Hover {
                 g2.drawRoundRect(x + 1, y + 1, width - 3, height - 3, arcRadius, arcRadius);
             }
         });
-        }
+    }
+
     public static void customizeTableHeader(JTable table) {
         JTableHeader tableHeader = table.getTableHeader();
         tableHeader.setFont(new Font("Arial", Font.BOLD, 16));
-        tableHeader.setBackground(new Color(135,206,250));
+        tableHeader.setBackground(new Color(135, 206, 250));
         tableHeader.setForeground(Color.WHITE);
     }
 
@@ -150,5 +158,7 @@ public class Hover {
         tableHeader.setBackground(background);
         tableHeader.setForeground(foreground);
     }
+
+    public static void roundComboBox(JComboBox<Category> cateNameComboBox, int i, Color white, Color lightGray) {
+    }
 }
-    
