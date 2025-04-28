@@ -16,7 +16,7 @@ public class ProductDAO implements DaoInterface<Product> {
         String sql = "INSERT INTO Product(name, price, quantity, categoryID) VALUES(?, ?, ?, ?)";
 
         try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
+             PreparedStatement st = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             st.setString(1, product.getName());
             st.setDouble(2, product.getPrice());
@@ -24,6 +24,14 @@ public class ProductDAO implements DaoInterface<Product> {
             st.setInt(4, product.getCategory().getCategoryID());
 
             int check = st.executeUpdate();
+            if (check > 0) {
+                try (ResultSet generatedKeys = st.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int newID = generatedKeys.getInt(1);
+                        product.setProductID(newID);  // cập nhật lại ID cho đối tượng product
+                    }
+                }
+            }
             return check > 0;
 
         } catch (SQLException e) {
@@ -31,6 +39,7 @@ public class ProductDAO implements DaoInterface<Product> {
             return false;
         }
     }
+
 
     @Override
     public boolean update(Product product) {

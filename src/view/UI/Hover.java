@@ -1,5 +1,7 @@
 package view.UI;
 
+import model.entity.Category;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
@@ -14,8 +16,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.plaf.basic.BasicTextFieldUI;
-import javax.swing.text.JTextComponent;
 
 public class Hover {
     public static void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
@@ -127,6 +127,6 @@ public class Hover {
         });
     }
 
-    public static void roundComboBox(JComboBox<String> cateNameComboBox, int i, Color white, Color lightGray) {
+    public static void roundComboBox(JComboBox<Category> cateNameComboBox, int i, Color white, Color lightGray) {
     }
 }

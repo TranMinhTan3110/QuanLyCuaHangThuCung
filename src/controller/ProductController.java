@@ -2,6 +2,7 @@ package controller;
 import model.entity.Category;
 import model.entity.Product;
 import service.ProductService;
+import utils.NumberUtil;
 import view.ProductView;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class ProductController {
         this.view.addPlusButtonListener(new PlusListener());
         this.view.addMinusButtonListener(new MinusListener());
         this.view.addSearchKeyListener(new SearchListener());
+        setupTableSelectionListener();
 
         loadTable();
     }
@@ -49,15 +51,28 @@ public class ProductController {
                 String name = view.getProductName();
                 double price = Double.parseDouble(view.getPrice());
                 int quantity = Integer.parseInt(view.getQuantity());
+                if (!validateQuantity(quantity)) {
+                    return; // Không cho thêm/xóa/sửa tiếp
+                }
                 Category selectedCategory = view.getCategory();
+                if (selectedCategory != null) {
+                    int id = selectedCategory.getCategoryID();
+                    String nameCat = selectedCategory.getCategoryName();
+                    System.out.println("ID: " + id + ", Name: " + name);
+                }
 
                 if (selectedCategory == null) {
                     JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
                     return;
                 }
 
-                Product p = new Product(0, name, price, quantity, selectedCategory);
-                service.insert(p);
+                Product product = new Product(); // Không set ID
+                product.setName(name);
+                product.setPrice(price);
+                product.setQuantity(quantity);
+                product.setCategory(selectedCategory);
+                System.out.println(product.getCategory().getCategoryID());
+                service.insert(product);
                 loadTable();
                 view.clearFields();
             } catch (Exception ex) {
@@ -76,6 +91,9 @@ public class ProductController {
                     String name = view.getProductName();
                     double price = Double.parseDouble(view.getPrice());
                     int quantity = Integer.parseInt(view.getQuantity());
+                    if (!validateQuantity(quantity)) {
+                        return; // Không cho thêm/xóa/sửa tiếp
+                    }
                     Category selectedCategory = view.getCategory();
 
                     if (selectedCategory == null) {
@@ -83,8 +101,15 @@ public class ProductController {
                         return;
                     }
 
-                    Product p = new Product(0, name, price, quantity, selectedCategory);
-                    service.update(p);
+                    Product p = new Product(id, name, price, quantity, selectedCategory);
+                    if(quantity > 0) {
+                        service.update(p);
+                        System.out.println("Update successful");
+                    }  else {
+                        service.delete(p);
+                        System.out.println("Delete successful");
+                    }
+
                     loadTable();
                     view.clearFields();
                 } catch (Exception ex) {
@@ -120,9 +145,10 @@ public class ProductController {
         public void actionPerformed(ActionEvent e) {
             try {
                 int quantity = Integer.parseInt(view.getQuantity());
-                view.setQuantity(String.valueOf(quantity + 1));
+                quantity++;
+                view.setQuantity(String.valueOf(quantity));
             } catch (NumberFormatException ex) {
-                view.setQuantity("1");
+                view.setQuantity("1"); // Nếu nhập linh tinh thì reset về 1
             }
         }
     }
@@ -133,12 +159,34 @@ public class ProductController {
             try {
                 int quantity = Integer.parseInt(view.getQuantity());
                 if (quantity > 0) {
-                    view.setQuantity(String.valueOf(quantity - 1));
+                    quantity--;
+                    view.setQuantity(String.valueOf(quantity));
+                } else {
+                    showWarning("Số lượng không thể nhỏ hơn 0!");
                 }
             } catch (NumberFormatException ex) {
-                view.setQuantity("0");
+                view.setQuantity("0"); // Nếu nhập linh tinh thì reset về 0
+                showWarning("Giá trị nhập không hợp lệ! Đã đặt về 0.");
             }
         }
+    }
+
+    private boolean validateQuantity(int quantity) {
+        try {
+            if (!NumberUtil.isValidQuantity(quantity)) {
+                showWarning("Số lượng không được nhỏ hơn 0!");
+                view.setQuantity("0");
+                return false;
+            }
+            return true;
+        } catch (NumberFormatException ex) {
+            showWarning("Vui lòng nhập số hợp lệ!");
+            view.setQuantity("0");
+            return false;
+        }
+    }
+    private void showWarning(String message) {
+        JOptionPane.showMessageDialog(view, message, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
     }
 
     class SearchListener implements KeyListener {
@@ -161,5 +209,29 @@ public class ProductController {
 
         @Override public void keyTyped(KeyEvent e) {}
         @Override public void keyPressed(KeyEvent e) {}
+    }
+
+    private void setupTableSelectionListener() {
+        view.addTableSelectionListener(event -> {
+            if (!event.getValueIsAdjusting()) {
+                int selectedRow = view.getSelectedRow();
+                if (selectedRow != -1) {
+                    fillFormFromSelectedRow(selectedRow);
+                }
+            }
+        });
+    }
+
+    // Hàm này Controller tự xử lý
+    private void fillFormFromSelectedRow(int selectedRow) {
+        String productName = view.getValueAt(selectedRow, 1);
+        String price = view.getValueAt(selectedRow, 2);
+        String quantity = view.getValueAt(selectedRow, 3);
+        String categoryName = view.getValueAt(selectedRow, 4);
+
+        view.setProductName(productName);
+        view.setPrice(price);
+        view.setQuantity(quantity);
+        view.setSelectedCategoryByName(categoryName);
     }
 }
