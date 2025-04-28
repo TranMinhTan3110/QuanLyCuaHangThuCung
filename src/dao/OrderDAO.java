@@ -4,6 +4,7 @@ import model.entity.*;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderDAO implements DaoInterface<Order>{
 
@@ -24,7 +25,7 @@ public class OrderDAO implements DaoInterface<Order>{
             st.setDouble(3, order.getTotalPrice());
             st.setDate(4, new Date(order.getOrderDate().getTime()));
 
-            int check = st.executeUpdate(sql);
+            int check = st.executeUpdate();
             return check > 0;
 
         } catch (SQLException e) {
@@ -45,7 +46,7 @@ public class OrderDAO implements DaoInterface<Order>{
             st.setDouble(3, order.getTotalPrice());
             st.setDate(4, new Date(order.getOrderDate().getTime()));
             st.setInt(5, order.getOrderID());
-            int check = st.executeUpdate(sql);
+            int check = st.executeUpdate();
             return check > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class OrderDAO implements DaoInterface<Order>{
             try (Connection con = DatabaseConnection.getConnection();
                  PreparedStatement st = con.prepareStatement(sql)) {
                 st.setInt(1, order.getOrderID());
-                return st.executeUpdate(sql) > 0;
+                return st.executeUpdate() > 0;
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;
@@ -119,7 +120,7 @@ public class OrderDAO implements DaoInterface<Order>{
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 int orderID = rs.getInt("orderID");
@@ -148,5 +149,53 @@ public class OrderDAO implements DaoInterface<Order>{
     public Order selectByName(String name) {
         return null;
     }
+
+    public List<Order> getOrdersByDate(Date date){
+        List<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE orderDate = ?";
+        try(Connection con = DatabaseConnection.getConnection();
+            PreparedStatement st = con.prepareStatement(sql)
+        ){
+            st.setDate(1,new java.sql.Date(date.getTime()));
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Order order = new Order();
+                order.setOrderID(rs.getInt("orderID"));
+                order.setOrderDate(rs.getDate("orderDate"));
+                order.setTotalPrice(rs.getDouble("totalPrice"));
+                orders.add(order);
+            }
+
+        }catch (SQLException e){
+                e.printStackTrace();
+        }
+        return orders;
+    }
+    public ArrayList<Order> getOrdersByRange(Date from, Date to) {
+        ArrayList<Order> orders = new ArrayList<>();
+        String sql = "SELECT * FROM [Order] WHERE orderDate BETWEEN ? AND ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setDate(1, new java.sql.Date(from.getTime()));
+            st.setDate(2, new java.sql.Date(to.getTime()));
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Order order = new Order();
+                order.setOrderID(rs.getInt("orderID"));
+                order.setTotalPrice(rs.getDouble("totalPrice"));
+                order.setOrderDate(rs.getDate("orderDate"));
+                // ... load thêm User, Customer nếu cần
+                orders.add(order);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+
+
 }
 

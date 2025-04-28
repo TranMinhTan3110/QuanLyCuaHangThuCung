@@ -1,8 +1,10 @@
 package view;
 
+import dao.CustomerDao;
 import dao.DaoInterface;
 import dao.ProductDAO;
 import dao.UserDAO;
+import service.CustomerService;
 import service.ProductService;
 import service.UserService;
 
@@ -19,7 +21,7 @@ public class MainView extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JButton btnPets;
-    private JButton btnAdmin ;
+    private JButton btnAdmin;
     private JButton btnBills;
     private JButton btnCusTomers ;
     private JButton btnProduct;
@@ -33,11 +35,13 @@ public class MainView extends JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(hoverColor);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(defaultColor);
             }
         });
     }
+
     private void addPlaceholder(JTextField textField, String placeholder) {
         textField.setText(placeholder);
         textField.setForeground(Color.GRAY);
@@ -86,7 +90,7 @@ public class MainView extends JFrame {
 
         // Thêm các panel
         centerPanel.add(createPetsPanel(), "Pets");
-
+        centerPanel.add(createProductPanel(), "Product");
         centerPanel.add(createCustomersPanel(), "Customers");
         centerPanel.add(createBillingsPanel(), "Bills");
         centerPanel.add(createHomePanel(), "Home");
@@ -171,6 +175,7 @@ public class MainView extends JFrame {
         panel.add(lblEmployeeID);
 
         btnProduct = new JButton("Product");
+//        centerPanel.add(createProductPanel(), "Product");
         btnProduct.setIconTextGap(20);
         btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Category_Icon.png")));
         btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -188,13 +193,12 @@ public class MainView extends JFrame {
         btnHome.setFocusPainted(false);
         btnHome.setBorder(null);
         btnHome.setBackground(new Color(255, 255, 204));
-        btnHome.setBounds(13,370, 173, 31);
+        btnHome.setBounds(13, 370, 173, 31);
         panel.add(btnHome);
 
         centerPanel.setVisible(true);
 
     }
-
 
 
     private JPanel createPetsPanel() {
@@ -213,15 +217,26 @@ public class MainView extends JFrame {
     }
 
     private JPanel createCustomersPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Manage Customers Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        return panel;
+        System.out.println("Tạo Customer Panel");
+        CustomerView customerView = new CustomerView();
+        DaoInterface userRepo = new CustomerDao();
+        CustomerService customerService = new CustomerService(userRepo);
+        new controller.CustomerController(customerView, customerService);
+        return customerView;
     }
 
     private JPanel createBillingsPanel() {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(new JLabel("Manage Billings Panel", SwingConstants.CENTER), BorderLayout.NORTH);
         return panel;
+    }
+
+    private JPanel createProductPanel() {
+        ProductView productView = new ProductView();
+        DaoInterface productRepo = new ProductDAO();
+        ProductService productService = new ProductService(productRepo);
+        new controller.ProductController(productView,productService);
+        return productView;
     }
 
     private JPanel createHomePanel() {
@@ -236,6 +251,7 @@ public class MainView extends JFrame {
             btnAdmin.addActionListener(listener);
         }
     }
+
     public void addPetsListener(ActionListener listener) {
         btnPets.addActionListener(listener);
     }
