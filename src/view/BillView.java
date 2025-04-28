@@ -207,7 +207,7 @@ public class BillView extends JPanel {
         scrollPaneProduct = new JScrollPane(tableProductList);
         scrollPaneProduct.setBounds(0, 346, 508, 395);
         scrollPaneProduct.setVisible(true);
-        Hover.customizeTableHeader(tableProductList);
+//        Hover.customizeTableHeader(tableProductList);
         add(scrollPaneProduct);
 
         // Bảng danh sách Pet
@@ -218,7 +218,7 @@ public class BillView extends JPanel {
         scrollPanePet = new JScrollPane(tablePetList);
         scrollPanePet.setBounds(0, 346, 506, 395);
         scrollPanePet.setVisible(false);
-        Hover.customizeTableHeader(tablePetList);
+//        Hover.customizeTableHeader(tablePetList);
         add(scrollPanePet);
 
         // Bảng danh sách Customer
@@ -229,7 +229,7 @@ public class BillView extends JPanel {
         scrollPaneCustomer = new JScrollPane(tableCustomerList);
         scrollPaneCustomer.setBounds(0, 346, 506, 395);
         scrollPaneCustomer.setVisible(false);
-        Hover.customizeTableHeader(tableCustomerList);
+//        Hover.customizeTableHeader(tableCustomerList);
         add(scrollPaneCustomer);
         
  
@@ -265,7 +265,7 @@ public class BillView extends JPanel {
         	    TitledBorder.DEFAULT_POSITION,
         	    new Font("Arial", Font.BOLD, 20) // Cỡ chữ 16, đậm
         	));
-        Hover.customizeTableHeader(tableBillItems);
+//        Hover.customizeTableHeader(tableBillItems);
         add(scrollPaneBill);
 
         // Nút "Lưu"

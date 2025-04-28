@@ -35,16 +35,16 @@ public class LoginController {
         String userName = views.getUsername();
 
         // Kiểm tra username và password không được bỏ trống
-        if (LoginUtil.isEmpty(userName, password)) {
-            noti = new Notification("Tài khoản và mật khẩu không được bỏ trống!");
-            return false;
-        }
-
-        // Kiểm tra username có đúng định dạng không
-        if (!LoginUtil.isValidUsername(userName)) {
-         noti =   new Notification("Tên đăng nhập phải có 5-20 ký tự, chữ, số, _, và . được phép.");
-            return false;
-        }
+//        if (LoginUtil.isEmpty(userName, password)) {
+//            noti = new Notification("Tài khoản và mật khẩu không được bỏ trống!");
+//            return false;
+//        }
+//
+//        // Kiểm tra username có đúng định dạng không
+//        if (!LoginUtil.isValidUsername(userName)) {
+//         noti =   new Notification("Tên đăng nhập phải có 5-20 ký tự, chữ, số, _, và . được phép.");
+//            return false;
+//        }
 
         // Kiểm tra độ mạnh của mật khẩu
 //        if (!LoginUtil.isStrongPassword(password)) {
