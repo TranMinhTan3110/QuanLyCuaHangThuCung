@@ -4,9 +4,10 @@ import model.entity.User;
 import model.request.LoginRequest;
 import model.response.LoginResponse;
 import respository.userRespositorty;
+import utils.LoginUtil;
+import view.notificationView.Notification;
 
 public class AuthService {
-
     private userRespositorty user;
 
     public AuthService(userRespositorty user) {
@@ -21,5 +22,8 @@ public class AuthService {
             return null;
         }
         return u;
+    }
+    public  boolean checkLogin2(String username, String password){
+        return LoginUtil.isEmpty(username,password);
     }
 }

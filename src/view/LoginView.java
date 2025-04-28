@@ -289,6 +289,7 @@ public class LoginView extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 dispose();
                 setDefaultCloseOperation(EXIT_ON_CLOSE);
+                System.exit(0);
                 // Đóng cửa sổ
             }
         });

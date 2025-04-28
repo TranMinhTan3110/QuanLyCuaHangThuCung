@@ -8,6 +8,58 @@ import java.util.ArrayList;
 
 public class UserDAO implements DaoInterface<User>{
 
+
+
+    public boolean isIdExists(int id) {
+        String sql = "SELECT COUNT(*) FROM [User] WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isPhoneExists(String phone) {
+        String sql = "SELECT COUNT(*) FROM Person WHERE phone = ?"; // Sửa từ [User] thành Person
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, phone);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isUsernameExists(String username) {
+        String sql = "SELECT COUNT(*) FROM [User] WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return true;
+                }
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
     @Override
     public boolean insert(User user) {
         String sqlPerson = "INSERT INTO Person (name, phone, address) VALUES (?, ?, ?)";
