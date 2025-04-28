@@ -2,6 +2,7 @@ package service;
 
 import dao.DaoInterface;
 
+import dao.ProductDAO;
 import model.entity.Product;
 import model.entity.User;
 
@@ -33,5 +34,20 @@ public class ProductService {
     // Xóa user
     public boolean delete(Product product) {
         return daoProduct.delete(product);
+    }
+
+    public Product selectByID(int productID) {
+        return (Product) daoProduct.selectByID(productID);
+    }
+    public ArrayList<Product> searchByName(String name) {
+        if (daoProduct instanceof ProductDAO) {
+            return ((ProductDAO) daoProduct).selectByNameLike(name);
+        }
+        return new ArrayList<>();
+    }
+
+    // Tìm kiếm chính xác (nếu bạn cần thêm)
+    public Product searchExactByName(String name) {
+        return (Product) daoProduct.selectByName(name);
     }
 }

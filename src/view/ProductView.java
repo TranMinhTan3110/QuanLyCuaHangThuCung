@@ -11,6 +11,7 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import model.entity.Category;
 import view.UI.Hover;
 
 import javax.swing.BorderFactory;
@@ -19,8 +20,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 public class ProductView extends JPanel {
 
@@ -28,13 +35,12 @@ public class ProductView extends JPanel {
 	private JTextField Quan_textField;
 	private JTextField ProName_textField;
 	private JTextField Price_textField;
-	private JTextField CateID_textField;
 	private JTable Pro_table;
 	private JTextField Search_textField;
+	private JButton btnAdd, btnEdit, btnDel;
+	private JButton btnPlus, btnMinus;
+	private JComboBox<Category> CateName_comboBox;
 
-	/**
-	 * Create the panel.
-	 */
 	public ProductView() {
 		setLayout(null);
 		setBounds(0,0,950,750);
@@ -50,39 +56,34 @@ public class ProductView extends JPanel {
 		lblQuanti.setBounds(444, 61, 77, 24);
 		panel_top.add(lblQuanti);
 
-		// Tạo panel chứa nút -, text field, nút +
 		JPanel quantityPanel = new JPanel();
 		quantityPanel.setLayout(new BorderLayout());
 		quantityPanel.setBounds(596, 61, 132, 34);
 		quantityPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-		// Nút giảm
-		JButton btnMinus = new JButton("−");
+		btnMinus = new JButton("−");
 		btnMinus.setBackground(new Color(232, 150, 89));
 		btnMinus.setMargin(new Insets(0, 5, 0, 5));
 		btnMinus.setFocusPainted(false);
 		btnMinus.setFont(new Font("Arial", Font.BOLD, 12));
 
-		// Text field
-		JTextField Quan_textField = new JTextField("0");
+		Quan_textField = new JTextField("0");
 		Quan_textField.setHorizontalAlignment(JTextField.CENTER);
 		Quan_textField.setFont(new Font("Arial", Font.PLAIN, 14));
 		Quan_textField.setBorder(null);
+		((AbstractDocument) Quan_textField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
-		// Nút tăng
-		JButton btnPlus = new JButton("+");
+		btnPlus = new JButton("+");
 		btnPlus.setBackground(new Color(232, 150, 89));
 		btnPlus.setMargin(new Insets(0, 5, 0, 5));
 		btnPlus.setFocusPainted(false);
 		btnPlus.setFont(new Font("Arial", Font.BOLD, 12));
 
-		// Thêm vào panel theo BorderLayout
 		quantityPanel.add(btnMinus, BorderLayout.WEST);
 		quantityPanel.add(Quan_textField, BorderLayout.CENTER);
 		quantityPanel.add(btnPlus, BorderLayout.EAST);
 		Hover.roundPanel(quantityPanel, 15, Color.WHITE, Color.GRAY);
 		panel_top.add(quantityPanel);
-
 
 		JLabel lblPro_Name = new JLabel("Product Name");
 		lblPro_Name.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -107,21 +108,29 @@ public class ProductView extends JPanel {
 		panel_top.add(Price_textField);
 		Hover.addPlaceholder(Price_textField, "Enter Price");
 		Hover.roundTextField(Price_textField, 10, Color.WHITE, Color.LIGHT_GRAY);
+		((AbstractDocument) Price_textField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
 
-		JLabel lblCate_ID_1 = new JLabel("Category ID");
-		lblCate_ID_1.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblCate_ID_1.setBounds(444, 120, 94, 24);
-		panel_top.add(lblCate_ID_1);
+		JLabel lblCate_Name = new JLabel("Category Name");
+		lblCate_Name.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblCate_Name.setBounds(444, 120, 120, 24);
+		panel_top.add(lblCate_Name);
 
-		CateID_textField = new JTextField();
-		CateID_textField.setColumns(10);
-		CateID_textField.setBounds(596, 118, 132, 34);
-		panel_top.add(CateID_textField);
-		Hover.addPlaceholder(CateID_textField, "Enter ID");
-		Hover.roundTextField(CateID_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+		// 1. Tạo danh sách Category
+		Category cat1 = new Category(1, "Thức ăn");
+		Category cat2 = new Category(2, "Thức uống");
+		Category cat3 = new Category(3, "Đồ dùng");
 
-		JButton btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		CateName_comboBox = new JComboBox<>();
+		CateName_comboBox.addItem(cat1);
+		CateName_comboBox.addItem(cat2);
+		CateName_comboBox.addItem(cat3);
+		CateName_comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
+		CateName_comboBox.setBounds(596, 118, 132, 34);
+		panel_top.add(CateName_comboBox);
+		Hover.roundComboBox(CateName_comboBox, 15, Color.WHITE, Color.LIGHT_GRAY);
+
+		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/pets_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
 		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnEdit.addActionListener(new ActionListener() {
@@ -137,8 +146,8 @@ public class ProductView extends JPanel {
 		panel_top.add(btnEdit);
 		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
-		JButton btnAdd = new JButton("Add");
-		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd = new JButton("Add");
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/pets_Icon.png")));
 		btnAdd.setBackground(new Color(255, 255, 223));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -154,12 +163,12 @@ public class ProductView extends JPanel {
 		panel_top.add(btnAdd);
 		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
 
-		JButton btnDel = new JButton("Delete");
+		btnDel = new JButton("Delete");
 		btnDel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/pets_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnDel.setBounds(189, 167, 87, 63);
@@ -171,8 +180,7 @@ public class ProductView extends JPanel {
 		panel_top.add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
-
+		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/pets_Icon.png"));
 		JPanel searchPanel = new JPanel(new BorderLayout());
 		searchPanel.setBounds(684, 187, 234, 24);
 		searchPanel.setBackground(Color.WHITE);
@@ -197,12 +205,121 @@ public class ProductView extends JPanel {
 		Pro_table = new JTable();
 		Pro_table.getTableHeader().setBackground(new Color(255,255,159));
 		Pro_table.setModel(new DefaultTableModel(
-				new Object[][] {
-				},
-				new String[] {
-						"ID", "Name", "Price","Quantity", "Category"
-				}
+				new Object[][] {},
+				new String[] {"ID", "Name", "Price","Quantity", "Category"}
 		));
 		Pro_list.setViewportView(Pro_table);
 	}
+
+	public String getProductName() {
+		return ProName_textField.getText();
+	}
+
+	public String getPrice() {
+		return Price_textField.getText();
+	}
+
+	public String getQuantity() {
+		return Quan_textField.getText();
+	}
+
+	public Category getCategory() {
+		Category selectedCategory = (Category) CateName_comboBox.getSelectedItem();
+		return selectedCategory;
+	}
+
+	public String getSearchKeyword() {
+		return Search_textField.getText();
+	}
+
+	public JTable getProductTable() {
+		return Pro_table;
+	}
+
+	public void setProductName(String name) {
+		ProName_textField.setText(name);
+	}
+
+	public void setPrice(String price) {
+		Price_textField.setText(price);
+	}
+
+	public void setQuantity(String quantity) {
+		Quan_textField.setText(quantity);
+	}
+
+	public void clearFields() {
+		ProName_textField.setText("");
+		Price_textField.setText("");
+		Quan_textField.setText("0");
+		CateName_comboBox.setSelectedIndex(0);
+		Search_textField.setText("");
+	}
+
+	public void addAddButtonListener(ActionListener listener) {
+		btnAdd.addActionListener(listener);
+	}
+
+	public void addEditButtonListener(ActionListener listener) {
+		btnEdit.addActionListener(listener);
+	}
+
+	public void addDeleteButtonListener(ActionListener listener) {
+		btnDel.addActionListener(listener);
+	}
+
+	public void addPlusButtonListener(ActionListener listener) {
+		btnPlus.addActionListener(listener);
+	}
+
+	public void addMinusButtonListener(ActionListener listener) {
+		btnMinus.addActionListener(listener);
+	}
+
+	public void addSearchKeyListener(java.awt.event.KeyListener listener) {
+		Search_textField.addKeyListener(listener);
+	}
+
+	public int getSelectedRow() {
+		return Pro_table.getSelectedRow();
+	}
+
+	public String getValueAt(int row, int column) {
+		Object value = Pro_table.getValueAt(row, column);
+		return value != null ? value.toString() : "";
+	}
+
+	public void setSelectedCategoryByName(String categoryName) {
+		for (int i = 0; i < CateName_comboBox.getItemCount(); i++) {
+			Category cate = CateName_comboBox.getItemAt(i);
+			if (cate.getCategoryName().equals(categoryName)) {
+				CateName_comboBox.setSelectedIndex(i);
+				break;
+			}
+		}
+	}
+
+	// Cho Controller gắn listener vào
+	public void addTableSelectionListener(ListSelectionListener listener) {
+		Pro_table.getSelectionModel().addListSelectionListener(listener);
+	}
+
+	class NumberOnlyFilter extends DocumentFilter {
+		@Override
+		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
+			if (string.matches("\\d*")) {  // chỉ cho phép chữ số
+				super.insertString(fb, offset, string, attr);
+			}
+		}
+
+		@Override
+		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
+			if (text.matches("\\d*")) {  // chỉ cho phép chữ số
+				super.replace(fb, offset, length, text, attrs);
+			}
+		}
+	}
+	public void showMessage(String s) {
+	}
+
 }

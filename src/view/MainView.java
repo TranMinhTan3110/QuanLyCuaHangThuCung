@@ -21,9 +21,9 @@ public class MainView extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel contentPane;
     private JButton btnPets;
-    private JButton btnAdmin ;
+    private JButton btnAdmin;
     private JButton btnBills;
-    private JButton btnCusTomers ;
+    private JButton btnCusTomers;
     private JButton btnProduct;
     private JButton btnHome;
     private JButton btnLogout;
@@ -35,11 +35,13 @@ public class MainView extends JFrame {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(hoverColor);
             }
+
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(defaultColor);
             }
         });
     }
+
     private void addPlaceholder(JTextField textField, String placeholder) {
         textField.setText(placeholder);
         textField.setForeground(Color.GRAY);
@@ -88,10 +90,10 @@ public class MainView extends JFrame {
 
         // Thêm các panel
         centerPanel.add(createPetsPanel(), "Pets");
-
+        centerPanel.add(createProductPanel(), "Product");
         centerPanel.add(createCustomersPanel(), "Customers");
         centerPanel.add(createBillingsPanel(), "Bills");
-//        centerPanel.add(createHomePanel(), "Home");
+        centerPanel.add(createHomePanel(), "Home");
 
         panel.setBackground(new Color(255, 255, 204));
         panel.setBounds(0, -16, 250, 750);
@@ -173,6 +175,7 @@ public class MainView extends JFrame {
         panel.add(lblEmployeeID);
 
         btnProduct = new JButton("Product");
+//        centerPanel.add(createProductPanel(), "Product");
         btnProduct.setIconTextGap(20);
         btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Category_Icon.png")));
         btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -190,13 +193,12 @@ public class MainView extends JFrame {
         btnHome.setFocusPainted(false);
         btnHome.setBorder(null);
         btnHome.setBackground(new Color(255, 255, 204));
-        btnHome.setBounds(13,370, 173, 31);
+        btnHome.setBounds(13, 370, 173, 31);
         panel.add(btnHome);
 
         centerPanel.setVisible(true);
 
     }
-
 
 
     private JPanel createPetsPanel() {
@@ -229,13 +231,19 @@ public class MainView extends JFrame {
         return panel;
     }
 
-//    private JPanel createHomePanel() {
-//        JPanel panel = new JPanel(new BorderLayout());
-//        HomeView homeView = new HomeView();
-//        return homeView;
-//        panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-//        return panel;
-//    }
+    private JPanel createProductPanel() {
+        ProductView productView = new ProductView();
+        DaoInterface productRepo = new ProductDAO();
+        ProductService productService = new ProductService(productRepo);
+        new controller.ProductController(productView,productService);
+        return productView;
+    }
+
+    private JPanel createHomePanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
+        return panel;
+    }
 
     public void addUsersListener(ActionListener listener) {
         // Kiểm tra xem btnAdmin có null không trước khi thêm ActionListener
@@ -243,6 +251,7 @@ public class MainView extends JFrame {
             btnAdmin.addActionListener(listener);
         }
     }
+
     public void addPetsListener(ActionListener listener) {
         btnPets.addActionListener(listener);
     }
@@ -267,7 +276,8 @@ public class MainView extends JFrame {
         btnHome.addActionListener(listener);
     }
 
-    public void showPanel(String panelName) {;
+    public void showPanel(String panelName) {
+        ;
         cardLayout.show(centerPanel, panelName);
     }
 

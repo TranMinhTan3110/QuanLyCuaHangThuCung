@@ -218,4 +218,9 @@ public class UserDAO implements DaoInterface<User>{
         return null; // Trả về null nếu không tìm thấy
     }
 
+    @Override
+    public User selectByName(String name) {
+        return null;
+    }
+
 }
