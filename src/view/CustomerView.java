@@ -17,6 +17,7 @@ import view.UI.Hover;
 import javax.swing.JLabel;
 import java.awt.Rectangle;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
@@ -24,24 +25,24 @@ import java.awt.event.ActionEvent;
 public class CustomerView extends JPanel {
 
 
-	
 
-	/**
-	 * Create the panel.
-	 */
+
+    /**
+     * Create the panel.
+     */
 
     private static final long serialVersionUID = 1L;
     private JTable table;
+    private JTextField ID_textField;
     private JTextField Name_textField;
     private JTextField Address_textField;
-    private JTextField ID_textField;
     private JTextField Phone_textField;
     private JTextField Score_textField;
     private JTextField Rank_textField;
     private JTextField Search_textField;
     private DefaultTableModel model;
     //cac nut
-    private JButton Delete_Button, Edit_Button, Save_Button,ID_Button;
+    private JButton btnDel, btnEdit, btnSave,ID_Button;
 
     public String getName_textField() {
         return Name_textField.getText();
@@ -50,11 +51,9 @@ public class CustomerView extends JPanel {
     public String getAddress_textField() {
         return Address_textField.getText();
     }
-
     public String getID_textField() {
         return ID_textField.getText();
     }
-
     public String getPhone_textField() {
         return Phone_textField.getText();
     }
@@ -76,28 +75,22 @@ public class CustomerView extends JPanel {
         add(panel_top);
         panel_top.setLayout(null);
 
-
-        JLabel lblID = new JLabel("ID");
-        lblID.setFont(new Font("Arial", Font.PLAIN, 16));
-        lblID.setBounds(new Rectangle(176, 36, 55, 21));
-        panel_top.add(lblID);
-
         JLabel lblName = new JLabel("Name");
         lblName.setFont(new Font("Arial", Font.PLAIN, 16));
         lblName.setBounds(new Rectangle(176, 54, 55, 21));
-        lblName.setBounds(370, 36, 97, 21);
+        lblName.setBounds(122, 55, 97, 21);
         panel_top.add(lblName);
 
         JLabel lblAddress = new JLabel("Address");
         lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
         lblAddress.setBounds(new Rectangle(176, 36, 55, 21));
-        lblAddress.setBounds(176, 121, 100, 21);
+        lblAddress.setBounds(122, 121, 100, 21);
         panel_top.add(lblAddress);
 
         JLabel lblPhone = new JLabel("Phone");
         lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
         lblPhone.setBounds(new Rectangle(176, 54, 55, 21));
-        lblPhone.setBounds(575, 36, 55, 21);
+        lblPhone.setBounds(454, 55, 55, 21);
         panel_top.add(lblPhone);
 
 
@@ -111,92 +104,110 @@ public class CustomerView extends JPanel {
         JLabel lblScore = new JLabel("Score");
         lblScore.setFont(new Font("Arial", Font.PLAIN, 16));
         lblScore.setBounds(new Rectangle(176, 36, 55, 21));
-        lblScore.setBounds(370, 121, 55, 21);
+        lblScore.setBounds(454, 121, 55, 21);
         panel_top.add(lblScore);
 
-
-        // Sửa lại phần khởi tạo các JTextField trong constructor:
-        ID_textField = new JTextField();
-        ID_textField.setColumns(10);
-        ID_textField.setBounds(176, 67, 109, 25);  // Đặt ID ở vị trí ban đầu của Name
-        panel_top.add(ID_textField);
-        Hover.addPlaceholder(ID_textField, "Enter ID");
-
         Name_textField = new JTextField();
-        Name_textField.setBounds(370, 67, 137, 25);  // Đặt Name ở vị trí ban đầu của Address
+        Name_textField.setBounds(238, 55, 140, 25);  // Đặt Name ở vị trí ban đầu của Address
         panel_top.add(Name_textField);
         Hover.addPlaceholder(Name_textField, "Enter Name");
+        Hover.roundTextField(Name_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
         // Sửa vị trí của Phone_textField
         Phone_textField = new JTextField();
         Phone_textField.setColumns(10);
-        Phone_textField.setBounds(575, 67, 109, 25); // Cùng vị trí X với JLabel "Phone", Y có thể điều chỉnh
+        Phone_textField.setBounds(543, 55, 140, 25); // Cùng vị trí X với JLabel "Phone", Y có thể điều chỉnh
         panel_top.add(Phone_textField);
         Hover.addPlaceholder(Phone_textField, "Enter Phone");
+        Hover.roundTextField(Phone_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
         // Sửa vị trí của Address_textField
         Address_textField = new JTextField();
         Address_textField.setColumns(10);
-        Address_textField.setBounds(176, 152, 102, 25); // Cùng vị trí X với JLabel "Address" (gần đúng), Y có thể điều chỉnh
+        Address_textField.setBounds(238, 121, 140, 25); // Cùng vị trí X với JLabel "Address" (gần đúng), Y có thể điều chỉnh
         panel_top.add(Address_textField);
         Hover.addPlaceholder(Address_textField, "Enter Address");
+        Hover.roundTextField(Address_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
 
 
         Score_textField = new JTextField();
         Score_textField.setColumns(10);
-        Score_textField.setBounds(370, 152, 109, 25);  // Đặt Score ở vị trí ban đầu của Rank
+        Score_textField.setBounds(543, 121, 140, 25);  // Đặt Score ở vị trí ban đầu của Rank
         panel_top.add(Score_textField);
         Hover.addPlaceholder(Score_textField, "Enter Score");
+        Hover.roundTextField(Score_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
 
-        Edit_Button = new JButton("Edit");
-        Edit_Button.setBackground(new Color(255, 255, 204));
-        Edit_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Edit_Button.setBounds(106, 187, 113, 30);
-        Edit_Button.setFocusPainted(false);
-        panel_top.add(Edit_Button);
-        Hover.addHoverEffect(Edit_Button, new Color(128, 128, 100), new Color(255, 255, 204));
-
-        Save_Button = new JButton("Save");
-        Save_Button.setBackground(new Color(255, 255, 204));
-        Save_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Save_Button.setBounds(296, 187, 113, 30);
-        Save_Button.setFocusPainted(false);
-        panel_top.add(Save_Button);
-        Hover.addHoverEffect(Save_Button, new Color(128, 128, 100), new Color(255, 255, 204));
-
-
-        Delete_Button = new JButton("Delete");
-        Delete_Button.setBackground(new Color(255, 255, 204));
-        Delete_Button.addActionListener(new ActionListener() {
+        btnEdit = new JButton("Edit");
+        btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+        btnEdit.setBackground(new Color(255, 255, 204));
+        btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnEdit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        Delete_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Delete_Button.setBounds(492, 187, 113, 30);
-        Delete_Button.setFocusPainted(false);
-        panel_top.add(Delete_Button);
-        Hover.addHoverEffect(Delete_Button, new Color(128, 128, 100), new Color(255, 255, 204));
-        
+        btnEdit.setBounds(110, 167, 69, 63);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setContentAreaFilled(false);
+        btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnEdit);
+        Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
+
+        btnSave = new JButton("Save");
+        btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
+        btnSave.setBackground(new Color(255, 255, 223));
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnSave.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnSave.setBounds(20, 167, 69, 63);
+        btnSave.setFocusPainted(false);
+        btnSave.setBorderPainted(false);
+        btnSave.setContentAreaFilled(false);
+        btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnSave);
+        Hover.addHoverButtonEffect(btnSave, new Color(0, 102, 204), 0.8f);
+
+        btnDel = new JButton("Delete");
+        btnDel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+        btnDel.setBackground(new Color(255, 255, 204));
+        btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnDel.setBounds(189, 167, 87, 63);
+        btnDel.setFocusPainted(false);
+        btnDel.setBorderPainted(false);
+        btnDel.setContentAreaFilled(false);
+        btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnDel);
+        Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+
         ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
 
-		JPanel searchPanel = new JPanel(new BorderLayout());
-		searchPanel.setBounds(684, 187, 234, 24);
-		searchPanel.setBackground(Color.WHITE);
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBounds(684, 187, 234, 24);
+        searchPanel.setBackground(Color.WHITE);
 
-		JLabel searchLabel = new JLabel(searchIcon);
-		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		searchPanel.add(searchLabel, BorderLayout.WEST);
+        JLabel searchLabel = new JLabel(searchIcon);
+        searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        searchPanel.add(searchLabel, BorderLayout.WEST);
 
-		Search_textField = new JTextField();
-		Search_textField.setBorder(null);
-		Search_textField.setColumns(10);
-		searchPanel.add(Search_textField, BorderLayout.CENTER);
-		Hover.addPlaceholder(Search_textField,"search...");
-		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+        Search_textField = new JTextField();
+        Search_textField.setBorder(null);
+        Search_textField.setColumns(10);
+        searchPanel.add(Search_textField, BorderLayout.CENTER);
+        Hover.addPlaceholder(Search_textField,"search...");
+        Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
-		panel_top.add(searchPanel);
+        panel_top.add(searchPanel);
 
         JScrollPane cus_List = new JScrollPane();
         cus_List.setBounds(0, 244, 950, 500);
@@ -226,6 +237,7 @@ public class CustomerView extends JPanel {
 
         table = new JTable(model);
         cus_List.setViewportView(table);
+        Hover.customizeTableHeader(table);
     }
 
     public void removeCustomerFromTable(int row) {
@@ -233,15 +245,15 @@ public class CustomerView extends JPanel {
     }
 
     public void setAddButtonListener(ActionListener listener) {
-        Save_Button.addActionListener(listener);
+        btnSave.addActionListener(listener);
     }
 
     public void setEditButtonListener(ActionListener listener) {
-        Edit_Button.addActionListener(listener);
+        btnEdit.addActionListener(listener);
     }
 
     public void setDeleteButtonListener(ActionListener listener) {
-        Delete_Button.addActionListener(listener);
+        btnDel.addActionListener(listener);
     }
 
     public JTable getTable() {
@@ -254,7 +266,6 @@ public class CustomerView extends JPanel {
         Name_textField.setText("");
         Address_textField.setText("");
         Phone_textField.setText("");
-        ID_textField.setText("");
         Score_textField.setText("");
     }
     public void addCustomerToTable(String id, String name,String  phone, String address ,int loyaltyPoints,String membershipLevels) {
@@ -270,7 +281,6 @@ public class CustomerView extends JPanel {
 
     }
     public void setEmployeeData(String id, String name ,String phone,String address) {
-        ID_textField.setText(id);
         Name_textField.setText(name);
         Phone_textField.setText(phone);
         Address_textField.setText(address);
@@ -278,4 +288,3 @@ public class CustomerView extends JPanel {
 
     }
 }
-

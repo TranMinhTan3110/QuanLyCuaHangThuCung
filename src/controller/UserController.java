@@ -218,9 +218,6 @@ public class UserController {
 
     // Sửa thông tin nhân viên
     public void editEmployee() {
-        if(currentUser == null){
-            JOptionPane.showMessageDialog(userView,"Chọn nv can xóa");
-        }
         int selectedRow = userView.getSelectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(userView, "Chọn nhân viên cần chỉnh sửa!");
