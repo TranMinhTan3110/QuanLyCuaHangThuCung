@@ -237,7 +237,6 @@ public class CustomerView extends JPanel {
         Hover.customizeTableHeader(table);
     }
 
-
     public void removeCustomerFromTable(int row) {
         model.removeRow(row);
     }
@@ -278,8 +277,6 @@ public class CustomerView extends JPanel {
 
 
     }
-
-
     public void setEmployeeData(String id, String name ,String phone,String address) {
         Name_textField.setText(name);
         Phone_textField.setText(phone);

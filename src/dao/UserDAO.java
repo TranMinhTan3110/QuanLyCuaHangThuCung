@@ -80,6 +80,7 @@ public class UserDAO implements DaoInterface<User>{
                 try (ResultSet generatedKeys = stmtPerson.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         personId = generatedKeys.getInt(1);
+                        user.setId(personId);//gán id tu database
                     } else {
                         throw new SQLException("Không lấy được ID của Person.");
                     }
