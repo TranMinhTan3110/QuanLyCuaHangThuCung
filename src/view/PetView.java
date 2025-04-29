@@ -23,7 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class PetView extends JPanel {
+public class petView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private JTextField Name_textField;
@@ -36,7 +36,7 @@ public class PetView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PetView() {
+	public petView() {
 		setLayout(null);
 		setBounds(0,0,950,750);
 
@@ -179,6 +179,18 @@ public class PetView extends JPanel {
 		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
 		panel_top.add(searchPanel);
+		
+		JComboBox Arrange_comboBox = new JComboBox();
+		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ascending", "Descending"}));
+		Arrange_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		Arrange_comboBox.setBounds(307, 178, 120, 33);
+		panel_top.add(Arrange_comboBox);
+		
+		JComboBox Species_comboBox = new JComboBox();
+		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo"}));
+		Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		Species_comboBox.setBounds(477, 178, 120, 33);
+		panel_top.add(Species_comboBox);
 
 		JScrollPane Pet_ScrollPane = new JScrollPane();
 		Pet_ScrollPane.setBounds(0, 240, 950, 510);
@@ -193,7 +205,7 @@ public class PetView extends JPanel {
 			}
 		));
 		Pet_Table.setFont(new Font("Arial", Font.PLAIN, 16));
-//		Hover.customizeTableHeader(Pet_Table);
+		Hover.customizeTableHeader(Pet_Table);
 		Pet_ScrollPane.setViewportView(Pet_Table);
 	}
 }

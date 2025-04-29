@@ -1,9 +1,11 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -36,7 +38,7 @@ public class CustomerView extends JPanel {
     private JTextField Phone_textField;
     private JTextField Score_textField;
     private JTextField Rank_textField;
-
+    private JTextField Search_textField;
     private DefaultTableModel model;
     //cac nut
     private JButton Delete_Button, Edit_Button, Save_Button,ID_Button;
@@ -151,7 +153,7 @@ public class CustomerView extends JPanel {
         Edit_Button = new JButton("Edit");
         Edit_Button.setBackground(new Color(255, 255, 204));
         Edit_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Edit_Button.setBounds(720, 62, 113, 30);
+        Edit_Button.setBounds(106, 187, 113, 30);
         Edit_Button.setFocusPainted(false);
         panel_top.add(Edit_Button);
         Hover.addHoverEffect(Edit_Button, new Color(128, 128, 100), new Color(255, 255, 204));
@@ -159,7 +161,7 @@ public class CustomerView extends JPanel {
         Save_Button = new JButton("Save");
         Save_Button.setBackground(new Color(255, 255, 204));
         Save_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Save_Button.setBounds(720, 121, 113, 30);
+        Save_Button.setBounds(296, 187, 113, 30);
         Save_Button.setFocusPainted(false);
         panel_top.add(Save_Button);
         Hover.addHoverEffect(Save_Button, new Color(128, 128, 100), new Color(255, 255, 204));
@@ -172,10 +174,29 @@ public class CustomerView extends JPanel {
             }
         });
         Delete_Button.setFont(new Font("Arial", Font.PLAIN, 16));
-        Delete_Button.setBounds(720, 175, 113, 30);
+        Delete_Button.setBounds(492, 187, 113, 30);
         Delete_Button.setFocusPainted(false);
         panel_top.add(Delete_Button);
         Hover.addHoverEffect(Delete_Button, new Color(128, 128, 100), new Color(255, 255, 204));
+        
+        ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
+
+		JPanel searchPanel = new JPanel(new BorderLayout());
+		searchPanel.setBounds(684, 187, 234, 24);
+		searchPanel.setBackground(Color.WHITE);
+
+		JLabel searchLabel = new JLabel(searchIcon);
+		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		searchPanel.add(searchLabel, BorderLayout.WEST);
+
+		Search_textField = new JTextField();
+		Search_textField.setBorder(null);
+		Search_textField.setColumns(10);
+		searchPanel.add(Search_textField, BorderLayout.CENTER);
+		Hover.addPlaceholder(Search_textField,"search...");
+		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+
+		panel_top.add(searchPanel);
 
         JScrollPane cus_List = new JScrollPane();
         cus_List.setBounds(0, 244, 950, 500);
