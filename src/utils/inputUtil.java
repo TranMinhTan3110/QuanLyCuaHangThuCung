@@ -13,7 +13,7 @@ public class inputUtil {
     }
     //kiểm tra id là số dương
     public static boolean isValidID(String id){
-        if(id==null || id.isEmpty()){
+        if( id.isEmpty()){
             return false;
         }
         try{
@@ -86,23 +86,21 @@ public class inputUtil {
             return false;
         }
 
-        // Kiểm tra địa chỉ có thể chứa chữ, số và dấu phẩy (cho phép tên đường, số nhà, quận, thành phố...)
-        if (!address.matches("^[a-zA-Z0-9\\s,.-]+$")) {
+        if (!address.matches(".*[\\p{L}].*")) {
             return false;
         }
+
 
         return true;
     }
 
-    public static boolean isValidName(String name){
-        if(name.trim().isEmpty() || name == null){
+    public static boolean isValidName(String name) {
+        if (name == null || name.trim().isEmpty()) {
             return false;
         }
-        if (!name.matches("[a-zA-Z]+")) {
-            return false;
-        }
-        return true;
+        return name.matches("^[\\p{L} ]+$");
     }
+
 
 }
 

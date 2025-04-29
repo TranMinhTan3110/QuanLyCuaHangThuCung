@@ -28,6 +28,7 @@ public class CustomerDao implements  DaoInterface<Customer> {
             int personId;
             if (resultset.next()) {
                 personId = resultset.getInt(1);
+                customer.setId(personId);
             } else {
                 throw new SQLException("Không thể lấy ID của Person!");
             }

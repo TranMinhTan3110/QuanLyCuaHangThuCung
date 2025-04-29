@@ -3,6 +3,9 @@ package view;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+
+import view.UI.Hover;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -13,7 +16,7 @@ public class UserView extends JPanel {
 	private JComboBox<String> roleComboBox;
 	private JTable table;
 	private DefaultTableModel model;
-	private JButton addButton, editButton, deleteButton;
+	private JButton btnAdd, btnEdit, btnDel;
 
 	public UserView() {
 		setLayout(null);
@@ -25,99 +28,121 @@ public class UserView extends JPanel {
 		panel_top.setLayout(null);
 		add(panel_top);
 
-		JLabel lblId = new JLabel("ID:");
-		lblId.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblId.setBounds(95, 46, 67, 21);
-		panel_top.add(lblId);
-
-		idField = new JTextField();
-		idField.setBounds(203, 43, 125, 32);
-		addPlaceholder(idField, "Enter ID");
-		panel_top.add(idField);
-
 		JLabel lblPhone = new JLabel("Phone:");
 		lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPhone.setBounds(95, 96, 68, 21);
+		lblPhone.setBounds(641, 61, 68, 21);
 		panel_top.add(lblPhone);
 
 		phoneField = new JTextField();
-		phoneField.setBounds(203, 93, 125, 32);
-		addPlaceholder(phoneField, "Enter Phone");
+		phoneField.setBounds(742, 60, 125, 32);
+		Hover.addPlaceholder(phoneField, "Enter Phone");
+		Hover.roundTextField(phoneField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		panel_top.add(phoneField);
 
 		JLabel lblUsername = new JLabel("UserName:");
 		lblUsername.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblUsername.setBounds(95, 148, 88, 21);
+		lblUsername.setBounds(95, 118, 88, 21);
 		panel_top.add(lblUsername);
 
 		usernameField = new JTextField();
-		usernameField.setBounds(203, 145, 125, 32);
-		addPlaceholder(usernameField, "Enter Username");
+		usernameField.setBounds(189, 115, 125, 32);
+		Hover.addPlaceholder(usernameField, "Enter Username");
+		Hover.roundTextField(usernameField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		panel_top.add(usernameField);
 
 		JLabel lblName = new JLabel("Name:");
 		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblName.setBounds(419, 46, 67, 21);
+		lblName.setBounds(95, 61, 67, 21);
 		panel_top.add(lblName);
 
 		nameField = new JTextField();
-		nameField.setBounds(530, 43, 125, 32);
-		addPlaceholder(nameField, "Enter Name");
+		nameField.setBounds(189, 60, 125, 32);
+		Hover.addPlaceholder(nameField, "Enter Name");
+		Hover.roundTextField(nameField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		panel_top.add(nameField);
 
 		JLabel lblAddress = new JLabel("Address:");
 		lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblAddress.setBounds(419, 96, 68, 21);
+		lblAddress.setBounds(358, 61, 68, 21);
 		panel_top.add(lblAddress);
 
 		addressField = new JTextField();
-		addressField.setBounds(530, 93, 125, 32);
-		addPlaceholder(addressField, "Enter Address");
+		addressField.setBounds(469, 60, 125, 32);
+		Hover.addPlaceholder(addressField, "Enter Address");
+		Hover.roundTextField(addressField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		panel_top.add(addressField);
 
 		JLabel lblPassword = new JLabel("Password:");
 		lblPassword.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPassword.setBounds(419, 148, 88, 21);
+		lblPassword.setBounds(358, 118, 88, 21);
 		panel_top.add(lblPassword);
 
 		passwordField = new JTextField();
-		passwordField.setBounds(530, 145, 125, 32);
-		addPlaceholder(passwordField, "Enter Password");
+		passwordField.setBounds(469, 115, 125, 32);
+		Hover.addPlaceholder(passwordField, "Enter Password");
+		Hover.roundTextField(passwordField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		panel_top.add(passwordField);
 
 		JLabel lblRole = new JLabel("Role");
 		lblRole.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblRole.setBounds(95, 190, 88, 21);
+		lblRole.setBounds(641, 118, 88, 21);
 		panel_top.add(lblRole);
 
 		roleComboBox = new JComboBox<>(new String[]{"Admin", "Employee"});
 		roleComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		roleComboBox.setBounds(203, 192, 125, 32);
+		roleComboBox.setBounds(742, 115, 125, 32);
 		panel_top.add(roleComboBox);
 
-		addButton = new JButton("Add");
-		addButton.setBackground(new Color(255, 255, 204));
-		addButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		addButton.setBounds(727, 40, 88, 32);
-		addButton.setFocusPainted(false);
-		addHoverEffect(addButton, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel_top.add(addButton);
+		btnAdd = new JButton("Add");
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setBackground(new Color(255, 255, 223));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnAdd.setBounds(20, 167, 69, 63);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setBorderPainted(false);
+		btnAdd.setContentAreaFilled(false);
+		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnAdd);
+		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
 
-		editButton = new JButton("Edit");
-		editButton.setBackground(new Color(255, 255, 204));
-		editButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		editButton.setBounds(727, 93, 88, 32);
-		editButton.setFocusPainted(false);
-		addHoverEffect(editButton, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel_top.add(editButton);
+		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		btnEdit.setBackground(new Color(255, 255, 204));
+		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnEdit.setBounds(110, 167, 69, 63);
+		btnEdit.setFocusPainted(false);
+		btnEdit.setBorderPainted(false);
+		btnEdit.setContentAreaFilled(false);
+		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnEdit);
+		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
-		deleteButton = new JButton("Delete");
-		deleteButton.setBackground(new Color(255, 255, 204));
-		deleteButton.setFont(new Font("Arial", Font.PLAIN, 16));
-		deleteButton.setBounds(727, 145, 88, 32);
-		deleteButton.setFocusPainted(false);
-		addHoverEffect(deleteButton, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel_top.add(deleteButton);
+		btnDel = new JButton("Delete");
+		btnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setBackground(new Color(255, 255, 204));
+		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnDel.setBounds(189, 167, 87, 63);
+		btnDel.setFocusPainted(false);
+		btnDel.setBorderPainted(false);
+		btnDel.setContentAreaFilled(false);
+		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnDel);
+		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -144,6 +169,7 @@ public class UserView extends JPanel {
 
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
+		Hover.customizeTableHeader(table);
 	}
 
 	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
@@ -159,31 +185,17 @@ public class UserView extends JPanel {
 	}
 
 	private void addPlaceholder(JTextField textField, String placeholder) {
-		textField.setText(placeholder);
-		textField.setForeground(Color.GRAY);
-		textField.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (textField.getText().equals(placeholder)) {
-					textField.setText("");
-					textField.setForeground(Color.BLACK);
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (textField.getText().isEmpty()) {
-					textField.setText(placeholder);
-					textField.setForeground(Color.GRAY);
-				}
-			}
-		});
 	}
 
 	// Getters for Controller
 	public String getIdField() {
 		return idField.getText();
 	}
+	public JTextField getIdFieldJ() {
+		return idField;
+	}
+
+
 
 	public String getPhoneField() {
 		return phoneField.getText();
@@ -220,10 +232,12 @@ public class UserView extends JPanel {
 	}
 
 	public void clearFields() {
-		JTextField[] fields = {idField, phoneField, usernameField, nameField, addressField, passwordField};
+
+		JTextField[] fields = { phoneField, usernameField, nameField, addressField, passwordField};
 		for (JTextField field : fields) field.setText("");
 		roleComboBox.setSelectedIndex(0);
 	}
+
 
 	public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
 		model.addRow(new Object[]{id, name, phone, username, password, address, role});
@@ -244,15 +258,15 @@ public class UserView extends JPanel {
 	}
 
 	public void setAddButtonListener(ActionListener listener) {
-		addButton.addActionListener(listener);
+		btnAdd.addActionListener(listener);
 	}
 
 	public void setEditButtonListener(ActionListener listener) {
-		editButton.addActionListener(listener);
+		btnEdit.addActionListener(listener);
 	}
 
 	public void setDeleteButtonListener(ActionListener listener) {
-		deleteButton.addActionListener(listener);
+		btnDel.addActionListener(listener);
 	}
 
 	public JTable getTable() {
@@ -261,7 +275,7 @@ public class UserView extends JPanel {
 
 	public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
 
-		idField.setText(id);
+//		idField.setText(id);
 		phoneField.setText(phone);
 		usernameField.setText(username);
 		nameField.setText(name);

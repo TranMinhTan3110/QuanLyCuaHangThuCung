@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
         public CustomerService(DaoInterface userRepo) {
             this.daoInterface = userRepo;
+            this.customerDao = new CustomerDao();
         }
 
         public ArrayList<Customer> getAll() {
@@ -40,6 +41,10 @@ import java.util.ArrayList;
         }
         public boolean checkPhone(String phone){
             return customerDao.findByPhone(phone);
+        }
+        //hàm trả về một Customer
+        public Customer  selectedByID(int id){
+            return (Customer) daoInterface.selectByID(id);
         }
     }
 

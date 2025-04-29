@@ -8,7 +8,7 @@ public class testPanel {
         JFrame frame = new JFrame("Manage Users");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(950, 750);
-        frame.add(new BillView());
+        frame.add(new CustomerView());
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
