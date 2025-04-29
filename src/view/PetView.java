@@ -32,7 +32,12 @@ public class PetView extends JPanel {
 	private JTextField Age_textField;
 	private JTextField Search_textField;
 	private JTable Pet_Table;
-
+	private JComboBox Breed_comboBox;
+	private JComboBox Species_comboBox;
+	private JComboBox Arrange_comboBox;
+	private JButton btnAdd;
+	private JButton btnDel;
+	private JButton btnEdit;
 	/**
 	 * Create the panel.
 	 */
@@ -90,7 +95,7 @@ public class PetView extends JPanel {
 		lblBreed.setBounds(222, 107, 76, 33);
 		panel_top.add(lblBreed);
 		
-		JComboBox Breed_comboBox = new JComboBox();
+		Breed_comboBox = new JComboBox();
 		Breed_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
 		Breed_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Breed_comboBox.setBounds(307, 107, 120, 33);
@@ -109,14 +114,10 @@ public class PetView extends JPanel {
 		Hover.addPlaceholder(Age_textField, "Enter Age");
 		Hover.roundTextField(Age_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		
-		JButton btnEdit = new JButton("Edit");
+		btnEdit = new JButton("Edit");
 		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
 		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnEdit.setBounds(110, 167, 69, 63);
 		btnEdit.setFocusPainted(false);
 		btnEdit.setBorderPainted(false);
@@ -126,13 +127,9 @@ public class PetView extends JPanel {
 		panel_top.add(btnEdit);
 		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
-		JButton btnAdd = new JButton("Add");
+		btnAdd = new JButton("Add");
 		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
 		btnAdd.setBackground(new Color(255, 255, 223));
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnAdd.setBounds(20, 167, 69, 63);
 		btnAdd.setFocusPainted(false);
@@ -143,11 +140,8 @@ public class PetView extends JPanel {
 		panel_top.add(btnAdd);
 		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
 
-		JButton btnDel = new JButton("Delete");
-		btnDel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
+		btnDel = new JButton("Delete");
+
 		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -180,13 +174,13 @@ public class PetView extends JPanel {
 
 		panel_top.add(searchPanel);
 		
-		JComboBox Arrange_comboBox = new JComboBox();
+		Arrange_comboBox = new JComboBox();
 		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ascending", "Descending"}));
 		Arrange_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Arrange_comboBox.setBounds(307, 178, 120, 33);
 		panel_top.add(Arrange_comboBox);
 		
-		JComboBox Species_comboBox = new JComboBox();
+		Species_comboBox = new JComboBox();
 		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo"}));
 		Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Species_comboBox.setBounds(477, 178, 120, 33);
@@ -207,5 +201,81 @@ public class PetView extends JPanel {
 		Pet_Table.setFont(new Font("Arial", Font.PLAIN, 16));
 		Hover.customizeTableHeader(Pet_Table);
 		Pet_ScrollPane.setViewportView(Pet_Table);
+	}
+
+	// Getters cho các TextField
+	public JTextField getNameTextField() {
+		return Name_textField;
+	}
+
+	public JTextField getSpeciesTextField() {
+		return Species_textField;
+	}
+
+	public JTextField getPriceTextField() {
+		return Price_textField;
+	}
+
+	public JTextField getAgeTextField() {
+		return Age_textField;
+	}
+
+	public JTextField getSearchTextField() {
+		return Search_textField;
+	}
+
+	// Getters cho các ComboBox
+	public JComboBox getBreedComboBox() {
+		return Breed_comboBox;
+	}
+
+	public JComboBox getArrangeComboBox() {
+		return Arrange_comboBox;
+	}
+
+	public JComboBox getSpeciesComboBox() {
+		return Species_comboBox;
+	}
+
+	// Getter cho Table
+	public JTable getPetTable() {
+		return Pet_Table;
+	}
+
+	// Getters cho Buttons
+	public JButton getAddButton() {
+		return btnAdd;
+	}
+
+	public JButton getEditButton() {
+		return btnEdit;
+	}
+
+	public JButton getDeleteButton() {
+		return btnDel;
+	}
+
+
+	public void addAddButtonListener(ActionListener listener) {
+		btnAdd.addActionListener(listener);
+	}
+
+	public void addEditButtonListener(ActionListener listener) {
+		btnEdit.addActionListener(listener);
+	}
+
+	public void addDeleteButtonListener(ActionListener listener) {
+		btnDel.addActionListener(listener);
+	}
+
+	public void clearFields() {
+		Name_textField.setText("");
+		Species_textField.setText("");
+		Price_textField.setText("");
+		Age_textField.setText("");
+		Search_textField.setText("");
+		Breed_comboBox.setSelectedIndex(0);
+		Species_comboBox.setSelectedIndex(0);
+		Arrange_comboBox.setSelectedIndex(0);
 	}
 }

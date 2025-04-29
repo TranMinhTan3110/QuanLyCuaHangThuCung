@@ -14,6 +14,4 @@ public interface DaoInterface<T> {
     public ArrayList<T> getAll();
 
     public T selectByID(int id);  // Đã chỉnh sửa cho khớp với ProductDAO
-    public ArrayList<Pet> selectByName(String name);
-//    Product selectByID(Product product);
 }

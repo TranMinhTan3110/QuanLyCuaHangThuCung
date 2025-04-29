@@ -47,8 +47,8 @@ public class ProductService {
         return new ArrayList<>();
     }
 
-    // Tìm kiếm chính xác (nếu bạn cần thêm)
-    public Product searchExactByName(String name) {
-        return (Product) daoProduct.selectByName(name);
-    }
+//    // Tìm kiếm chính xác (nếu bạn cần thêm)
+//    public Product searchExactByName(String name) {
+//        return (Product) daoProduct.selectByName(name);
+//    }
 }
