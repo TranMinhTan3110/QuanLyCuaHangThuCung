@@ -146,7 +146,7 @@ public class OrderDAO implements DaoInterface<Order>{
     }
 
     @Override
-    public Order selectByName(String name) {
+    public ArrayList<Pet> selectByName(String name) {
         return null;
     }
 

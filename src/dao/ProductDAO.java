@@ -1,6 +1,7 @@
 package dao;
 
 import model.entity.Category;
+import model.entity.Pet;
 import model.entity.Product;
 
 import java.sql.Connection;
@@ -158,7 +159,7 @@ public class ProductDAO implements DaoInterface<Product> {
     }
 
     @Override
-    public Product selectByName(String name) {
+    public ArrayList<Pet> selectByName(String name) {
         String sql = """
         SELECT p.productID, p.name, p.price, p.quantity,
                c.categoryID, c.categoryName

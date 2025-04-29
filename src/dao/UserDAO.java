@@ -1,5 +1,6 @@
 package dao;
 
+import model.entity.Pet;
 import model.entity.Role;
 import model.entity.User;
 
@@ -219,7 +220,7 @@ public class UserDAO implements DaoInterface<User>{
     }
 
     @Override
-    public User selectByName(String name) {
+    public ArrayList<Pet> selectByName(String name) {
         return null;
     }
 

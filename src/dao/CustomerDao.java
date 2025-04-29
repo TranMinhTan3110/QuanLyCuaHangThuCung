@@ -1,6 +1,7 @@
 package dao;
 
 import model.entity.Customer;
+import model.entity.Pet;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -154,7 +155,7 @@ public class CustomerDao implements  DaoInterface<Customer> {
     }
 
     @Override
-    public Customer selectByName(String name) {
+    public ArrayList<Pet> selectByName(String name) {
         return null;
     }
 

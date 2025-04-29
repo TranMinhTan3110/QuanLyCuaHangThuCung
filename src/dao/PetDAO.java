@@ -121,17 +121,17 @@ public class PetDAO implements DaoInterface<Pet>{
     }
 
     @Override
-    public Pet selectByName(String name) {
-        // Viết luôn cho bạn
-        String sql = "SELECT * FROM Pet WHERE name = ?";
+    public ArrayList<Pet> selectByName(String name) {
+        ArrayList<Pet> list = new ArrayList<>();
+        String sql = "SELECT * FROM Pet WHERE name LIKE ?";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
-            st.setString(1, name);
+            st.setString(1, "%" + name + "%"); // Thêm wildcard để tìm gần đúng
             ResultSet rs = st.executeQuery();
 
-            if (rs.next()) {
-                return new Pet(
+            while (rs.next()) {
+                Pet pet = new Pet(
                         rs.getInt("petID"),
                         rs.getString("name"),
                         rs.getString("species"),
@@ -139,12 +139,14 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getInt("age"),
                         rs.getDouble("price")
                 );
+                list.add(pet);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
+
 
     public ArrayList<Pet> searchByName(String keyword) {
         ArrayList<Pet> pets = new ArrayList<>();
