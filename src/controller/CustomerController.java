@@ -53,7 +53,7 @@ public class CustomerController {
     // Load danh sách nhân viên từ database
     private void loadEmployeesFromDB() {
         ArrayList<Customer> customers = new ArrayList<>();
-      customers = customerService.getAll();
+        customers = customerService.getAll();
         for (Customer customer : customers) {
             customerView.addCustomerToTable(
                     String.valueOf(customer.getId()),
@@ -143,5 +143,4 @@ public class CustomerController {
 
     }
 }
-
 
