@@ -228,7 +228,6 @@ public class CustomerView extends JPanel {
         cus_List.setViewportView(table);
     }
 
-
     public void removeCustomerFromTable(int row) {
         model.removeRow(row);
     }
@@ -270,8 +269,6 @@ public class CustomerView extends JPanel {
 
 
     }
-
-
     public void setEmployeeData(String id, String name ,String phone,String address) {
         ID_textField.setText(id);
         Name_textField.setText(name);

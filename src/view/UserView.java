@@ -184,6 +184,9 @@ public class UserView extends JPanel {
 	public String getIdField() {
 		return idField.getText();
 	}
+	public JTextField getIdFieldJ() {
+		return idField;
+	}
 
 	public String getPhoneField() {
 		return phoneField.getText();
@@ -221,9 +224,13 @@ public class UserView extends JPanel {
 
 	public void clearFields() {
 		JTextField[] fields = {idField, phoneField, usernameField, nameField, addressField, passwordField};
-		for (JTextField field : fields) field.setText("");
-		roleComboBox.setSelectedIndex(0);
+		for (JTextField field : fields) {
+			field.setText(""); // Reset text field
+			addPlaceholder(field, field.getText()); // Reapply placeholder
+		}
+		roleComboBox.setSelectedIndex(0); // Reset combo box to default value
 	}
+
 
 	public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
 		model.addRow(new Object[]{id, name, phone, username, password, address, role});

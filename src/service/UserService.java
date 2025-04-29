@@ -39,6 +39,9 @@ public class UserService {
     public boolean delete(User user) {
         return daoInterface.delete(user);
     }
+    public User selectedById(int id){
+        return (User) daoInterface.selectByID(id);
+    }
     public boolean checkInput(String s){
         if (!inputUtil.isValidPhoneNumber(s)) {
             JOptionPane.showMessageDialog(userView, "Số điện thoại không hợp lệ! Vui lòng nhập 10 chữ số bắt đầu bằng số 0.");
@@ -57,6 +60,7 @@ public class UserService {
     public boolean isUsernameExists(String username) {
         return userDAO.isUsernameExists(username);
     }
+
 
 
 
