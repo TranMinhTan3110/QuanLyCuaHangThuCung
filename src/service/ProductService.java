@@ -11,6 +11,7 @@ import java.util.ArrayList;
 public class ProductService {
     private DaoInterface daoProduct;
     private ProductDAO productDao;
+
     // Constructor nhận vào một repository để dễ dàng thay đổi hoặc kiểm thử
     public ProductService(DaoInterface productRepo) {
         this.daoProduct = productRepo;
@@ -41,17 +42,16 @@ public class ProductService {
     public Product selectByID(int productID) {
         return (Product) daoProduct.selectByID(productID);
     }
+
     public ArrayList<Product> searchByName(String name) {
         if (daoProduct instanceof ProductDAO) {
             return ((ProductDAO) daoProduct).selectByNameLike(name);
         }
         return new ArrayList<>();
     }
-public boolean isProductExist(String name){
-       return  productDao.isProductExists(name);
-}
-    // Tìm kiếm chính xác (nếu bạn cần thêm)
-    public Product searchExactByName(String name) {
-        return (Product) daoProduct.selectByName(name);
+
+    public boolean isProductExist(String name) {
+        return productDao.isProductExists(name);
     }
+
 }

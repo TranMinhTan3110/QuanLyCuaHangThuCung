@@ -157,46 +157,6 @@ public class ProductDAO implements DaoInterface<Product> {
         return null;
     }
 
-    @Override
-    public Product selectByName(String name) {
-        String sql = """
-                    SELECT p.productID, p.name, p.price, p.quantity,
-                           c.categoryID, c.categoryName
-                    FROM Product p JOIN Category c ON p.categoryID = c.categoryID
-                    WHERE p.name = ?
-                """;
-
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
-
-            st.setString(1, name);
-            ResultSet rs = st.executeQuery();
-
-            if (rs.next()) {
-                int productID = rs.getInt("productID");
-                double price = rs.getDouble("price");
-                int quantity = rs.getInt("quantity");
-                int categoryID = rs.getInt("categoryID");
-                String categoryName = rs.getString("categoryName");
-
-                Category category = new Category(categoryID, categoryName);
-                Product product = new Product();
-                product.setProductID(productID);
-                product.setName(name);
-                product.setPrice(price);
-                product.setQuantity(quantity);
-                product.setCategory(category);
-
-                return product;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
     public ArrayList<Product> selectByNameLike(String name) {
         ArrayList<Product> products = new ArrayList<>();
 

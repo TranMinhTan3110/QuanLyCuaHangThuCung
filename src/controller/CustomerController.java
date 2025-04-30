@@ -28,9 +28,9 @@ public class CustomerController {
         this.customerView = customerView;
         initController();
         loadEmployeesFromDB();
-        this.customerView.setAddButtonListener(e->addCustomer());
-        this.customerView.setEditButtonListener(e->editCustomer());
-        this.customerView.setDeleteButtonListener(e->deleteCustomer());
+        this.customerView.setAddButtonListener(e -> addCustomer());
+        this.customerView.setEditButtonListener(e -> editCustomer());
+        this.customerView.setDeleteButtonListener(e -> deleteCustomer());
     }
 
     private void initController() {
@@ -51,7 +51,7 @@ public class CustomerController {
             String address = customerView.getTable().getValueAt(selectedRow, 3).toString();
 //            String Score = customerView.getTable().getValueAt(selectedRow,5).toString();
             System.out.println("DEBUG: ID=" + id + ", Name=" + name + ", Phone=" + phone + ", Address=" + address);
-            customerView.setEmployeeData(id,name,phone,address );
+            customerView.setEmployeeData(id, name, phone, address);
             // Cập nhật currentCustomer từ DB dựa trên ID
             try {
                 int current_id = Integer.parseInt(id);
@@ -61,6 +61,7 @@ public class CustomerController {
             }
         }
     }
+
     // Load danh sách nhân viên từ database
     private void loadEmployeesFromDB() {
         ArrayList<Customer> customers = new ArrayList<>();
@@ -76,18 +77,19 @@ public class CustomerController {
 
         }
     }
+
     //thêm khách hàng
     public void addCustomer() {
 //            String idStr =customerView.getID_textField().trim();  // Thêm .trim() ở đây
-        String name = (customerView.getName_textField());
+        String name = customerView.getName_textField();
         String phone = customerView.getPhone_textField();
         String address = customerView.getAddress_textField();
 //        boolean checkPhone = customerService.checkPhone(phone);
 //            String idStr = String.valueOf(id);
 //            int id = Integer.parseInt(idStr);
         if (name == null || name.trim().isEmpty() || name.equals("Enter Name") ||
-                        phone == null || phone.trim().isEmpty() || phone.equals("Enter Phone") ||
-                        address == null || address.trim().isEmpty() || address.equals("Enter Address")) {
+                phone == null || phone.trim().isEmpty() || phone.equals("Enter Phone") ||
+                address == null || address.trim().isEmpty() || address.equals("Enter Address")) {
 
             JOptionPane.showMessageDialog(customerView, "Vui lòng nhập đầy đủ thông tin Customer!");
             return;
@@ -134,18 +136,26 @@ public class CustomerController {
 //        }
         int loyaltyPoints = 0;
         String membershipLevel = "Basic";
-        Customer customer = new Customer(0, name, phone, address, loyaltyPoints, membershipLevel);
-        if (customerService.insert(customer)) {
-            customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, loyaltyPoints, membershipLevel);
-            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
-            customerView.clear();
-        } else {
-            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thất bại");
-        }
+        Customer customer = new Customer();
+        customer.setName(name);
+        customer.setPhone(phone);
+        customer.setAddress(address);
+        customer.setLoyaltyPoints(loyaltyPoints);
+        customer.setMembershipLevel(membershipLevel);
+        customerService.insert(customer);
+        loadEmployeesFromDB();
+//        if (customerService.insert(customer)) {
+//            customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, loyaltyPoints, membershipLevel);
+//            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
+//            customerView.clear();
+//        } else {
+//            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thất bại");
+//        }
 
     }
+
     //chỉnh sửa khách hàng
-    public void editCustomer(){
+    public void editCustomer() {
         int selectedRow = customerView.getSeclectedRow();
         if (selectedRow == -1) {
             JOptionPane.showMessageDialog(customerView, "Chọn khách hàng cần chỉnh sửa!");
@@ -177,22 +187,22 @@ public class CustomerController {
 
         // Kiểm tra nếu phone không giống phone ban đầu thì cần check
         if (!currentCustomer.getPhone().equals(phone)) {
-            if(!inputUtil.isValidPhoneNumber(phone)){
-                JOptionPane.showMessageDialog(customerView,"Số điện thoại không hơp lệ!");
+            if (!inputUtil.isValidPhoneNumber(phone)) {
+                JOptionPane.showMessageDialog(customerView, "Số điện thoại không hơp lệ!");
                 return;
             }
         }
         // Kiểm tra nếu address không giống address ban đầu thì cần check
         if (!currentCustomer.getAddress().equals(address)) {
-            if(!inputUtil.isValidAddress(address)){
-                JOptionPane.showMessageDialog(customerView,"Địa chỉ không hơp lệ!");
+            if (!inputUtil.isValidAddress(address)) {
+                JOptionPane.showMessageDialog(customerView, "Địa chỉ không hơp lệ!");
                 return;
             }
         }
         // Kiểm tra nếu name không giống name ban đầu thì cần check
         if (!currentCustomer.getName().equals(name)) {
-            if(!inputUtil.isValidName(name)){
-                JOptionPane.showMessageDialog(customerView,"Tên không hơp lệ!");
+            if (!inputUtil.isValidName(name)) {
+                JOptionPane.showMessageDialog(customerView, "Tên không hơp lệ!");
                 return;
             }
         }
@@ -206,12 +216,13 @@ public class CustomerController {
         }
 
     }
+
     //xóa khách hàng
-    public void deleteCustomer(){
-        try{
+    public void deleteCustomer() {
+        try {
             int selectedRow = customerView.getSeclectedRow();
-            if(selectedRow == -1){
-                JOptionPane.showMessageDialog(customerView,"Chọn khách hàng cần xóa");
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(customerView, "Chọn khách hàng cần xóa");
                 return;
             }
             {
@@ -220,16 +231,16 @@ public class CustomerController {
                 String phone = customerView.getPhone_textField();
                 String address = customerView.getAddress_textField();
                 String name = customerView.getName_textField();
-                Customer customer = new Customer(id,name,phone,address);
-                if(customerService.delete(customer)){
-                    JOptionPane.showMessageDialog(customerView,"Xóa khách hàng thành công");
+                Customer customer = new Customer(id, name, phone, address);
+                if (customerService.delete(customer)) {
+                    JOptionPane.showMessageDialog(customerView, "Xóa khách hàng thành công");
                     customerView.removeCustomerFromTable(selectedRow);
-                }else{
-                    JOptionPane.showMessageDialog(customerView,"Xóa khách hàng thất bại");
+                } else {
+                    JOptionPane.showMessageDialog(customerView, "Xóa khách hàng thất bại");
                 }
             }
-        }catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(customerView,"ID không hợp lệ");
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(customerView, "ID không hợp lệ");
         }
 
     }
