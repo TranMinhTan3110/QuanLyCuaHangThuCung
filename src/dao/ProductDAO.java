@@ -83,10 +83,10 @@ public class ProductDAO implements DaoInterface<Product> {
     public ArrayList<Product> getAll() {
         ArrayList<Product> products = new ArrayList<>();
         String sql = """
-            SELECT p.productID, p.name, p.price, p.quantity,
-                   c.categoryID, c.categoryName
-            FROM Product p JOIN Category c ON p.categoryID = c.categoryID
-        """;
+                    SELECT p.productID, p.name, p.price, p.quantity,
+                           c.categoryID, c.categoryName
+                    FROM Product p JOIN Category c ON p.categoryID = c.categoryID
+                """;
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql);
@@ -120,11 +120,11 @@ public class ProductDAO implements DaoInterface<Product> {
     @Override
     public Product selectByID(int id) {
         String sql = """
-            SELECT p.productID, p.name, p.price, p.quantity,
-                   c.categoryID, c.categoryName
-            FROM Product p JOIN Category c ON p.categoryID = c.categoryID
-            WHERE p.productID = ?
-        """;
+                    SELECT p.productID, p.name, p.price, p.quantity,
+                           c.categoryID, c.categoryName
+                    FROM Product p JOIN Category c ON p.categoryID = c.categoryID
+                    WHERE p.productID = ?
+                """;
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -160,11 +160,11 @@ public class ProductDAO implements DaoInterface<Product> {
     @Override
     public Product selectByName(String name) {
         String sql = """
-        SELECT p.productID, p.name, p.price, p.quantity,
-               c.categoryID, c.categoryName
-        FROM Product p JOIN Category c ON p.categoryID = c.categoryID
-        WHERE p.name = ?
-    """;
+                    SELECT p.productID, p.name, p.price, p.quantity,
+                           c.categoryID, c.categoryName
+                    FROM Product p JOIN Category c ON p.categoryID = c.categoryID
+                    WHERE p.name = ?
+                """;
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -201,12 +201,12 @@ public class ProductDAO implements DaoInterface<Product> {
         ArrayList<Product> products = new ArrayList<>();
 
         String sql = """
-        SELECT p.productID, p.name, p.price, p.quantity,
-               c.categoryID, c.categoryName
-        FROM Product p
-        JOIN Category c ON p.categoryID = c.categoryID
-        WHERE p.name LIKE ?
-    """;
+                    SELECT p.productID, p.name, p.price, p.quantity,
+                           c.categoryID, c.categoryName
+                    FROM Product p
+                    JOIN Category c ON p.categoryID = c.categoryID
+                    WHERE p.name LIKE ?
+                """;
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -239,4 +239,25 @@ public class ProductDAO implements DaoInterface<Product> {
 
         return products;
     }
+
+    //kiểm tra sản phẩm đã tồn tại chưa
+    public boolean isProductExists(String name) {
+        String sql = "SELECT COUNT(*) FROM Product WHERE NAME = ?";
+
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setString(1, name);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1); // Lấy giá trị COUNT(*)
+                    return count > 0; // Nếu > 0 nghĩa là đã có sản phẩm
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }

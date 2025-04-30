@@ -10,10 +10,12 @@ import java.util.ArrayList;
 
 public class ProductService {
     private DaoInterface daoProduct;
-
+    private ProductDAO productDao;
     // Constructor nhận vào một repository để dễ dàng thay đổi hoặc kiểm thử
     public ProductService(DaoInterface productRepo) {
         this.daoProduct = productRepo;
+        this.productDao = new ProductDAO();
+
     }
 
     // Lấy danh sách product
@@ -45,7 +47,9 @@ public class ProductService {
         }
         return new ArrayList<>();
     }
-
+public boolean isProductExist(String name){
+       return  productDao.isProductExists(name);
+}
     // Tìm kiếm chính xác (nếu bạn cần thêm)
     public Product searchExactByName(String name) {
         return (Product) daoProduct.selectByName(name);

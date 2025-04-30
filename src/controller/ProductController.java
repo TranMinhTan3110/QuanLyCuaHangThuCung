@@ -3,6 +3,7 @@ import model.entity.Category;
 import model.entity.Product;
 import service.ProductService;
 import utils.NumberUtil;
+import utils.inputUtil;
 import view.ProductView;
 
 import javax.swing.*;
@@ -47,75 +48,127 @@ public class ProductController {
     class AddListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                String name = view.getProductName();
-                double price = Double.parseDouble(view.getPrice());
-                int quantity = Integer.parseInt(view.getQuantity());
-                if (!validateQuantity(quantity)) {
-                    return; // Không cho thêm/xóa/sửa tiếp
-                }
-                Category selectedCategory = view.getCategory();
-                if (selectedCategory != null) {
-                    int id = selectedCategory.getCategoryID();
-                    String nameCat = selectedCategory.getCategoryName();
-                    System.out.println("ID: " + id + ", Name: " + name);
-                }
+            String name = view.getProductName().trim();
+            String priceStr = view.getPrice().trim();
+            String quantityStr = view.getQuantity().trim();
 
-                if (selectedCategory == null) {
-                    JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
-                    return;
-                }
-
-                Product product = new Product(); // Không set ID
-                product.setName(name);
-                product.setPrice(price);
-                product.setQuantity(quantity);
-                product.setCategory(selectedCategory);
-                System.out.println(product.getCategory().getCategoryID());
-                service.insert(product);
-                loadTable();
-                view.clearFields();
-            } catch (Exception ex) {
-                JOptionPane.showMessageDialog(view, "Lỗi khi thêm sản phẩm: " + ex.getMessage());
+            // Kiểm tra nếu có ô nào bị để trống
+            if (name.isEmpty() || priceStr.isEmpty() || quantityStr.isEmpty()
+                    || priceStr.equals("Enter Price") || quantityStr.equals("Enter Quantity")) {
+                JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
+                return;
             }
+            if(!inputUtil.isValidProductName(name)){
+                JOptionPane.showMessageDialog(view,"Tên sản phẩm không hợp lệ!");
+                return;
+            }
+            double price;
+            int quantity;
+
+            // Kiểm tra định dạng số
+            try {
+                price = Double.parseDouble(priceStr);
+                quantity = Integer.parseInt(quantityStr);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
+                return;
+            }
+            if (!validateQuantity(quantity)) {
+                return; // Không cho thêm/xóa/sửa tiếp
+            }
+            Category selectedCategory = view.getCategory();
+            if (service.isProductExist(name)) {
+                JOptionPane.showMessageDialog(view, "Sản phẩm này đã tồn tại!");
+//                view.getTable().clearSelection();
+                return;
+            }
+            if (selectedCategory != null) {
+                int id = selectedCategory.getCategoryID();
+                String nameCat = selectedCategory.getCategoryName();
+//                System.out.println("ID: " + id + ", Name: " + name);
+                JOptionPane.showMessageDialog(view,"Thêm sản phẩm thành công!");
+            }
+            if (name == null || name.trim().isEmpty() || name.equals("Enter Price") || String.valueOf(price) == null || String.valueOf(price).trim().isEmpty()) {
+                JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
+                return;
+            }
+            if (selectedCategory == null) {
+                JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
+                return;
+            }
+            if (service.isProductExist(name)) {
+                JOptionPane.showMessageDialog(view, "Sản phẩm này đã tồn tại!");
+//                view.getTable().clearSelection();
+                return;
+            }
+            Product product = new Product(); // Không set ID
+            product.setName(name);
+            product.setPrice(price);
+            product.setQuantity(quantity);
+            product.setCategory(selectedCategory);
+            System.out.println(product.getCategory().getCategoryID());
+            service.insert(product);
+            loadTable();
+            view.clearFields();
         }
-    }
+        }
+
 
     class EditListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             int row = view.getProductTable().getSelectedRow();
             if (row >= 0) {
-                try {
                     int id = (int) view.getProductTable().getValueAt(row, 0);
                     String name = view.getProductName();
-                    double price = Double.parseDouble(view.getPrice());
-                    int quantity = Integer.parseInt(view.getQuantity());
+                    String  priceStr = view.getPrice();
+                    String quantityStr = view.getQuantity();
+
+                // Kiểm tra nếu có ô nào bị để trống
+                if (name == null || name.trim().isEmpty()|| name.equals("Enter Name")
+                        || priceStr == null || priceStr.trim().isEmpty() || priceStr.equals("Enter Price")
+                        || quantityStr == null || quantityStr.trim().isEmpty() || quantityStr.equals("Enter Quantity")) {
+                    JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
+                    return;
+                }
+
+                if(!inputUtil.isValidProductName(name)){
+                    JOptionPane.showMessageDialog(view,"Tên sản phẩm không hợp lệ!");
+                    return;
+                }
+                double price;
+                int quantity;
+                // Kiểm tra định dạng số
+                try {
+                    price = Double.parseDouble(priceStr);
+                    quantity = Integer.parseInt(quantityStr);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
+                    return;
+                }
+
                     if (!validateQuantity(quantity)) {
                         return; // Không cho thêm/xóa/sửa tiếp
                     }
                     Category selectedCategory = view.getCategory();
-
                     if (selectedCategory == null) {
                         JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
                         return;
                     }
 
                     Product p = new Product(id, name, price, quantity, selectedCategory);
-                    if(quantity > 0) {
+                    if (quantity > 0) {
                         service.update(p);
-                        System.out.println("Update successful");
-                    }  else {
+                        JOptionPane.showMessageDialog(view,"Cập nhật sản phẩm thành công");
+                    } else {
                         service.delete(p);
-                        System.out.println("Delete successful");
+                        System.out.println("Xóa sản phẩm thành công");
                     }
 
                     loadTable();
                     view.clearFields();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(view, "Lỗi khi cập nhật sản phẩm: " + ex.getMessage());
                 }
-            } else {
+             else {
                 JOptionPane.showMessageDialog(view, "Vui lòng chọn sản phẩm để sửa.");
             }
         }
@@ -228,7 +281,6 @@ public class ProductController {
         String price = view.getValueAt(selectedRow, 2);
         String quantity = view.getValueAt(selectedRow, 3);
         String categoryName = view.getValueAt(selectedRow, 4);
-
         view.setProductName(productName);
         view.setPrice(price);
         view.setQuantity(quantity);

@@ -93,7 +93,12 @@ public class inputUtil {
 
         return true;
     }
-
+    public static boolean isValidProductName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return false;
+        }
+        return name.matches("^[\\p{L} ]+$");
+    }
     public static boolean isValidName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return false;
