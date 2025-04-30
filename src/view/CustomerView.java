@@ -25,14 +25,15 @@ import java.awt.event.ActionEvent;
 public class CustomerView extends JPanel {
 
 
-	
 
-	/**
-	 * Create the panel.
-	 */
+
+    /**
+     * Create the panel.
+     */
 
     private static final long serialVersionUID = 1L;
     private JTable table;
+    private JTextField ID_textField;
     private JTextField Name_textField;
     private JTextField Address_textField;
     private JTextField Phone_textField;
@@ -49,8 +50,10 @@ public class CustomerView extends JPanel {
 
     public String getAddress_textField() {
         return Address_textField.getText();
-    } 
-
+    }
+    public String getID_textField() {
+        return ID_textField.getText();
+    }
     public String getPhone_textField() {
         return Phone_textField.getText();
     }
@@ -137,74 +140,74 @@ public class CustomerView extends JPanel {
 
 
         btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
-		btnEdit.setBackground(new Color(255, 255, 204));
-		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnEdit.setBounds(110, 167, 69, 63);
-		btnEdit.setFocusPainted(false);
-		btnEdit.setBorderPainted(false);
-		btnEdit.setContentAreaFilled(false);
-		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnEdit);
-		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
+        btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+        btnEdit.setBackground(new Color(255, 255, 204));
+        btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnEdit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnEdit.setBounds(110, 167, 69, 63);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setContentAreaFilled(false);
+        btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnEdit);
+        Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
-		btnSave = new JButton("Save");
-		btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
-		btnSave.setBackground(new Color(255, 255, 223));
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSave.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnSave.setBounds(20, 167, 69, 63);
-		btnSave.setFocusPainted(false);
-		btnSave.setBorderPainted(false);
-		btnSave.setContentAreaFilled(false);
-		btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnSave);
-		Hover.addHoverButtonEffect(btnSave, new Color(0, 102, 204), 0.8f);
+        btnSave = new JButton("Save");
+        btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
+        btnSave.setBackground(new Color(255, 255, 223));
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnSave.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnSave.setBounds(20, 167, 69, 63);
+        btnSave.setFocusPainted(false);
+        btnSave.setBorderPainted(false);
+        btnSave.setContentAreaFilled(false);
+        btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnSave);
+        Hover.addHoverButtonEffect(btnSave, new Color(0, 102, 204), 0.8f);
 
         btnDel = new JButton("Delete");
-		btnDel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
-		btnDel.setBackground(new Color(255, 255, 204));
-		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnDel.setBounds(189, 167, 87, 63);
-		btnDel.setFocusPainted(false);
-		btnDel.setBorderPainted(false);
-		btnDel.setContentAreaFilled(false);
-		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnDel);
-		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
-        
+        btnDel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            }
+        });
+        btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+        btnDel.setBackground(new Color(255, 255, 204));
+        btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnDel.setBounds(189, 167, 87, 63);
+        btnDel.setFocusPainted(false);
+        btnDel.setBorderPainted(false);
+        btnDel.setContentAreaFilled(false);
+        btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnDel);
+        Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+
         ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
 
-		JPanel searchPanel = new JPanel(new BorderLayout());
-		searchPanel.setBounds(684, 187, 234, 24);
-		searchPanel.setBackground(Color.WHITE);
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBounds(684, 187, 234, 24);
+        searchPanel.setBackground(Color.WHITE);
 
-		JLabel searchLabel = new JLabel(searchIcon);
-		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		searchPanel.add(searchLabel, BorderLayout.WEST);
+        JLabel searchLabel = new JLabel(searchIcon);
+        searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        searchPanel.add(searchLabel, BorderLayout.WEST);
 
-		Search_textField = new JTextField();
-		Search_textField.setBorder(null);
-		Search_textField.setColumns(10);
-		searchPanel.add(Search_textField, BorderLayout.CENTER);
-		Hover.addPlaceholder(Search_textField,"search...");
-		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+        Search_textField = new JTextField();
+        Search_textField.setBorder(null);
+        Search_textField.setColumns(10);
+        searchPanel.add(Search_textField, BorderLayout.CENTER);
+        Hover.addPlaceholder(Search_textField,"search...");
+        Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
 
-		panel_top.add(searchPanel);
+        panel_top.add(searchPanel);
 
         JScrollPane cus_List = new JScrollPane();
         cus_List.setBounds(0, 244, 950, 500);
@@ -285,4 +288,3 @@ public class CustomerView extends JPanel {
 
     }
 }
-

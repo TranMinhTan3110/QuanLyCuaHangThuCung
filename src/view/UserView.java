@@ -12,7 +12,7 @@ import java.awt.event.*;
 public class UserView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private JTextField phoneField, usernameField, nameField, addressField, passwordField;
+	private JTextField idField, phoneField, usernameField, nameField, addressField, passwordField;
 	private JComboBox<String> roleComboBox;
 	private JTable table;
 	private DefaultTableModel model;
@@ -143,7 +143,7 @@ public class UserView extends JPanel {
 		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		panel_top.add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
 		scrollPane.setBounds(0, 244, 950, 500);
@@ -188,8 +188,14 @@ public class UserView extends JPanel {
 	}
 
 	// Getters for Controller
+	public String getIdField() {
+		return idField.getText();
+	}
+	public JTextField getIdFieldJ() {
+		return idField;
+	}
 
-	
+
 
 	public String getPhoneField() {
 		return phoneField.getText();
