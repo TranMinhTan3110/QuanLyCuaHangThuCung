@@ -16,7 +16,6 @@ import model.entity.Product;
 import service.PetService;
 import view.PetView;
 
-import static sun.net.www.MimeTable.loadTable;
 
 public class PetController {
     private PetView view;
