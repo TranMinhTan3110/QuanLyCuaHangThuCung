@@ -32,6 +32,7 @@ public class petView extends JPanel {
 	private JTextField Age_textField;
 	private JTextField Search_textField;
 	private JTable Pet_Table;
+	private JTextField Breed_textField;
 
 	/**
 	 * Create the panel.
@@ -87,24 +88,27 @@ public class petView extends JPanel {
 		
 		JLabel lblBreed = new JLabel("Breed");
 		lblBreed.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblBreed.setBounds(222, 107, 76, 33);
+		lblBreed.setBounds(97, 107, 76, 33);
 		panel_top.add(lblBreed);
 		
-		JComboBox Breed_comboBox = new JComboBox();
-		Breed_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
-		Breed_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		Breed_comboBox.setBounds(307, 107, 120, 33);
-		panel_top.add(Breed_comboBox);
+		Breed_textField = new JTextField();
+		Breed_textField.setFont(new Font("Arial", Font.PLAIN, 16));
+		Breed_textField.setColumns(10);
+		Breed_textField.setBounds(163, 107, 120, 33);
+		panel_top.add(Breed_textField);
+		Hover.addPlaceholder(Breed_textField, "Enter Breed");
+		Hover.roundTextField(Breed_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+		
 		
 		JLabel lblAge = new JLabel("Age");
 		lblAge.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblAge.setBounds(493, 107, 76, 33);
+		lblAge.setBounds(583, 107, 76, 33);
 		panel_top.add(lblAge);
 		
 		Age_textField = new JTextField();
 		Age_textField.setFont(new Font("Arial", Font.PLAIN, 16));
 		Age_textField.setColumns(10);
-		Age_textField.setBounds(560, 107, 120, 33);
+		Age_textField.setBounds(657, 107, 120, 33);
 		panel_top.add(Age_textField);
 		Hover.addPlaceholder(Age_textField, "Enter Age");
 		Hover.roundTextField(Age_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
@@ -183,14 +187,32 @@ public class petView extends JPanel {
 		JComboBox Arrange_comboBox = new JComboBox();
 		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ascending", "Descending"}));
 		Arrange_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		Arrange_comboBox.setBounds(307, 178, 120, 33);
+		Arrange_comboBox.setBounds(307, 178, 105, 33);
 		panel_top.add(Arrange_comboBox);
 		
 		JComboBox Species_comboBox = new JComboBox();
 		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo"}));
 		Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		Species_comboBox.setBounds(477, 178, 120, 33);
+		Species_comboBox.setBounds(443, 178, 76, 33);
 		panel_top.add(Species_comboBox);
+		
+		
+		
+		JLabel lblGender = new JLabel("Gender");
+		lblGender.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblGender.setBounds(325, 107, 76, 33);
+		panel_top.add(lblGender);
+		
+		JComboBox gender_comboBox = new JComboBox();
+		gender_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
+		gender_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		gender_comboBox.setBounds(411, 107, 120, 33);
+		panel_top.add(gender_comboBox);
+		
+		JComboBox Breed_comboBox = new JComboBox();
+		Breed_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+		Breed_comboBox.setBounds(563, 178, 76, 33);
+		panel_top.add(Breed_comboBox);
 
 		JScrollPane Pet_ScrollPane = new JScrollPane();
 		Pet_ScrollPane.setBounds(0, 240, 950, 510);
@@ -201,7 +223,7 @@ public class petView extends JPanel {
 			new Object[][] {
 			},
 			new String[] {
-				"Name", "Species", "Price", "Breed", "Age"
+				"Name", "Species", "Price", "Breed","Gender", "Age"
 			}
 		));
 		Pet_Table.setFont(new Font("Arial", Font.PLAIN, 16));
