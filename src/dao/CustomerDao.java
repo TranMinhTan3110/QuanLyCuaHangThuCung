@@ -1,6 +1,7 @@
 package dao;
 
 import model.entity.Customer;
+import model.entity.Pet;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -151,11 +152,6 @@ public class CustomerDao implements  DaoInterface<Customer> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
-    }
-
-    @Override
-    public Customer selectByName(String name) {
         return null;
     }
 

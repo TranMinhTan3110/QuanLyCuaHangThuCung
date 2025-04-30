@@ -7,14 +7,24 @@ public class Pet {
     private String breed;//giống loài
     private float age;
     private double price;
+    private  String gender;
 
-    public Pet(int petID, String name, String breed, String species, float age, double price) {
+    public Pet(int petID, String name, String breed, String species, float age, double price, String gender) {
         this.petID = petID;
         this.name = name;
         this.breed = breed;
         this.species = species;
         this.age = age;
         this.price = price;
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public Pet() {

@@ -145,10 +145,6 @@ public class OrderDAO implements DaoInterface<Order>{
         return null; // Không tìm thấy đơn hàng
     }
 
-    @Override
-    public Order selectByName(String name) {
-        return null;
-    }
 
     public List<Order> getOrdersByDate(Date date){
         List<Order> orders = new ArrayList<>();

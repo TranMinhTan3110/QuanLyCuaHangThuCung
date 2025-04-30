@@ -8,7 +8,7 @@ public class Product {
     private Category category;
 
     // Constructor không tham số
-    public Product() {}
+    public Product() {};
 
     // Constructor đầy đủ
     public Product(int productID, String name, double price, int quantity, Category category) {
@@ -18,6 +18,7 @@ public class Product {
         this.quantity = quantity;
         this.category = category;
     }
+
     public int getProductID() {
         return productID;
     }

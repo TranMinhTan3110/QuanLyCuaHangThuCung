@@ -1,9 +1,8 @@
 package dao;
 
-import model.entity.Product;
+import model.entity.Pet;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 public interface DaoInterface<T> {
     public boolean insert(T t);
@@ -15,6 +14,6 @@ public interface DaoInterface<T> {
     public ArrayList<T> getAll();
 
     public T selectByID(int id);  // Đã chỉnh sửa cho khớp với ProductDAO
-    public T selectByName(String name);
-//    Product selectByID(Product product);
+
+
 }

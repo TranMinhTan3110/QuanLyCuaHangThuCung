@@ -1,5 +1,6 @@
 package dao;
 
+import model.entity.Pet;
 import model.entity.Role;
 import model.entity.User;
 
@@ -219,9 +220,5 @@ public class UserDAO implements DaoInterface<User>{
         return null; // Trả về null nếu không tìm thấy
     }
 
-    @Override
-    public User selectByName(String name) {
-        return null;
-    }
 
 }
