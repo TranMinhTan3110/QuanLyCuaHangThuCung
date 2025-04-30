@@ -96,11 +96,12 @@ public class PetView extends JPanel {
 		panel_top.add(lblBreed);
 		
 		Breed_comboBox = new JComboBox();
-		Breed_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
+		Breed_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female", "Tất cả"}));
 		Breed_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Breed_comboBox.setBounds(307, 107, 120, 33);
 		panel_top.add(Breed_comboBox);
-		
+
+
 		JLabel lblAge = new JLabel("Age");
 		lblAge.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblAge.setBounds(493, 107, 76, 33);
@@ -175,13 +176,13 @@ public class PetView extends JPanel {
 		panel_top.add(searchPanel);
 		
 		Arrange_comboBox = new JComboBox();
-		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Ascending", "Descending"}));
+		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Tăng dần", "Giảm dần", "Tất cả"}));
 		Arrange_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Arrange_comboBox.setBounds(307, 178, 120, 33);
 		panel_top.add(Arrange_comboBox);
 		
 		Species_comboBox = new JComboBox();
-		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo"}));
+		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo", "Tất cả" }));
 		Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Species_comboBox.setBounds(477, 178, 120, 33);
 		panel_top.add(Species_comboBox);
@@ -237,6 +238,13 @@ public class PetView extends JPanel {
 		return Species_comboBox;
 	}
 
+	public String getSearchKeyword() {
+		return Search_textField.getText();
+	}
+
+	public void addSearchKeyListener(java.awt.event.KeyListener listener) {
+		Search_textField.addKeyListener(listener);
+	}
 	// Getter cho Table
 	public JTable getPetTable() {
 		return Pet_Table;

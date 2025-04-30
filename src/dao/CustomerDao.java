@@ -155,11 +155,6 @@ public class CustomerDao implements  DaoInterface<Customer> {
         return null;
     }
 
-    @Override
-    public ArrayList<Pet> selectByName(String name) {
-        return null;
-    }
-
 
     public boolean findByPhone(String phone) {
         String sql = "SELECT 1 FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.phone = ?";

@@ -1,10 +1,8 @@
 package view;
 
-import dao.CustomerDao;
-import dao.DaoInterface;
-import dao.ProductDAO;
-import dao.UserDAO;
+import dao.*;
 import service.CustomerService;
+import service.PetService;
 import service.ProductService;
 import service.UserService;
 
@@ -202,9 +200,11 @@ public class MainView extends JFrame {
 
 
     private JPanel createPetsPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Manage Pets Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        return panel;
+        PetView petView = new PetView();
+        DaoInterface petRepo = new PetDAO();
+        PetService petService = new PetService(petRepo);
+        new controller.PetController(petView,petService);
+        return petView;
     }
 
     private JPanel createUsersPanel() {

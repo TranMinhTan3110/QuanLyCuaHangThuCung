@@ -70,4 +70,12 @@ public class PetService {
         }
         return new ArrayList<>();
     }
+
+
+    public ArrayList<Pet> filterALL(String species, String breed, String priceOrder) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).filterAndSort(species,breed,priceOrder);
+        }
+        return new  ArrayList<>();
+    }
 }

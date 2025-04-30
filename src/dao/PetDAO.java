@@ -120,34 +120,6 @@ public class PetDAO implements DaoInterface<Pet>{
         return null;
     }
 
-    @Override
-    public ArrayList<Pet> selectByName(String name) {
-        ArrayList<Pet> list = new ArrayList<>();
-        String sql = "SELECT * FROM Pet WHERE name LIKE ?";
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement st = con.prepareStatement(sql)) {
-
-            st.setString(1, "%" + name + "%"); // Thêm wildcard để tìm gần đúng
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                Pet pet = new Pet(
-                        rs.getInt("petID"),
-                        rs.getString("name"),
-                        rs.getString("species"),
-                        rs.getString("breed"),
-                        rs.getInt("age"),
-                        rs.getDouble("price")
-                );
-                list.add(pet);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-
     public ArrayList<Pet> searchByName(String keyword) {
         ArrayList<Pet> pets = new ArrayList<>();
         String sql = "SELECT * FROM Pet WHERE name LIKE ?";
@@ -225,5 +197,71 @@ public class PetDAO implements DaoInterface<Pet>{
         return pets;
     }
 
+    public ArrayList<Pet> sortByBreed() {
+        ArrayList<Pet> list = new ArrayList<>();
+        String sql = "SELECT * FROM Pet ORDER BY breed"; // 'đực', 'cái'
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql);
+             ResultSet rs = st.executeQuery())
+        {
+            while (rs.next()) {
+                list.add(new Pet(
+                        rs.getInt("petID"),
+                        rs.getString("name"),
+                        rs.getString("species"),
+                        rs.getString("breed"),
+                        rs.getInt("age"),
+                        rs.getDouble("price")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public ArrayList<Pet> filterAndSort(String species, String breed, String priceOrder) {
+        ArrayList<Pet> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Pet WHERE 1=1");
+
+        if (species != null && !species.isEmpty()) {
+            sql.append(" AND species = ?");
+        }
+        if (breed != null && !breed.isEmpty()) {
+            sql.append(" AND breed = ?");
+        }
+        if (priceOrder != null && !priceOrder.isEmpty()) {
+            sql.append(" ORDER BY price ").append(priceOrder); // ASC hoặc DESC
+        }
+
+        try  (Connection con = DatabaseConnection.getConnection();
+              PreparedStatement st = con.prepareStatement(String.valueOf(sql));
+              ResultSet rs = st.executeQuery())
+        {
+            var ps = con.prepareStatement(sql.toString());
+            int paramIndex = 1;
+            if (species != null && !species.isEmpty()) {
+                ps.setString(paramIndex++, species);
+            }
+            if (breed != null && !breed.isEmpty()) {
+                ps.setString(paramIndex++, breed);
+            }
+            while (rs.next()) {
+                list.add(new Pet(
+                        rs.getInt("petID"),
+                        rs.getString("name"),
+                        rs.getString("species"),
+                        rs.getString("breed"),
+                        rs.getInt("age"),
+                        rs.getDouble("price")
+                ));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 
 }
