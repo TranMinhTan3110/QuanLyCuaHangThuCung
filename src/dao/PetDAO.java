@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class PetDAO implements DaoInterface<Pet>{
     @Override
     public boolean insert(Pet pet) {
-        String sql = "INSERT INTO Pet(name, species, breed, age, price) VALUES(?,?,?,?,?)";
+        String sql = "INSERT INTO Pet(name, species, breed, age, price, gender) VALUES(?,?,?,?,?,?)";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
@@ -20,7 +20,7 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setString(3, pet.getBreed());
             st.setFloat(4, pet.getAge());
             st.setDouble(5, pet.getPrice());
-
+            st.setString(6, pet.getGender());
             int check = st.executeUpdate();
             return check > 0;
         } catch (SQLException e) {
@@ -31,7 +31,7 @@ public class PetDAO implements DaoInterface<Pet>{
 
     @Override
     public boolean update(Pet pet) {
-        String sql = "UPDATE Pet SET name = ?, species = ?, breed = ?, age = ?, price = ? WHERE petID = ?";
+        String sql = "UPDATE Pet SET name = ?, species = ?, breed = ?, age = ?, price = ?, gender = ? WHERE petID = ?";
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
 
@@ -40,7 +40,8 @@ public class PetDAO implements DaoInterface<Pet>{
             st.setString(3, pet.getBreed());
             st.setFloat(4, pet.getAge());
             st.setDouble(5, pet.getPrice());
-            st.setInt(6, pet.getPetID()); // thêm dòng này
+            st.setString(6, pet.getGender());
+            st.setInt(7, pet.getPetID()); // thêm dòng này
 
             int check = st.executeUpdate();
             return check > 0;
@@ -84,7 +85,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 );
                 pets.add(pet);
             }
@@ -111,7 +113,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 );
             }
         } catch (SQLException e) {
@@ -136,7 +139,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 );
                 pets.add(pet);
             }
@@ -162,7 +166,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 );
                 pets.add(pet);
             }
@@ -187,7 +192,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 );
                 pets.add(pet);
             }
@@ -211,7 +217,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 ));
             }
         } catch (Exception e) {
@@ -234,11 +241,9 @@ public class PetDAO implements DaoInterface<Pet>{
             sql.append(" ORDER BY price ").append(priceOrder); // ASC hoặc DESC
         }
 
-        try  (Connection con = DatabaseConnection.getConnection();
-              PreparedStatement st = con.prepareStatement(String.valueOf(sql));
-              ResultSet rs = st.executeQuery())
-        {
-            var ps = con.prepareStatement(sql.toString());
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql.toString())) {
+
             int paramIndex = 1;
             if (species != null && !species.isEmpty()) {
                 ps.setString(paramIndex++, species);
@@ -246,6 +251,9 @@ public class PetDAO implements DaoInterface<Pet>{
             if (breed != null && !breed.isEmpty()) {
                 ps.setString(paramIndex++, breed);
             }
+
+            ResultSet rs = ps.executeQuery(); // ✅ chỉ gọi sau khi đã set xong các tham số
+
             while (rs.next()) {
                 list.add(new Pet(
                         rs.getInt("petID"),
@@ -253,7 +261,8 @@ public class PetDAO implements DaoInterface<Pet>{
                         rs.getString("species"),
                         rs.getString("breed"),
                         rs.getInt("age"),
-                        rs.getDouble("price")
+                        rs.getDouble("price"),
+                        rs.getString("gender")
                 ));
             }
 
@@ -263,5 +272,6 @@ public class PetDAO implements DaoInterface<Pet>{
 
         return list;
     }
+
 
 }

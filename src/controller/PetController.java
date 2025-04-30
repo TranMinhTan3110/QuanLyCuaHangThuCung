@@ -49,6 +49,7 @@ public class PetController {
             model.setRowCount(0);
             for (Pet pet : list) {
                 model.addRow(new Object[]{
+                        pet.getPetID(),
                         pet.getName(),
                         pet.getSpecies(),
                         pet.getPrice(),
@@ -68,26 +69,49 @@ public class PetController {
 
         for (Pet pet : pets) {
             model.addRow(new Object[]{
+                    pet.getPetID(),
                     pet.getName(),
                     pet.getSpecies(),
                     pet.getPrice(),
                     pet.getBreed(),
+                    pet.getGender(),
                     pet.getAge()
+
             });
         }
     }
 
     private void addPet() {
         try {
-            String name = view.getNameTextField().getText();
-            String species = view.getSpeciesTextField().getText();
-            String breed = view.getBreedComboBox().getSelectedItem().toString();
-            int age = Integer.parseInt(view.getAgeTextField().getText());
-            double price = Double.parseDouble(view.getPriceTextField().getText());
+            String name = view.getNameTextField().getText().trim();
+            System.out.println(name);
+            String species = view.getSpeciesTextField().getText().trim();
+            System.out.println(species);
+            String breed = view.getBreed_textField().getText().trim();
+            System.out.println(breed);
+            String gender = view.getGenderComboBox().getSelectedItem().toString();
+            System.out.println(gender);
+            String ageStr = view.getAgeTextField().getText().trim();
+            System.out.println(ageStr);
+            String priceStr = view.getPriceTextField().getText().trim();
+            System.out.println(priceStr);
 
-            Pet pet = new Pet(0, name, species, breed, age, price);
+
+            if (name.isEmpty() || species.isEmpty() || ageStr.isEmpty() || priceStr.isEmpty()) {
+                JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin.");
+                return;
+            }
+
+            float age = Float.parseFloat(ageStr);
+            double price = Double.parseDouble(priceStr);
+            Pet pet = new Pet();
+            pet.setName(name);
+            pet.setSpecies(species);
+            pet.setBreed(breed);
+            pet.setAge(age);
+            pet.setPrice(price);
+            pet.setGender(gender);
             service.insert(pet);
-
             loadTableData();
             view.clearFields();
         } catch (Exception ex) {
@@ -106,12 +130,12 @@ public class PetController {
             String name = view.getNameTextField().getText();
             String species = view.getSpeciesTextField().getText();
             String breed = view.getBreedComboBox().getSelectedItem().toString();
-            int age = Integer.parseInt(view.getAgeTextField().getText());
+            float age = Float.parseFloat(view.getAgeTextField().getText());
             double price = Double.parseDouble(view.getPriceTextField().getText());
-
+            String  gender = view.getGenderComboBox().getSelectedItem().toString();
             int petID = service.searchByNameLike(name).get(0).getPetID(); // hoặc lấy ID qua TableModel nếu có
 
-            Pet pet = new Pet(petID, name, species, breed, age, price);
+            Pet pet = new Pet(petID, name, species, breed, age, price, gender);
             service.update(pet);
 
             loadTableData();
@@ -146,13 +170,32 @@ public class PetController {
         model.setRowCount(0);
         for (Pet pet : filtered) {
             model.addRow(new Object[]{
+                    pet.getPetID(),
                     pet.getName(),
                     pet.getSpecies(),
                     pet.getPrice(),
                     pet.getBreed(),
+                    pet.getAge(),
                     pet.getAge()
             });
         }
     }
+
+
+//    private void fillFormFromSelectedRow(int selectedRow) {
+//        String petName = view.getValueAt(selectedRow, 1);
+//        String species = view.getValueAt(selectedRow, 2);
+//        String price = view.getValueAt(selectedRow, 3);
+//        String breed = view.getValueAt(selectedRow, 4);
+//        String gender = view.getValueAt(selectedRow, 5);
+//        String age = view.getValueAt(selectedRow, 6);
+//
+//        view.setName_textField(petName);
+//        view.setSpecies_textField(species);
+//        view.setBreed_textField(breed);
+//        view.setPrice_textField(price);
+//        view.setAge_textField(age);
+//        view.setGender_comboBox();
+//    }
 
 }
