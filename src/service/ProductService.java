@@ -51,7 +51,7 @@ public boolean isProductExist(String name){
        return  productDao.isProductExists(name);
 }
     // Tìm kiếm chính xác (nếu bạn cần thêm)
-    public Product searchExactByName(String name) {
-        return (Product) daoProduct.selectByName(name);
-    }
+//    public Product searchExactByName(String name) {
+//        return (Product) daoProduct.selectByName(name);
+//    }
 }
