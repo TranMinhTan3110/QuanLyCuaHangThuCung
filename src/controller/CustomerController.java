@@ -13,7 +13,13 @@ import view.MainView;
 import view.UserView;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerController {
     private CustomerView customerView;
@@ -31,6 +37,7 @@ public class CustomerController {
         this.customerView.setAddButtonListener(e->addCustomer());
         this.customerView.setEditButtonListener(e->editCustomer());
         this.customerView.setDeleteButtonListener(e->deleteCustomer());
+        this.customerView.setSearchListener(new searchCustomer());
     }
 
     private void initController() {
@@ -230,6 +237,48 @@ public class CustomerController {
             }
         }catch (NumberFormatException e){
             JOptionPane.showMessageDialog(customerView,"ID không hợp lệ");
+        }
+
+    }
+    //search for customer
+    public class searchCustomer implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            search();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            search();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            search();
+        }
+        public void search() {
+            String str = customerView.getSearch_textField().toLowerCase();
+            List<Customer> customers = new ArrayList<>();
+            if(str.matches("\\d+")){
+               customers = customerService.searchByCustomerPhone(str);
+            }else{
+                customers = customerService.searchByCustomerName(str);
+            }
+            DefaultTableModel model = (DefaultTableModel) customerView.getCustomerTable().getModel();
+            model.setRowCount(0); // Xóa các dòng cũ
+            // Thêm dữ liệu mới vào bảng
+            for (Customer c : customers) {
+                model.addRow(new Object[]{
+                        c.getId(),
+                        c.getName(),
+                        c.getPhone(),
+                        c.getAddress(),
+                        c.getLoyaltyPoints(),
+                        c.getMembershipLevel()
+
+                });
+            }
         }
 
     }
