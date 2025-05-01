@@ -15,8 +15,10 @@ import view.UI.Hover;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -272,7 +274,7 @@ public class BillView extends JPanel {
         btnSave = new JButton("Lưu");
         btnSave.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
         btnSave.setFont(new Font("Arial", Font.BOLD, 14));
-        btnSave.setBounds(553, 570, 150, 70);
+        btnSave.setBounds(551, 609, 150, 70);
         btnSave.setFocusPainted(false);
         btnSave.setFocusPainted(false);
 		btnSave.setBorderPainted(false);
@@ -286,7 +288,7 @@ public class BillView extends JPanel {
         btnExport = new JButton("Xuất hóa đơn");
         btnExport.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
         btnExport.setFont(new Font("Arial", Font.BOLD, 14));
-        btnExport.setBounds(712, 572, 150, 67);
+        btnExport.setBounds(712, 611, 150, 67);
         btnExport.setFocusPainted(false);
         btnExport.setFocusPainted(false);
         btnExport.setBorderPainted(false);
@@ -295,11 +297,41 @@ public class BillView extends JPanel {
         btnExport.setVerticalTextPosition(SwingConstants.BOTTOM);
         Hover.addHoverButtonEffect(btnExport, new Color(0, 102, 204), 0.8f);
         add(btnExport);
-
-
+        
+        JButton btnAdd = new JButton("");
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setBackground(new Color(255, 255, 223));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnAdd.setBounds(746, 535, 45, 45);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setBorderPainted(false);
+		btnAdd.setContentAreaFilled(false);
+		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
+		add(btnAdd);
+		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
+        
+		JButton btnDel = new JButton("");
+		btnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setBackground(new Color(255, 255, 204));
+		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnDel.setBounds(817, 535, 45, 45);
+		btnDel.setFocusPainted(false);
+		btnDel.setBorderPainted(false);
+		btnDel.setContentAreaFilled(false);
+		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+		add(btnDel);
+		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
         setupButtonListeners();
-
-
     }
 
     private void setupButtonListeners() {
@@ -348,7 +380,4 @@ public class BillView extends JPanel {
             }
         });
     }
-
-   
-
 }
