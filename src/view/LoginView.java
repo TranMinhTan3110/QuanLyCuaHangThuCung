@@ -29,8 +29,8 @@ public class LoginView extends JFrame {
         private Image backgroundImage;
 
         public BackgroundPanel(String imagePath) {
-                backgroundImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
-            }
+            backgroundImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
+        }
 
         @Override
         protected void paintComponent(Graphics g) {
@@ -50,12 +50,14 @@ public class LoginView extends JFrame {
         this.setResizable(false);
 
         // Tạo icon
-        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/Icon/icon_Login.png"));        this.setIconImage(appIcon.getImage());
+        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/Icon/icon_Login.png"));
+        this.setIconImage(appIcon.getImage());
         // Giao diện chính
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         // ===== Sidebar (Bên trái) =====
-        JPanel sidebar = new BackgroundPanel("/view/Icon/background_Login.png");        sidebar.setPreferredSize(new Dimension(250, 350));
+        JPanel sidebar = new BackgroundPanel("/view/Icon/background_Login.png");
+        sidebar.setPreferredSize(new Dimension(250, 350));
 //        sidebar.setMinimumSize(new Dimension(150, 300));  // Kích thước tối thiểu
 //        sidebar.setMaximumSize(new Dimension(400, 600));  // Kích thước tối đa
 
@@ -114,7 +116,7 @@ public class LoginView extends JFrame {
         loginPanel.add(lblUser, gbc);
 
         gbc.gridx = 1;
-         txtUser = new JTextField(15);
+        txtUser = new JTextField(15);
 //        txtUser.setPreferredSize(new Dimension(200, 30));
         txtUser.setBorder(BorderFactory.createLineBorder(new Color(139, 69, 19), 2));
         //focus viền
@@ -137,7 +139,7 @@ public class LoginView extends JFrame {
                 new LineBorder(new Color(100, 100, 100), 1, true),  // Viền màu xám, bo tròn
                 BorderFactory.createEmptyBorder(5, 10, 5, 5) // Padding trong ô nhập
         ));
-         //tạo placehoder
+        //tạo placehoder
         txtUser.setText("Nhập tên đăng nhập...");
         txtUser.setForeground(Color.GRAY); // Đặt màu xám khi hiển thị placeholder
 

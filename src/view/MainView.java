@@ -1,10 +1,7 @@
 package view;
 
 import dao.*;
-import service.CustomerService;
-import service.PetService;
-import service.ProductService;
-import service.UserService;
+import service.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -162,12 +159,16 @@ public class MainView extends JFrame {
         lblNewLabel.setBounds(55, 81, 131, 135);
         panel.add(lblNewLabel);
 
-        lblEmployeeName = new JLabel("Name: ");
+        int id = UserSession.getInstance().getUser().getId();
+        String name = UserSession.getInstance().getUser().getName();
+
+        lblEmployeeName = new JLabel("Name: " + name);
         lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblEmployeeName.setBounds(23, 226, 163, 25);
         panel.add(lblEmployeeName);
 
-        lblEmployeeID = new JLabel("ID: ");
+
+        lblEmployeeID = new JLabel("ID: " + id);
         lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
         lblEmployeeID.setBounds(23, 261, 163, 25);
         panel.add(lblEmployeeID);
@@ -226,9 +227,11 @@ public class MainView extends JFrame {
     }
 
     private JPanel createBillingsPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Manage Billings Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-        return panel;
+        BillView billView = new BillView();
+        DaoInterface billRepo = new BillDAO();
+        BillService billService = new BillService(billRepo);
+        new controller.BillController(billView, billService);
+        return billView;
     }
 
     private JPanel createProductPanel() {

@@ -45,19 +45,25 @@ public class CustomerController {
     private void loadSelectedEmployeeIntoForm() {
         int selectedRow = customerView.getTable().getSelectedRow();
         if (selectedRow != -1) {
-            String id = customerView.getTable().getValueAt(selectedRow, 0).toString();
-            String name = customerView.getTable().getValueAt(selectedRow, 1).toString();
-            String phone = customerView.getTable().getValueAt(selectedRow, 2).toString();
-            String address = customerView.getTable().getValueAt(selectedRow, 3).toString();
-//            String Score = customerView.getTable().getValueAt(selectedRow,5).toString();
-            System.out.println("DEBUG: ID=" + id + ", Name=" + name + ", Phone=" + phone + ", Address=" + address);
-            customerView.setEmployeeData(id, name, phone, address);
-            // Cập nhật currentCustomer từ DB dựa trên ID
             try {
-                int current_id = Integer.parseInt(id);
-                currentCustomer = customerService.selectedByID(current_id); // Lấy người dùng theo ID từ DB
+                String idStr = customerView.getTable().getValueAt(selectedRow, 0).toString().trim();
+                String name = customerView.getTable().getValueAt(selectedRow, 1).toString().trim();
+                String phone = customerView.getTable().getValueAt(selectedRow, 2).toString().trim();
+                String address = customerView.getTable().getValueAt(selectedRow, 3).toString().trim();
+                String scoreStr = customerView.getTable().getValueAt(selectedRow, 4).toString().trim();
+
+                int id = Integer.parseInt(idStr);
+                int score = Integer.parseInt(scoreStr);  // Kiểm tra xem score có thực sự là số?
+
+                // In ra để debug
+                System.out.println("DEBUG: ID=" + id + ", Name=" + name + ", Phone=" + phone + ", Address=" + address + ", Score=" + score);
+
+                customerView.setEmployeeData(idStr, name, phone, address, score);
+
+                currentCustomer = customerService.selectedByID(id);
+
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(userView, "ID không hợp lệ khi chọn dòng!");
+                JOptionPane.showMessageDialog(customerView, "Dữ liệu số không hợp lệ (ID hoặc Score)!\nChi tiết: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -81,7 +87,7 @@ public class CustomerController {
     //thêm khách hàng
     public void addCustomer() {
 //            String idStr =customerView.getID_textField().trim();  // Thêm .trim() ở đây
-        String name = customerView.getName_textField();
+        String name = (customerView.getName_textField());
         String phone = customerView.getPhone_textField();
         String address = customerView.getAddress_textField();
 //        boolean checkPhone = customerService.checkPhone(phone);
@@ -134,23 +140,25 @@ public class CustomerController {
 //            JOptionPane.showMessageDialog(customerView, "Khách hàng này đã tồn tại");
 //            return;
 //        }
-        int loyaltyPoints = 0;
-        String membershipLevel = "Basic";
+
         Customer customer = new Customer();
         customer.setName(name);
         customer.setPhone(phone);
         customer.setAddress(address);
+        int loyaltyPoints = Integer.parseInt(customerView.getScore_textField());
+        System.out.println("DEBUG: loyaltyPoints=" + loyaltyPoints);
+        String membershipLevel = convertPointMembershipLV(loyaltyPoints);
+        System.out.println("DEBUG: membershipLevel=" + membershipLevel);
         customer.setLoyaltyPoints(loyaltyPoints);
         customer.setMembershipLevel(membershipLevel);
-        customerService.insert(customer);
-        loadEmployeesFromDB();
-//        if (customerService.insert(customer)) {
-//            customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, loyaltyPoints, membershipLevel);
-//            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
-//            customerView.clear();
-//        } else {
-//            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thất bại");
-//        }
+
+        if (customerService.insert(customer)) {
+            customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, loyaltyPoints, membershipLevel);
+            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
+            customerView.clear();
+        } else {
+            JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thất bại");
+        }
 
     }
 
@@ -206,10 +214,22 @@ public class CustomerController {
                 return;
             }
         }
-        Customer customer = new Customer(0, name, phone, address);
+        Customer customer = new Customer();
+        customer.setName(name);
+        customer.setPhone(phone);
+        customer.setAddress(address);
+        int loyaltyPoints = Integer.parseInt(customerView.getScore_textField());
+        System.out.println("DEBUG: loyaltyPoints=" + loyaltyPoints);
+        String membershipLevel = convertPointMembershipLV(loyaltyPoints);
+        System.out.println("DEBUG: membershipLevel=" + membershipLevel);
+        customer.setLoyaltyPoints(loyaltyPoints);
+        customer.setMembershipLevel(membershipLevel);
+        int id = Integer.parseInt(customerView.getTable().getValueAt(selectedRow, 0).toString());
+        customer.setId(id);
+        System.out.println(customer.getId());
         if (customerService.update(customer)) {
             JOptionPane.showMessageDialog(customerView, "Cập nhật  khách hàng thành công");
-            customerView.updateCustomerInTable(selectedRow, String.valueOf(customer.getId()), name, phone, address);
+            customerView.updateCustomerInTable(selectedRow, String.valueOf(customer.getId()), name, phone, address, loyaltyPoints, membershipLevel);
             customerView.getTable().clearSelection();
         } else {
             JOptionPane.showMessageDialog(customerView, "Cập nhật khách hàng không thành công");
@@ -243,6 +263,18 @@ public class CustomerController {
             JOptionPane.showMessageDialog(customerView, "ID không hợp lệ");
         }
 
+    }
+
+    //Phần liên quan đến điểm
+
+    private String convertPointMembershipLV(int loyaltyPoints) {
+        String membershipLevel;
+        if (loyaltyPoints >= 1000) membershipLevel = "Platinum";
+        else if (loyaltyPoints >= 500) membershipLevel = "Gold";
+        else if (loyaltyPoints >= 100) membershipLevel = "Silver";
+        else membershipLevel = "Basic";
+
+        return membershipLevel;
     }
 }
 

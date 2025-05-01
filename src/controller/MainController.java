@@ -47,7 +47,7 @@ public class MainController {
 
     private void onBillingsClicked() {
         System.out.println("Billings button clicked!");
-        view.showPanel("Billings");
+        view.showPanel("Bills");
     }
 
     private void onProductClicked() {

@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class CustomerDao implements  DaoInterface<Customer> {
+
+    @Override
     public boolean insert(Customer customer) {
         String sqlPerson = "INSERT INTO Person(name, phone, address) VALUES(?, ?, ?)";
         String sqlCustomer = "INSERT INTO Customer(id, loyaltyPoints, membershipLevel) VALUES (?, ?, ?)";
@@ -48,27 +50,33 @@ public class CustomerDao implements  DaoInterface<Customer> {
 
     @Override
     public boolean update(Customer customer) {
-        // SQL để cập nhật các thông tin của khách hàng (thuộc Person)
-        String sql = "UPDATE Person SET name = ?, phone = ?, address = ? WHERE id = ?";
+        String sqlPerson = "UPDATE Person SET name = ?, phone = ?, address = ? WHERE id = ?";
+        String sqlCustomer = "UPDATE Customer SET loyaltyPoints = ?, membershipLevel = ? WHERE id = ?";
 
-        try (Connection con = DatabaseConnection.getConnection();
-             PreparedStatement st = con.prepareStatement(sql)
-        ) {
-            // Set các giá trị vào câu lệnh SQL
-            st.setString(1, customer.getName());
-            st.setString(2, customer.getPhone());
-            st.setString(3, customer.getAddress());
-            st.setInt(4, customer.getId());  // Lưu ý lấy ID từ Customer
+        try (Connection con = DatabaseConnection.getConnection()) {
+            // Cập nhật bảng Person
+            try (PreparedStatement st1 = con.prepareStatement(sqlPerson)) {
+                st1.setString(1, customer.getName());
+                st1.setString(2, customer.getPhone());
+                st1.setString(3, customer.getAddress());
+                st1.setInt(4, customer.getId());
+                st1.executeUpdate();
+            }
 
-            // Thực hiện câu lệnh SQL
-            return st.executeUpdate() > 0;
+            // Cập nhật bảng Customer
+            try (PreparedStatement st2 = con.prepareStatement(sqlCustomer)) {
+                st2.setInt(1, customer.getLoyaltyPoints());
+                st2.setString(2, customer.getMembershipLevel());
+                st2.setInt(3, customer.getId());
+                st2.executeUpdate();
+            }
 
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
-
 
 
 

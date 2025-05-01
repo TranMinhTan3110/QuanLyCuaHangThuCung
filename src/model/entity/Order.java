@@ -9,10 +9,11 @@ public class Order {
     private double totalPrice;
     private Date orderDate;
 
-    public Order(){
+    public Order() {
 
     }
-    public Order(int orderID, User user, Customer customer, double totalPrice, Date orderDate ) {
+
+    public Order(int orderID, User user, Customer customer, double totalPrice, Date orderDate) {
         this.orderID = orderID;
         this.user = user;
         this.customer = customer;
