@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 public class PetService {
     private DaoInterface daoPet;
-
+    private PetDAO petDAO;
     // Constructor truyền vào Repository
     public PetService(DaoInterface petRepo) {
         this.daoPet = petRepo;
+        this.petDAO = new PetDAO();
     }
 
     // Lấy toàn bộ Pet
@@ -70,12 +71,21 @@ public class PetService {
         }
         return new ArrayList<>();
     }
+    public ArrayList<Pet> sortByPrice(boolean check) {
+            return petDAO.sortByPrice(check);
+
+    }
 
 
-    public ArrayList<Pet> filterALL(String species, String breed, String priceOrder) {
+    public ArrayList<Pet> filterALL(String species, String priceOrder) {
         if (daoPet instanceof PetDAO) {
-            return ((PetDAO) daoPet).filterAndSort(species,breed,priceOrder);
+            return ((PetDAO) daoPet).filterAndSort(species,priceOrder);
         }
         return new  ArrayList<>();
+    }
+
+    //kiểm tra pet đã tồn tại chưa
+    public boolean isProductExist(String name){
+        return  petDAO.isPetExists(name);
     }
 }
