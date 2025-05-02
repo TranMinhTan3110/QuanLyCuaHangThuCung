@@ -1,0 +1,12 @@
+===== HÓA ĐƠN THANH TOÁN =====
+Mã hóa đơn: 9
+Khách hàng: Pham Tan kha
+Nhân viên: Pham Kha
+Ngày tạo: 02/05/2025 20:37
+-----------------------------------
+STT   Tên mặt hàng         SL       Giá       
+1     Unknown Product      2        130000.00 
+2     Coco                 1        700000.00 
+-----------------------------------
+Tổng cộng: 960,000.00 VNĐ
+Cảm ơn quý khách!

@@ -5,6 +5,7 @@ public class User extends Person {
     private String password;
     private Role role; // "admin" hoặc "customer"
 
+
     public User() {
         super(); // Gọi constructor mặc định của Person
     }

@@ -72,11 +72,11 @@ public class PetDAO implements DaoInterface<Pet>{
     @Override
     public ArrayList<Pet> getAll() {
         ArrayList<Pet> pets = new ArrayList<>();
-        String sql = "SELECT * FROM Pet";
+        String sql = "SELECT * FROM Pet WHERE trangThai = N'Chưa bán'";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) { // KHÔNG truyền sql vào đây
+             ResultSet rs = st.executeQuery()) {
 
             while (rs.next()) {
                 Pet pet = new Pet(
@@ -272,8 +272,52 @@ public class PetDAO implements DaoInterface<Pet>{
 
         return list;
     }
+
+    public static String getPetNameById(int petId) {
+        String sql = "SELECT name FROM Pet WHERE petID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, petId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Unknown Pet";
+    }
+
+    public boolean deletePetByID(int petID) {
+        String sql = "DELETE FROM Pet WHERE petID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, petID);
+            int affectedRows = stmt.executeUpdate();
+
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updatePetStatus(int petID, String status) {
+        String sql = "UPDATE Pet SET trangThai = ? WHERE petID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, status);
+            ps.setInt(2, petID);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public boolean isPetExists(String name) {
-        String sql = "SELECT COUNT(*) FROM Pet WHERE NAME = ?";
+        String sql = "SELECT COUNT(*) FROM Pet WHERE name = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -290,5 +334,4 @@ public class PetDAO implements DaoInterface<Pet>{
         }
         return false;
     }
-
 }

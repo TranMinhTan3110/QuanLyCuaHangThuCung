@@ -1,5 +1,6 @@
 package controller;
 
+import dao.UserSession;
 import model.entity.User;
 import service.AuthService;
 import utils.LoginUtil;
@@ -54,9 +55,11 @@ public class LoginController {
 
         // Kiểm tra thông tin tài khoản qua authService
         User check = authService.checkLogin(userName, password);
+
         if (check != null) {
             // Đăng nhập thành công
             System.out.println("Đăng nhập thành công!");
+            UserSession.getInstance().setUser(check);
             views.setVisible(false);
 
             // Hiển thị giao diện chính theo quyền

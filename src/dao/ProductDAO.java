@@ -65,6 +65,24 @@ public class ProductDAO implements DaoInterface<Product> {
         }
     }
 
+    public boolean updateQuantity(int productID, int soldQuantity) {
+        String sql = "UPDATE Product SET quantity = quantity - ? WHERE productID = ? AND quantity >= ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, soldQuantity); // số lượng muốn trừ
+            stmt.setInt(2, productID);
+            stmt.setInt(3, soldQuantity); // để đảm bảo không trừ vượt quá số lượng hiện có
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @Override
     public boolean delete(Product product) {
         String sql = "DELETE FROM Product WHERE productID = ?";
@@ -159,46 +177,6 @@ public class ProductDAO implements DaoInterface<Product> {
         return null;
     }
 
-//    @Override
-//    public Product selectByName(String name) {
-//        String sql = """
-//                    SELECT p.productID, p.name, p.price, p.quantity,
-//                           c.categoryID, c.categoryName
-//                    FROM Product p JOIN Category c ON p.categoryID = c.categoryID
-//                    WHERE p.name = ?
-//                """;
-//
-//        try (Connection con = DatabaseConnection.getConnection();
-//             PreparedStatement st = con.prepareStatement(sql)) {
-//
-//            st.setString(1, name);
-//            ResultSet rs = st.executeQuery();
-//
-//            if (rs.next()) {
-//                int productID = rs.getInt("productID");
-//                double price = rs.getDouble("price");
-//                int quantity = rs.getInt("quantity");
-//                int categoryID = rs.getInt("categoryID");
-//                String categoryName = rs.getString("categoryName");
-//
-//                Category category = new Category(categoryID, categoryName);
-//                Product product = new Product();
-//                product.setProductID(productID);
-//                product.setName(name);
-//                product.setPrice(price);
-//                product.setQuantity(quantity);
-//                product.setCategory(category);
-//
-//                return product;
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//
-//        return null;
-//    }
-
     public ArrayList<Product> selectByNameLike(String name) {
         ArrayList<Product> products = new ArrayList<>();
 
@@ -244,7 +222,7 @@ public class ProductDAO implements DaoInterface<Product> {
 
     //kiểm tra sản phẩm đã tồn tại chưa
     public boolean isProductExists(String name) {
-        String sql = "SELECT COUNT(*) FROM Product WHERE NAME = ?";
+        String sql = "SELECT COUNT(*) FROM Product WHERE name = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -262,4 +240,18 @@ public class ProductDAO implements DaoInterface<Product> {
         return false;
     }
 
+    public static String getProductNameById(int productId) {
+        String sql = "SELECT name FROM Product WHERE productID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Unknown Product";
+    }
 }

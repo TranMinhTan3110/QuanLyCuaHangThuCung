@@ -72,7 +72,7 @@ public class PetService {
         return new ArrayList<>();
     }
     public ArrayList<Pet> sortByPrice(boolean check) {
-            return petDAO.sortByPrice(check);
+        return petDAO.sortByPrice(check);
 
     }
 
@@ -87,5 +87,25 @@ public class PetService {
     //kiểm tra pet đã tồn tại chưa
     public boolean isProductExist(String name){
         return  petDAO.isPetExists(name);
+    }
+    public String getPetName(int id) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).getPetNameById(id);
+        }
+        return null;
+    }
+
+    public boolean sellPet(int id) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).deletePetByID(id);
+        }
+        return false;
+    }
+
+    public boolean updateTrangThai(int petID, String status) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).updatePetStatus(petID, status);
+        }
+        return false;
     }
 }
