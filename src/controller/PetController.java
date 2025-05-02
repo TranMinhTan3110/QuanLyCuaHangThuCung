@@ -1,3 +1,4 @@
+
 package controller;
 
 import java.awt.event.ActionEvent;
@@ -162,34 +163,34 @@ public class PetController {
             JOptionPane.showMessageDialog(view, "Vui lòng chọn pet để chỉnh sửa.");
             return;
         }
-            String name = view.getNameTextField();
-            String species = view.getSpeciesTextField();
+        String name = view.getNameTextField();
+        String species = view.getSpeciesTextField();
 //            String breed = view.getBreedComboBox().getSelectedItem().toString();
-            String breed = view.getBreed_textField();
+        String breed = view.getBreed_textField();
 //            view.getBreedComboBox().addItem(breed);
-            String ageStr = view.getAgeTextField();
-            String priceStr = view.getPriceTextField();
-            String  gender = view.getGenderComboBox().getSelectedItem().toString();
+        String ageStr = view.getAgeTextField();
+        String priceStr = view.getPriceTextField();
+        String  gender = view.getGenderComboBox().getSelectedItem().toString();
         int petID = (int) view.getPetTable().getValueAt(selectedRow, 0);
         if (name.isEmpty() ||name.equals("Enter Name") || species.isEmpty() ||species.equals("Enter species") || breed.isEmpty() || breed.equals("Enter breed") || ageStr.isEmpty()|| ageStr.equals("Enter Age") || priceStr.isEmpty() ||priceStr.equals("Enter Price")) {
             JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin.");
             return;
         }
-            try{
+        try{
             int age = Integer.parseInt(view.getAgeTextField());
             double price = Double.parseDouble(view.getPriceTextField());
             Pet pet = new Pet(petID, name, breed,species, age, price, gender);
-                // Kiểm tra xem name, breed, species có chứa số hay không
-                if (containsNumber(name) || containsNumber(breed) || containsNumber(species)) {
-                    JOptionPane.showMessageDialog(view, "Không được nhập số cho Tên, Giống và Loài!");
-                    return;
-                }
+            // Kiểm tra xem name, breed, species có chứa số hay không
+            if (containsNumber(name) || containsNumber(breed) || containsNumber(species)) {
+                JOptionPane.showMessageDialog(view, "Không được nhập số cho Tên, Giống và Loài!");
+                return;
+            }
             service.update(pet);
             loadTableData();
             view.clearFields();
         } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(view, "Vui lòng nhập số hợp lệ cho Tuổi và Giá!");
-            }
+            JOptionPane.showMessageDialog(view, "Vui lòng nhập số hợp lệ cho Tuổi và Giá!");
+        }
     }
 
     private void deletePet() {

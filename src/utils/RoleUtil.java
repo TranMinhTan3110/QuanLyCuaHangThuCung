@@ -22,10 +22,10 @@ public class RoleUtil {
             throw new IllegalArgumentException("Role string is empty");
         }
         // Chuyển "ADMIN" => "admin"
-        String forDatabaseConnectiontted = trimmed.toLowerCase();
+        String formatted = trimmed.toLowerCase();
         // Lúc này, enum Role phải định nghĩa: admin, employee
         try {
-            return Role.valueOf(forDatabaseConnectiontted);
+            return Role.valueOf(formatted);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid role string: '" + roleStr + "'. Expected one of: " + Arrays.toString(Role.values()));
         }
@@ -38,7 +38,7 @@ public class RoleUtil {
      * @param role giá trị Role
      * @return chuỗi viết thường
      */
-    public static String forDatabaseConnectiontRole(Role role) {
+    public static String formatRole(Role role) {
         if (role == null) {
             throw new IllegalArgumentException("Role is null");
         }

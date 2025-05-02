@@ -69,7 +69,7 @@ public class ProductController {
             try {
                 price = Double.parseDouble(priceStr);
                 quantity = Integer.parseInt(quantityStr);
-            } catch (NumberForDatabaseConnectiontException ex) {
+            } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
                 return;
             }
@@ -111,7 +111,7 @@ public class ProductController {
             loadTable();
             view.clearFields();
         }
-        }
+    }
 
 
     class EditListener implements ActionListener {
@@ -119,10 +119,10 @@ public class ProductController {
         public void actionPerformed(ActionEvent e) {
             int row = view.getProductTable().getSelectedRow();
             if (row >= 0) {
-                    int id = (int) view.getProductTable().getValueAt(row, 0);
-                    String name = view.getProductName();
-                    String  priceStr = view.getPrice();
-                    String quantityStr = view.getQuantity();
+                int id = (int) view.getProductTable().getValueAt(row, 0);
+                String name = view.getProductName();
+                String  priceStr = view.getPrice();
+                String quantityStr = view.getQuantity();
 
                 // Kiểm tra nếu có ô nào bị để trống
                 if (name == null || name.trim().isEmpty()|| name.equals("Enter Name")
@@ -142,33 +142,33 @@ public class ProductController {
                 try {
                     price = Double.parseDouble(priceStr);
                     quantity = Integer.parseInt(quantityStr);
-                } catch (NumberForDatabaseConnectiontException ex) {
+                } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
                     return;
                 }
 
-                    if (!validateQuantity(quantity)) {
-                        return; // Không cho thêm/xóa/sửa tiếp
-                    }
-                    Category selectedCategory = view.getCategory();
-                    if (selectedCategory == null) {
-                        JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
-                        return;
-                    }
-
-                    Product p = new Product(id, name, price, quantity, selectedCategory);
-                    if (quantity > 0) {
-                        service.update(p);
-                        JOptionPane.showMessageDialog(view,"Cập nhật sản phẩm thành công");
-                    } else {
-                        service.delete(p);
-                        System.out.println("Xóa sản phẩm thành công");
-                    }
-
-                    loadTable();
-                    view.clearFields();
+                if (!validateQuantity(quantity)) {
+                    return; // Không cho thêm/xóa/sửa tiếp
                 }
-             else {
+                Category selectedCategory = view.getCategory();
+                if (selectedCategory == null) {
+                    JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
+                    return;
+                }
+
+                Product p = new Product(id, name, price, quantity, selectedCategory);
+                if (quantity > 0) {
+                    service.update(p);
+                    JOptionPane.showMessageDialog(view,"Cập nhật sản phẩm thành công");
+                } else {
+                    service.delete(p);
+                    System.out.println("Xóa sản phẩm thành công");
+                }
+
+                loadTable();
+                view.clearFields();
+            }
+            else {
                 JOptionPane.showMessageDialog(view, "Vui lòng chọn sản phẩm để sửa.");
             }
         }
@@ -200,7 +200,7 @@ public class ProductController {
                 int quantity = Integer.parseInt(view.getQuantity());
                 quantity++;
                 view.setQuantity(String.valueOf(quantity));
-            } catch (NumberForDatabaseConnectiontException ex) {
+            } catch (NumberFormatException ex) {
                 view.setQuantity("1"); // Nếu nhập linh tinh thì reset về 1
             }
         }
@@ -217,7 +217,7 @@ public class ProductController {
                 } else {
                     showWarning("Số lượng không thể nhỏ hơn 0!");
                 }
-            } catch (NumberForDatabaseConnectiontException ex) {
+            } catch (NumberFormatException ex) {
                 view.setQuantity("0"); // Nếu nhập linh tinh thì reset về 0
                 showWarning("Giá trị nhập không hợp lệ! Đã đặt về 0.");
             }
@@ -232,7 +232,7 @@ public class ProductController {
                 return false;
             }
             return true;
-        } catch (NumberForDatabaseConnectiontException ex) {
+        } catch (NumberFormatException ex) {
             showWarning("Vui lòng nhập số hợp lệ!");
             view.setQuantity("0");
             return false;

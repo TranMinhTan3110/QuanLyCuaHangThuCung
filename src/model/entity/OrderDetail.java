@@ -1,23 +1,38 @@
 package model.entity;
 
+import java.math.BigDecimal;
+
 public class OrderDetail {
-    private int orderDetailID;  // Mã chi tiết đơn hàng
-    private int orderID;        // Mã đơn hàng (liên kết với Order)
-    private int productID;      // Mã sản phẩm (liên kết với Product)
-    private int quantity;       // Số lượng sản phẩm
-    private double price;       // Giá tại thời điểm mua
+    private int orderDetailID;
+    private int orderID;
+    private Integer productID; // Có thể null nếu là pet
+    private Integer petID;     // Có thể null nếu là product
+    private int quantity;
+    private BigDecimal price;
 
-    public OrderDetail(){
-
+    public OrderDetail() {
     }
-    public OrderDetail(int orderDetailID, int orderID, int productID, int quantity, double price) {
-        this.orderDetailID = orderDetailID;
+
+    // Constructor không có orderDetailID (dùng khi thêm mới)
+    public OrderDetail(int orderID, Integer productID, Integer petID, int quantity, BigDecimal price) {
         this.orderID = orderID;
-        this.productID = productID;//mã sản phẩm hoặc thú cưng
+        this.productID = productID;
+        this.petID = petID;
         this.quantity = quantity;
         this.price = price;
     }
 
+    // Constructor đầy đủ (dùng khi đọc từ DB)
+    public OrderDetail(int orderDetailID, int orderID, Integer productID, Integer petID, int quantity, BigDecimal price) {
+        this.orderDetailID = orderDetailID;
+        this.orderID = orderID;
+        this.productID = productID;
+        this.petID = petID;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    // Getters & Setters
     public int getOrderDetailID() {
         return orderDetailID;
     }
@@ -34,12 +49,20 @@ public class OrderDetail {
         this.orderID = orderID;
     }
 
-    public int getProductID() {
+    public Integer getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(Integer productID) {
         this.productID = productID;
+    }
+
+    public Integer getPetID() {
+        return petID;
+    }
+
+    public void setPetID(Integer petID) {
+        this.petID = petID;
     }
 
     public int getQuantity() {
@@ -50,11 +73,11 @@ public class OrderDetail {
         this.quantity = quantity;
     }
 
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }

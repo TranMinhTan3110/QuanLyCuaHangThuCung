@@ -4,18 +4,19 @@ import java.util.Date;
 
 public class Order {
     private int orderID;
-    private User user;  // Nhân viên tạo đơn hàng
-    private Customer customer; // Khách hàng
+    private int userID;  // Nhân viên tạo đơn hàng
+    private int customerID; // Khách hàng
     private double totalPrice;
     private Date orderDate;
 
-    public Order(){
+    public Order() {
 
     }
-    public Order(int orderID, User user, Customer customer, double totalPrice, Date orderDate ) {
+
+    public Order(int orderID, int userID, int customerID, double totalPrice, Date orderDate) {
         this.orderID = orderID;
-        this.user = user;
-        this.customer = customer;
+        this.userID = userID;
+        this.customerID = customerID;
         this.totalPrice = totalPrice;
         this.orderDate = orderDate;
 
@@ -30,20 +31,20 @@ public class Order {
         this.orderID = orderID;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserID() {
+        return userID;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserID(int id) {
+        this.userID = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerID(int id) {
+        this.customerID = id;
     }
 
     public double getTotalPrice() {

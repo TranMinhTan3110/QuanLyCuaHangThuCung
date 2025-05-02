@@ -61,6 +61,7 @@ public class UserDAO implements DaoInterface<User>{
         }
         return false;
     }
+
     @Override
     public boolean insert(User user) {
         String sqlPerson = "INSERT INTO Person (name, phone, address) VALUES (?, ?, ?)";

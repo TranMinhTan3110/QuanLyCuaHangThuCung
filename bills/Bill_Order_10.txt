@@ -1,0 +1,12 @@
+===== HÓA ĐƠN THANH TOÁN =====
+Mã hóa đơn: 10
+Khách hàng: Pham Tan kha
+Nhân viên: Pham Kha
+Ngày tạo: 02/05/2025 20:42
+-----------------------------------
+STT   Tên mặt hàng         SL       Giá       
+1     Bánh thưởng cho mèo vị cá ngừ 4        130000.00 
+2     Daisy                1        1300000.00
+-----------------------------------
+Tổng cộng: 1,820,000.00 VNĐ
+Cảm ơn quý khách!

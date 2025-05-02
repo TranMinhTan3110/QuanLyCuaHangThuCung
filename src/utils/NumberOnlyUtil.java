@@ -8,7 +8,7 @@ public class NumberOnlyUtil {
         textField.getDocument().addDocumentListener(new DocumentListener() {
             private void validateInput() {
                 String text = textField.getText();
-                if (!text.DatabaseConnectiontches("\\d*")) { // chỉ cho phép chuỗi số, nếu có ký tự khác sẽ xóa hết ký tự đó
+                if (!text.matches("\\d*")) { // chỉ cho phép chuỗi số, nếu có ký tự khác sẽ xóa hết ký tự đó
                     textField.setText(text.replaceAll("[^\\d]", ""));
                 }
             }

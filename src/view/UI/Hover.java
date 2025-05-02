@@ -7,7 +7,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.IDatabaseConnectionge;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.FocusAdapter;
@@ -16,7 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.Icon;
-import javax.swing.IDatabaseConnectiongeIcon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -73,12 +73,12 @@ public class Hover {
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setForeground(textHoverColor);
-                if (orIcon instanceof IDatabaseConnectiongeIcon) {
-                    IDatabaseConnectionge img = ((IDatabaseConnectiongeIcon) orIcon).getIDatabaseConnectionge();
+                if (orIcon instanceof ImageIcon) {
+                    Image img = ((ImageIcon) orIcon).getImage();
                     int newWidth = (int) (img.getWidth(null) * iconhover);
                     int newHeight = (int) (img.getHeight(null) * iconhover);
-                    IDatabaseConnectionge scaledImg = img.getScaledInstance(newWidth, newHeight, IDatabaseConnectionge.SCALE_SMOOTH);
-                    button.setIcon(new IDatabaseConnectiongeIcon(scaledImg));
+                    Image scaledImg = img.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+                    button.setIcon(new ImageIcon(scaledImg));
                 }
             }
 

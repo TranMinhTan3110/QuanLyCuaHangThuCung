@@ -17,7 +17,6 @@ public class UserView extends JPanel {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButton btnAdd, btnEdit, btnDel;
-
 	public UserView() {
 		setLayout(null);
 		setBounds(0, 0, 950, 750);
@@ -94,7 +93,7 @@ public class UserView extends JPanel {
 		panel_top.add(roleComboBox);
 
 		btnAdd = new JButton("Add");
-		btnAdd.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
 		btnAdd.setBackground(new Color(255, 255, 223));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -111,7 +110,7 @@ public class UserView extends JPanel {
 		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
 
 		btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
 		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnEdit.addActionListener(new ActionListener() {
@@ -132,7 +131,7 @@ public class UserView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDel.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnDel.setBounds(189, 167, 87, 63);
@@ -149,7 +148,7 @@ public class UserView extends JPanel {
 		scrollPane.setBounds(0, 244, 950, 500);
 		scrollPane.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Color.BLACK),
-				"DatabaseConnectionnager Users",
+				"Manager Users",
 				TitledBorder.CENTER,
 				TitledBorder.TOP,
 				new Font("Arial", Font.BOLD, 16),
@@ -191,10 +190,10 @@ public class UserView extends JPanel {
 	public String getIdField() {
 		return idField.getText();
 	}
+
 	public JTextField getIdFieldJ() {
 		return idField;
 	}
-
 
 
 	public String getPhoneField() {
@@ -274,7 +273,6 @@ public class UserView extends JPanel {
 	}
 
 	public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
-
 //		idField.setText(id);
 		phoneField.setText(phone);
 		usernameField.setText(username);

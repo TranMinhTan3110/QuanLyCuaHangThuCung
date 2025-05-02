@@ -1,11 +1,12 @@
 package controller;
 
+import dao.UserSession;
 import model.entity.User;
 import service.AuthService;
 import utils.LoginUtil;
 import utils.RoleUtil;
 import view.LoginView;
-import view.DatabaseConnectioninView;
+import view.MainView;
 import view.notificationView.Notification;
 
 import java.awt.event.ActionEvent;
@@ -20,9 +21,9 @@ public class LoginController {
         this.views = view;
         this.authService = authService;
         this.views.addLoginListener(e -> {
-            getRequest();
+                    getRequest();
 //            checkLogin();
-        }
+                }
         );
     }
 
@@ -54,16 +55,18 @@ public class LoginController {
 
         // Kiểm tra thông tin tài khoản qua authService
         User check = authService.checkLogin(userName, password);
+
         if (check != null) {
             // Đăng nhập thành công
             System.out.println("Đăng nhập thành công!");
+            UserSession.getInstance().setUser(check);
             views.setVisible(false);
 
             // Hiển thị giao diện chính theo quyền
             RoleUtil roleUtil = new RoleUtil();
-            DatabaseConnectioninView DatabaseConnectioninView = new DatabaseConnectioninView(roleUtil.forDatabaseConnectiontRole(check.getRole()));
-            new DatabaseConnectioninController(DatabaseConnectioninView);
-            DatabaseConnectioninView.setVisible(true);
+            MainView mainView = new MainView(roleUtil.formatRole(check.getRole()));
+            new MainController(mainView);
+            mainView.setVisible(true);
             return true;
         } else {
             System.out.println("Đăng nhập thất bại!");

@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.IDatabaseConnectiongeIcon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,9 +23,8 @@ import javax.swing.JButton;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 public class CustomerView extends JPanel {
-
-
 
 
     /**
@@ -43,7 +42,7 @@ public class CustomerView extends JPanel {
     private JTextField Search_textField;
     private DefaultTableModel model;
     //cac nut
-    private JButton btnDel, btnEdit, btnSave,ID_Button;
+    private JButton btnDel, btnEdit, btnSave, ID_Button;
 
     public String getName_textField() {
         return Name_textField.getText();
@@ -52,9 +51,11 @@ public class CustomerView extends JPanel {
     public String getAddress_textField() {
         return Address_textField.getText();
     }
+
     public String getID_textField() {
         return ID_textField.getText();
     }
+
     public String getPhone_textField() {
         return Phone_textField.getText();
     }
@@ -98,7 +99,6 @@ public class CustomerView extends JPanel {
         panel_top.add(lblPhone);
 
 
-
 //        JLabel lblRank = new JLabel("Rank");
 //        lblRank.setFont(new Font("Arial", Font.PLAIN, 16));
 //        lblRank.setBounds(new Rectangle(176, 36, 55, 21));
@@ -134,7 +134,6 @@ public class CustomerView extends JPanel {
         Hover.roundTextField(Address_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
 
-
         Score_textField = new JTextField();
         Score_textField.setColumns(10);
         Score_textField.setBounds(543, 121, 140, 25);  // Đặt Score ở vị trí ban đầu của Rank
@@ -144,7 +143,7 @@ public class CustomerView extends JPanel {
 
 
         btnEdit = new JButton("Edit");
-        btnEdit.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+        btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
         btnEdit.setBackground(new Color(255, 255, 204));
         btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
         btnEdit.addActionListener(new ActionListener() {
@@ -161,7 +160,7 @@ public class CustomerView extends JPanel {
         Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
         btnSave = new JButton("Save");
-        btnSave.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
+        btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
         btnSave.setBackground(new Color(255, 255, 223));
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +181,7 @@ public class CustomerView extends JPanel {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        btnDel.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+        btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
         btnDel.setBackground(new Color(255, 255, 204));
         btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
         btnDel.setBounds(189, 167, 87, 63);
@@ -194,7 +193,7 @@ public class CustomerView extends JPanel {
         panel_top.add(btnDel);
         Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-        IDatabaseConnectiongeIcon searchIcon = new IDatabaseConnectiongeIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
+        ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
 
         JPanel searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBounds(684, 187, 234, 24);
@@ -208,8 +207,8 @@ public class CustomerView extends JPanel {
         Search_textField.setBorder(null);
         Search_textField.setColumns(10);
         searchPanel.add(Search_textField, BorderLayout.CENTER);
-        Hover.addPlaceholder(Search_textField,"search...");
-        Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+        Hover.addPlaceholder(Search_textField, "search...");
+        Hover.roundPanel(searchPanel, 20, Color.WHITE, Color.GRAY);
 
         panel_top.add(searchPanel);
 
@@ -231,7 +230,7 @@ public class CustomerView extends JPanel {
 
 
 //		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
-        String[] columnNames = {"Id", "Name", "Phone", "Address","Score","Rank"};
+        String[] columnNames = {"Id", "Name", "Phone", "Address", "Score", "Rank"};
         model = new DefaultTableModel(columnNames, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -266,32 +265,52 @@ public class CustomerView extends JPanel {
     public JTable getTable() {
         return table;
     }
-    public int getSeclectedRow(){
+
+    public int getSeclectedRow() {
         return table.getSelectedRow();
     }
-    public void clear(){
+
+    public void clear() {
         Name_textField.setText("");
         Address_textField.setText("");
         Phone_textField.setText("");
         Score_textField.setText("");
     }
-    public void addCustomerToTable(String id, String name,String  phone, String address ,int loyaltyPoints,String membershipLevels) {
-        model.addRow(new Object[]{id, name,phone ,address, loyaltyPoints,membershipLevels});
+
+    public void addCustomerToTable(String id, String name, String phone, String address, int loyaltyPoints, String membershipLevels) {
+        model.addRow(new Object[]{id, name, phone, address, loyaltyPoints, membershipLevels});
     }
 
-    public void updateCustomerInTable(int row, String id, String name, String phone, String address  ) {
+    public void updateCustomerInTable(int row, String id, String name, String phone, String address ,int point, String member) {
         model.setValueAt(id, row, 0);
         model.setValueAt(name, row, 1);
         model.setValueAt(phone, row, 2);
         model.setValueAt(address, row, 3);
-
+        model.setValueAt(point, row, 4);
+        model.setValueAt(member, row, 5);
 
     }
-    public void setEmployeeData(String id, String name ,String phone,String address) {
+
+    public void setEmployeeData(String id, String name, String phone, String address, int point) {
         Name_textField.setText(name);
         Phone_textField.setText(phone);
         Address_textField.setText(address);
-//        Score_textField.setText(String.valueOf(Score));
-
+        Score_textField.setText(String.valueOf(point));
     }
+
+    public JTextField getScoreTextField() {
+        return Score_textField;
+    }
+
+    public void setScore_textField(String score) {
+        this.Score_textField.setText(score);
+    }
+    public JTextField getRankTextField() {
+        return Rank_textField;
+    }
+
+    public JTextField getIDTextField() {
+        return ID_textField;
+    }
+
 }

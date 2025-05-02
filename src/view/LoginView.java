@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.net.http.WebSocket;
-//11232
+
 public class LoginView extends JFrame {
     JTextField txtUser;
     JPasswordField txtPass;
@@ -22,21 +22,21 @@ public class LoginView extends JFrame {
         this.authService = authService;
     }
 
-    public static Color getPriDatabaseConnectionryColor() {
+    public static Color getPrimaryColor() {
         return new Color(139, 69, 19); // Màu nâu
     }
     class BackgroundPanel extends JPanel {
-        private IDatabaseConnectionge backgroundIDatabaseConnectionge;
+        private Image backgroundImage;
 
-        public BackgroundPanel(String iDatabaseConnectiongePath) {
-                backgroundIDatabaseConnectionge = new IDatabaseConnectiongeIcon(getClass().getResource(iDatabaseConnectiongePath)).getIDatabaseConnectionge();
-            }
+        public BackgroundPanel(String imagePath) {
+            backgroundImage = new ImageIcon(getClass().getResource(imagePath)).getImage();
+        }
 
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            if (backgroundIDatabaseConnectionge != null) {
-                g.drawIDatabaseConnectionge(backgroundIDatabaseConnectionge, 0, 0, getWidth(), getHeight(), this);
+            if (backgroundImage != null) {
+                g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
             }
         }
     }
@@ -50,24 +50,26 @@ public class LoginView extends JFrame {
         this.setResizable(false);
 
         // Tạo icon
-        IDatabaseConnectiongeIcon appIcon = new IDatabaseConnectiongeIcon(getClass().getResource("/view/Icon/icon_Login.png"));        this.setIconIDatabaseConnectionge(appIcon.getIDatabaseConnectionge());
+        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/Icon/icon_Login.png"));
+        this.setIconImage(appIcon.getImage());
         // Giao diện chính
-        JPanel DatabaseConnectioninPanel = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
 
         // ===== Sidebar (Bên trái) =====
-        JPanel sidebar = new BackgroundPanel("/view/Icon/background_Login.png");        sidebar.setPreferredSize(new Dimension(250, 350));
+        JPanel sidebar = new BackgroundPanel("/view/Icon/background_Login.png");
+        sidebar.setPreferredSize(new Dimension(250, 350));
 //        sidebar.setMinimumSize(new Dimension(150, 300));  // Kích thước tối thiểu
-//        sidebar.setDatabaseConnectionximumSize(new Dimension(400, 600));  // Kích thước tối đa
+//        sidebar.setMaximumSize(new Dimension(400, 600));  // Kích thước tối đa
 
         sidebar.setBackground(new Color(255, 224, 102));
         sidebar.setLayout(new BoxLayout(sidebar, BoxLayout.Y_AXIS));
 
         // Logo
-        JLabel logoLabel = new JLabel(new IDatabaseConnectiongeIcon("background_Login.png"));
+        JLabel logoLabel = new JLabel(new ImageIcon("background_Login.png"));
         logoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidebar.add(logoLabel);
 
-        DatabaseConnectioninPanel.add(sidebar, BorderLayout.WEST);
+        mainPanel.add(sidebar, BorderLayout.WEST);
 
         // ===== Form đăng nhập (Bên phải) =====
         JPanel loginPanel = new JPanel();
@@ -87,14 +89,14 @@ public class LoginView extends JFrame {
         JLabel title = new JLabel("Cửa Hàng Thú Cưng HKT");
         title.setFont(new Font("Dialog", Font.BOLD, 22));
         gbc.insets = new Insets(-10, 0, 35, 0);
-        title.setForeground(getPriDatabaseConnectionryColor());
+        title.setForeground(getPrimaryColor());
         loginPanel.add(title, gbc);
 
         // Ảnh logo
         gbc.gridy = 1;
-        IDatabaseConnectiongeIcon originalIcon = new IDatabaseConnectiongeIcon(getClass().getResource("/view/Icon/logo_Login.png"));
-        IDatabaseConnectionge scaledIDatabaseConnectionge = originalIcon.getIDatabaseConnectionge().getScaledInstance(150, 150, IDatabaseConnectionge.SCALE_SMOOTH);
-        JLabel loginLogo = new JLabel(new IDatabaseConnectiongeIcon(scaledIDatabaseConnectionge));
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/view/Icon/logo_Login.png"));
+        Image scaledImage = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+        JLabel loginLogo = new JLabel(new ImageIcon(scaledImage));
         gbc.insets = new Insets(-10, 0, 30, 0);
         loginPanel.add(loginLogo, gbc);
 
@@ -110,11 +112,11 @@ public class LoginView extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         JLabel lblUser = new JLabel("Username :");
         lblUser.setFont(biggerFont);
-        lblUser.setForeground(getPriDatabaseConnectionryColor());
+        lblUser.setForeground(getPrimaryColor());
         loginPanel.add(lblUser, gbc);
 
         gbc.gridx = 1;
-         txtUser = new JTextField(15);
+        txtUser = new JTextField(15);
 //        txtUser.setPreferredSize(new Dimension(200, 30));
         txtUser.setBorder(BorderFactory.createLineBorder(new Color(139, 69, 19), 2));
         //focus viền
@@ -137,7 +139,7 @@ public class LoginView extends JFrame {
                 new LineBorder(new Color(100, 100, 100), 1, true),  // Viền màu xám, bo tròn
                 BorderFactory.createEmptyBorder(5, 10, 5, 5) // Padding trong ô nhập
         ));
-         //tạo placehoder
+        //tạo placehoder
         txtUser.setText("Nhập tên đăng nhập...");
         txtUser.setForeground(Color.GRAY); // Đặt màu xám khi hiển thị placeholder
 
@@ -168,7 +170,7 @@ public class LoginView extends JFrame {
         gbc.gridy = 3;
         JLabel lblPass = new JLabel("Password :");
         lblPass.setFont(biggerFont);
-        lblPass.setForeground(getPriDatabaseConnectionryColor());
+        lblPass.setForeground(getPrimaryColor());
         loginPanel.add(lblPass, gbc);
 
         gbc.gridx = 1;
@@ -234,43 +236,43 @@ public class LoginView extends JFrame {
         buttonPanel.setOpaque(false);
         JButton btnCancel = new JButton("Cancel");
         btnCancel.setBackground(Color.white);
-        btnCancel.setForeground(getPriDatabaseConnectionryColor());
-        btnCancel.setBorder(new LineBorder(getPriDatabaseConnectionryColor(), 2));
+        btnCancel.setForeground(getPrimaryColor());
+        btnCancel.setBorder(new LineBorder(getPrimaryColor(), 2));
         //tắt focus
         btnCancel.setFocusable(false);
         //hiệu ứng khi hover
         btnCancel.addMouseListener(new  java.awt.event.MouseAdapter()
         {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnCancel.setBackground(getPriDatabaseConnectionryColor());
+                btnCancel.setBackground(getPrimaryColor());
                 btnCancel.setForeground(Color.white);
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnCancel.setBackground(Color.white);
-                btnCancel.setForeground(getPriDatabaseConnectionryColor());
+                btnCancel.setForeground(getPrimaryColor());
             }
         });
 
         btnLogin = new JButton("Login");
         btnLogin.setBackground(Color.white);
-        btnLogin.setForeground(getPriDatabaseConnectionryColor());
-        btnLogin.setBorder(new LineBorder(getPriDatabaseConnectionryColor(), 2));
+        btnLogin.setForeground(getPrimaryColor());
+        btnLogin.setBorder(new LineBorder(getPrimaryColor(), 2));
         //tắt focus
         btnLogin.setFocusable(false);
         //hiệu ứng khi hover
         btnLogin.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnLogin.setBackground(getPriDatabaseConnectionryColor());  // Đổi màu nền khi hover
+                btnLogin.setBackground(getPrimaryColor());  // Đổi màu nền khi hover
                 btnLogin.setForeground(Color.white);
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 btnLogin.setBackground(Color.white);  // Quay lại nền trắng khi rời chuột
-                btnLogin.setForeground(getPriDatabaseConnectionryColor());
+                btnLogin.setForeground(getPrimaryColor());
             }
         });
 // Thêm hai nút vào buttonPanel
@@ -294,10 +296,10 @@ public class LoginView extends JFrame {
             }
         });
 
-        DatabaseConnectioninPanel.add(loginPanel, BorderLayout.CENTER);
+        mainPanel.add(loginPanel, BorderLayout.CENTER);
 
         // Hiển thị giao diện
-        this.setContentPane(DatabaseConnectioninPanel);
+        this.setContentPane(mainPanel);
         this.setVisible(true);
     }
     public String getUsername() {

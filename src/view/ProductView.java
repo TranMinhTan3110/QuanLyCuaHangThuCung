@@ -53,7 +53,7 @@ public class ProductView extends JPanel {
 
 		btnMinus = new JButton("−");
 		btnMinus.setBackground(new Color(232, 150, 89));
-		btnMinus.setDatabaseConnectionrgin(new Insets(0, 5, 0, 5));
+		btnMinus.setMargin(new Insets(0, 5, 0, 5));
 		btnMinus.setFocusPainted(false);
 		btnMinus.setFont(new Font("Arial", Font.BOLD, 12));
 
@@ -65,7 +65,7 @@ public class ProductView extends JPanel {
 
 		btnPlus = new JButton("+");
 		btnPlus.setBackground(new Color(232, 150, 89));
-		btnPlus.setDatabaseConnectionrgin(new Insets(0, 5, 0, 5));
+		btnPlus.setMargin(new Insets(0, 5, 0, 5));
 		btnPlus.setFocusPainted(false);
 		btnPlus.setFont(new Font("Arial", Font.BOLD, 12));
 
@@ -120,7 +120,7 @@ public class ProductView extends JPanel {
 		Hover.roundComboBox(CateName_comboBox, 15, Color.WHITE, Color.LIGHT_GRAY);
 
 		btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
 		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnEdit.addActionListener(new ActionListener() {
@@ -137,7 +137,7 @@ public class ProductView extends JPanel {
 		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
 		btnAdd = new JButton("Add");
-		btnAdd.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
 		btnAdd.setBackground(new Color(255, 255, 223));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +158,7 @@ public class ProductView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 			}
 		});
-		btnDel.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnDel.setBounds(189, 167, 87, 63);
@@ -170,7 +170,7 @@ public class ProductView extends JPanel {
 		panel_top.add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-		IDatabaseConnectiongeIcon searchIcon = new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
+		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
 		JPanel searchPanel = new JPanel(new BorderLayout());
 		searchPanel.setBounds(684, 187, 234, 24);
 		searchPanel.setBackground(Color.WHITE);
@@ -288,7 +288,7 @@ public class ProductView extends JPanel {
 
 	public void setSelectedCategoryByName(String categoryName) {
 		for (int i = 0; i < CateName_comboBox.getItemCount(); i++) {
-			Category cate = CateName_comboBox.getIteDatabaseConnectiont(i);
+			Category cate = CateName_comboBox.getItemAt(i);
 			if (cate.getCategoryName().equals(categoryName)) {
 				CateName_comboBox.setSelectedIndex(i);
 				return;
@@ -309,14 +309,14 @@ public class ProductView extends JPanel {
 	class NumberOnlyFilter extends DocumentFilter {
 		@Override
 		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-			if (string.DatabaseConnectiontches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
+			if (string.matches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
 				super.insertString(fb, offset, string, attr);
 			}
 		}
 
 		@Override
 		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-			if (text.DatabaseConnectiontches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
+			if (text.matches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
 				super.replace(fb, offset, length, text, attrs);
 			}
 		}

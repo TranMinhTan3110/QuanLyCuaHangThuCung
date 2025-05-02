@@ -9,8 +9,8 @@ import view.LoginView;
 
 import javax.swing.*;
 
-public class   TestView {
-    public static void DatabaseConnectionin(String[] args) {
+public class  TestView {
+    public static void main(String[] args) {
 //        SwingUtilities.invokeLater(LoginView::new);
         UserResposittoryImpl user = new UserResposittoryImpl();
         AuthService authService = new AuthService(user);
