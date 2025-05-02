@@ -2,6 +2,7 @@ package service;
 
 import dao.DaoInterface;
 import dao.PetDAO;
+import dao.ProductDAO;
 import model.entity.Pet;
 
 import java.util.ArrayList;
@@ -77,5 +78,25 @@ public class PetService {
             return ((PetDAO) daoPet).filterAndSort(species,breed,priceOrder);
         }
         return new  ArrayList<>();
+    }
+
+    public String getPetName(int id) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).getPetNameById(id);
+        }
+        return null;
+    }
+    public boolean sellPet(int id) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).deletePetByID(id);
+        }
+        return false;
+    }
+
+    public boolean updateTrangThai(int petID, String status) {
+        if (daoPet instanceof PetDAO) {
+            return ((PetDAO) daoPet).updatePetStatus(petID, status);
+        }
+        return false;
     }
 }

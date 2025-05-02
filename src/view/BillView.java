@@ -34,6 +34,7 @@ public class BillView extends JPanel {
     private JTextField searchProductField;
     private JTextField searchPetField;
     private JTextField searchCustomerField;
+    private JTextField totaltextField;
     private JButton productButton;
     private JButton petButton;
     private JButton customerButton;
@@ -41,7 +42,8 @@ public class BillView extends JPanel {
     private JButton btnAdd, btnDel;
     private JComboBox<String> comboPaymentMethod;
     private JTextField txtTotalAmount;
-
+    private JComboBox pay_comboBox;
+    private int idCustomer;
     public BillView() {
         setLayout(null);
         setBounds(0, 0, 950, 750);
@@ -219,7 +221,8 @@ public class BillView extends JPanel {
                     String name = tableCustomerList.getValueAt(selectedRow, 1).toString();
                     String address = tableCustomerList.getValueAt(selectedRow, 2).toString();
                     String phone = tableCustomerList.getValueAt(selectedRow, 3).toString();
-
+                    int id = Integer.parseInt(tableCustomerList.getValueAt(selectedRow, 0).toString());
+                    idCustomer = id;
                     nameTextField.setText(name);
                     phoneTextField.setText(phone);
                     addressTextField.setText(address);
@@ -244,7 +247,7 @@ public class BillView extends JPanel {
             }
         });
         scrollPaneBill = new JScrollPane(tableBillItems);
-        scrollPaneBill.setBounds(508, 0, 450, 514);
+        scrollPaneBill.setBounds(508, 0, 450, 426);
         scrollPaneBill.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(),
                 "Hóa Đơn",
@@ -259,7 +262,7 @@ public class BillView extends JPanel {
         btnSave = new JButton("Lưu");
         btnSave.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
         btnSave.setFont(new Font("Arial", Font.BOLD, 14));
-        btnSave.setBounds(553, 570, 150, 70);
+        btnSave.setBounds(553, 610, 150, 70);
         btnSave.setFocusPainted(false);
         btnSave.setFocusPainted(false);
         btnSave.setBorderPainted(false);
@@ -273,7 +276,7 @@ public class BillView extends JPanel {
         btnExport = new JButton("Xuất hóa đơn");
         btnExport.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
         btnExport.setFont(new Font("Arial", Font.BOLD, 14));
-        btnExport.setBounds(712, 572, 150, 67);
+        btnExport.setBounds(712, 610, 150, 67);
         btnExport.setFocusPainted(false);
         btnExport.setFocusPainted(false);
         btnExport.setBorderPainted(false);
@@ -317,23 +320,47 @@ public class BillView extends JPanel {
         add(btnDel);
         Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-        comboPaymentMethod = new JComboBox<>(new String[]{"Tiền mặt", "Chuyển khoản", "QR Code"});
-        txtTotalAmount = new JTextField(10);
-        txtTotalAmount.setEditable(false); // Chỉ hiển thị, không nhập tay
+        JLabel totallbl = new JLabel("Total");
+        totallbl.setFont(new Font("Arial", Font.PLAIN, 16));
+        totallbl.setBounds(535, 446, 45, 19);
+        add(totallbl);
 
-        JPanel panelBottom = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        panelBottom.add(new JLabel("Phương thức thanh toán:"));
-        panelBottom.add(comboPaymentMethod);
-        panelBottom.add(new JLabel("Tổng tiền:"));
-        panelBottom.add(txtTotalAmount);
+        totaltextField = new JTextField();
+        totaltextField.setBounds(732, 445, 150, 25);
+        add(totaltextField);
+        totaltextField.setColumns(10);
 
-        add(panelBottom, BorderLayout.SOUTH); // hoặc vị trí phù hợp
+        pay_comboBox = new JComboBox();
+        pay_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
+        pay_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Tiền mặt", "Chuyển Khoản"}));
+        pay_comboBox.setBounds(732, 495, 150, 21);
+        add(pay_comboBox);
+
+        JLabel paylbl = new JLabel("Phương thức thanh toán");
+        paylbl.setFont(new Font("Arial", Font.PLAIN, 16));
+        paylbl.setBounds(535, 491, 176, 25);
+        add(paylbl);
 
         setupButtonListeners();
 
 
     }
 
+    public JTextField getTotaltextField() {
+        return totaltextField;
+    }
+
+    public void setTotaltextField(Double price) {
+        this.totaltextField.setText(String.valueOf(price));
+    }
+
+    public JComboBox getPay_comboBox() {
+        return pay_comboBox;
+    }
+
+    public int getIDCustomer() {
+        return idCustomer;
+    }
     public JButton getBtnAdd() {
         return btnAdd;
     }

@@ -8,6 +8,7 @@ public class Pet {
     private float age;
     private double price;
     private  String gender;
+    private String trangThai; // thêm trạng thái
 
     public Pet(int petID, String name, String breed, String species, float age, double price, String gender) {
         this.petID = petID;
@@ -19,6 +20,14 @@ public class Pet {
         this.gender = gender;
     }
 
+    // getter, setter cho tất cả thuộc tính
+    public String getTrangThai() {
+        return trangThai;
+    }
+
+    public void setTrangThai(String trangThai) {
+        this.trangThai = trangThai;
+    }
     public String getGender() {
         return gender;
     }

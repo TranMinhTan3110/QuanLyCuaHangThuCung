@@ -10,11 +10,11 @@ public class OrderDAO {
     public int insert(Order order) throws SQLException {
         int generatedID = -1;
         Connection conn = DatabaseConnection.getConnection();
-        String sql = "INSERT INTO Orders(userID, customerID, totalPrice, orderDate) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO [Order](userID, customerID, totalPrice, orderDate) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setInt(1, order.getUser().getId());
-            ps.setInt(2, order.getCustomer().getId());
+            ps.setInt(1, order.getUserID());
+            ps.setInt(2, order.getCustomerID());  // Sửa lỗi ở đây
             ps.setDouble(3, order.getTotalPrice());
             ps.setDate(4, new java.sql.Date(order.getOrderDate().getTime()));
 
@@ -25,10 +25,12 @@ public class OrderDAO {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            throw e;
         }
 
         return generatedID;
     }
+
 
     public ArrayList<Order> getAll() {
         ArrayList<Order> list = new ArrayList<>();

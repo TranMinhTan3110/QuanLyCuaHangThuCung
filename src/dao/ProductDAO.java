@@ -63,6 +63,24 @@ public class ProductDAO implements DaoInterface<Product> {
         }
     }
 
+    public boolean updateQuantity(int productID, int soldQuantity) {
+        String sql = "UPDATE Product SET quantity = quantity - ? WHERE productID = ? AND quantity >= ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, soldQuantity); // số lượng muốn trừ
+            stmt.setInt(2, productID);
+            stmt.setInt(3, soldQuantity); // để đảm bảo không trừ vượt quá số lượng hiện có
+
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @Override
     public boolean delete(Product product) {
         String sql = "DELETE FROM Product WHERE productID = ?";
@@ -202,7 +220,7 @@ public class ProductDAO implements DaoInterface<Product> {
 
     //kiểm tra sản phẩm đã tồn tại chưa
     public boolean isProductExists(String name) {
-        String sql = "SELECT COUNT(*) FROM Product WHERE NAME = ?";
+        String sql = "SELECT COUNT(*) FROM Product WHERE name = ?";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -220,4 +238,18 @@ public class ProductDAO implements DaoInterface<Product> {
         return false;
     }
 
+    public static String getProductNameById(int productId) {
+        String sql = "SELECT name FROM Product WHERE productID = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, productId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("name");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Unknown Product";
+    }
 }

@@ -54,4 +54,17 @@ public class ProductService {
         return productDao.isProductExists(name);
     }
 
+    public String getProductName(int id) {
+        if (daoProduct instanceof ProductDAO) {
+            return ((ProductDAO) daoProduct).getProductNameById(id);
+        }
+        return null;
+    }
+
+    public boolean updateByQua(int id, int sl) {
+        if (daoProduct instanceof ProductDAO) {
+            return ((ProductDAO) daoProduct).updateQuantity(id, sl);
+        }
+        return false;
+    }
 }

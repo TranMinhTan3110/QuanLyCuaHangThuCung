@@ -230,7 +230,13 @@ public class MainView extends JFrame {
         BillView billView = new BillView();
         DaoInterface billRepo = new BillDAO();
         BillService billService = new BillService(billRepo);
-        new controller.BillController(billView, billService);
+        DaoInterface userRepo = new CustomerDao();
+        CustomerService customerService = new CustomerService(userRepo);
+        DaoInterface productRepo = new ProductDAO();
+        ProductService productService = new ProductService(productRepo);
+        DaoInterface petRepo = new PetDAO();
+        PetService petService = new PetService(petRepo);
+        new controller.BillController(billView, billService,productService,petService,customerService);
         return billView;
     }
 
