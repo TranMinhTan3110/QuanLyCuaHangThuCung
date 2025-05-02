@@ -16,7 +16,7 @@ import view.UI.Hover;
 import javax.swing.JComboBox;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
+import javax.swing.IDatabaseConnectiongeIcon;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -119,7 +119,7 @@ public class PetView extends JPanel {
 		Hover.roundTextField(Age_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 		
 		btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+		btnEdit.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
 		btnEdit.setBackground(new Color(255, 255, 204));
 		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnEdit.setBounds(110, 167, 69, 63);
@@ -132,7 +132,7 @@ public class PetView extends JPanel {
 		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
 		btnAdd = new JButton("Add");
-		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
 		btnAdd.setBackground(new Color(255, 255, 223));
 		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnAdd.setBounds(20, 167, 69, 63);
@@ -146,7 +146,7 @@ public class PetView extends JPanel {
 
 		btnDel = new JButton("Delete");
 
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
 		btnDel.setBounds(189, 167, 87, 63);
@@ -159,7 +159,7 @@ public class PetView extends JPanel {
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 		
 		
-		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
+		IDatabaseConnectiongeIcon searchIcon = new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
 
 		JPanel searchPanel = new JPanel(new BorderLayout());
 		searchPanel.setBounds(684, 187, 234, 24);
@@ -198,7 +198,7 @@ public class PetView extends JPanel {
 		panel_top.add(lblGender);
 
 		gender_comboBox = new JComboBox();
-		gender_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
+		gender_comboBox.setModel(new DefaultComboBoxModel(new String[] {"DatabaseConnectionle", "FeDatabaseConnectionle"}));
 		gender_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		gender_comboBox.setBounds(411, 107, 120, 33);
 		panel_top.add(gender_comboBox);

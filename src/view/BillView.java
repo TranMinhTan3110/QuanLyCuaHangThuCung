@@ -21,7 +21,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
+import javax.swing.IDatabaseConnectiongeIcon;
 
 public class BillView extends JPanel {
 
@@ -270,7 +270,7 @@ public class BillView extends JPanel {
 
         // Nút "Lưu"
         btnSave = new JButton("Lưu");
-        btnSave.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
+        btnSave.setIcon(new IDatabaseConnectiongeIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
         btnSave.setFont(new Font("Arial", Font.BOLD, 14));
         btnSave.setBounds(553, 570, 150, 70);
         btnSave.setFocusPainted(false);
@@ -284,7 +284,7 @@ public class BillView extends JPanel {
 
         // Nút "Xuất hóa đơn"
         btnExport = new JButton("Xuất hóa đơn");
-        btnExport.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
+        btnExport.setIcon(new IDatabaseConnectiongeIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
         btnExport.setFont(new Font("Arial", Font.BOLD, 14));
         btnExport.setBounds(712, 572, 150, 67);
         btnExport.setFocusPainted(false);

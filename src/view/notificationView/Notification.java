@@ -4,7 +4,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
-import static view.LoginView.getPrimaryColor;
+import static view.LoginView.getPriDatabaseConnectionryColor;
 
 public class Notification extends JFrame {
     JButton button;
@@ -21,8 +21,8 @@ public class Notification extends JFrame {
         getContentPane().setBackground(new Color(255, 228, 181));
 
         // Icon
-        ImageIcon appIcon = new ImageIcon(getClass().getResource("/view/Icon/icon_Login.png"));
-        this.setIconImage(appIcon.getImage());
+        IDatabaseConnectiongeIcon appIcon = new IDatabaseConnectiongeIcon(getClass().getResource("/view/Icon/icon_Login.png"));
+        this.setIconIDatabaseConnectionge(appIcon.getIDatabaseConnectionge());
 
         // Text thông báo
         JTextArea notification = new JTextArea(s);
@@ -41,21 +41,21 @@ public class Notification extends JFrame {
         button = new JButton("OK");
         button.setFocusable(false);
         button.setBackground(Color.white);
-        button.setForeground(getPrimaryColor());
-        button.setBorder(new LineBorder(getPrimaryColor(), 2));
+        button.setForeground(getPriDatabaseConnectionryColor());
+        button.setBorder(new LineBorder(getPriDatabaseConnectionryColor(), 2));
         button.setBounds(300, 95, 70, 30); // Cố định vị trí
         button.addActionListener(e -> this.setVisible(false));
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                button.setBackground(getPrimaryColor());
+                button.setBackground(getPriDatabaseConnectionryColor());
                 button.setForeground(Color.white);
             }
 
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(Color.white);
-                button.setForeground(getPrimaryColor());
+                button.setForeground(getPriDatabaseConnectionryColor());
             }
         });
 

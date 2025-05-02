@@ -42,7 +42,7 @@ public class UserController {
 //                    try {
 //                        int id = Integer.parseInt(idStr);
 //                        currentUser = userService.selectedById(id); // Lấy người dùng theo ID
-//                    } catch (NumberFormatException ex) {
+//                    } catch (NumberForDatabaseConnectiontException ex) {
 //                        JOptionPane.showMessageDialog(userView, "ID không hợp lệ khi chọn dòng!");
 //                    }
 //                }
@@ -62,7 +62,7 @@ public class UserController {
                     user.getUsername(),
                     user.getPassword(),
                     user.getAddress(),
-                    RoleUtil.formatRole(user.getRole())
+                    RoleUtil.forDatabaseConnectiontRole(user.getRole())
             );
         }
     }
@@ -83,7 +83,7 @@ public class UserController {
             try {
                 int id = Integer.parseInt(idStr);
                 currentUser = userService.selectedById(id); // Lấy người dùng theo ID từ DB
-            } catch (NumberFormatException ex) {
+            } catch (NumberForDatabaseConnectiontException ex) {
                 JOptionPane.showMessageDialog(userView, "ID không hợp lệ khi chọn dòng!");
             }
         }
@@ -203,14 +203,14 @@ public class UserController {
             // Tạo đối tượng User và thêm vào cơ sở dữ liệu
             User user = new User(0, name, phone, address, username, password, role);
             if (userService.insert(user)) {
-                userView.addUserToTable(String.valueOf(user.getId()), name, phone, username, password, address, RoleUtil.formatRole(role));
+                userView.addUserToTable(String.valueOf(user.getId()), name, phone, username, password, address, RoleUtil.forDatabaseConnectiontRole(role));
                 JOptionPane.showMessageDialog(userView, "Thêm nhân viên thành công!");
                 userView.clearFields();
             } else {
                 JOptionPane.showMessageDialog(userView, "Thêm nhân viên thất bại!");
             }
         }
-//        catch (NumberFormatException ex) {
+//        catch (NumberForDatabaseConnectiontException ex) {
 //            JOptionPane.showMessageDialog(userView, "ID phải là số!");
 //        }
 
@@ -312,14 +312,14 @@ public class UserController {
             }
             User user = new User(idStr, name, phone, address, username, password, role);
             if (userService.update(user)) {
-                userView.updateUserInTable(selectedRow, String.valueOf(user.getId()), name, phone, username, password, address, RoleUtil.formatRole(role));
+                userView.updateUserInTable(selectedRow, String.valueOf(user.getId()), name, phone, username, password, address, RoleUtil.forDatabaseConnectiontRole(role));
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thành công!");
                 userView.clearFields();
                 userView.getTable().clearSelection();
             } else {
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thất bại!");
             }
-        } catch (NumberFormatException ex) {
+        } catch (NumberForDatabaseConnectiontException ex) {
             JOptionPane.showMessageDialog(userView, "ID phải là số!");
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(userView, "Lỗi chuyển đổi role: " + ex.getMessage());
@@ -344,7 +344,7 @@ public class UserController {
             } else {
                 JOptionPane.showMessageDialog(userView, "Xóa nhân viên thất bại!");
             }
-        } catch (NumberFormatException ex) {
+        } catch (NumberForDatabaseConnectiontException ex) {
             JOptionPane.showMessageDialog(userView, "ID nhân viên không hợp lệ!");
         }
     }

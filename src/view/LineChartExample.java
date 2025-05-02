@@ -52,7 +52,7 @@
 //        // Chỉnh font tiêu đề và trục
 //        lineChart.getTitle().setFont(new Font("SansSerif", Font.BOLD, 18));
 //        lineChart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 14));
-//        plot.getDomainAxis().setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
+//        plot.getDoDatabaseConnectioninAxis().setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 //        plot.getRangeAxis().setTickLabelFont(new Font("SansSerif", Font.PLAIN, 12));
 //
 //        // Hiển thị biểu đồ
@@ -61,7 +61,7 @@
 //        setContentPane(chartPanel);
 //    }
 //
-//    public static void main(String[] args) {
+//    public static void DatabaseConnectionin(String[] args) {
 //        SwingUtilities.invokeLater(() -> {
 //            LineChartExample chart = new LineChartExample();
 //            chart.setVisible(true);

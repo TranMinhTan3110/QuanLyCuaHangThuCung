@@ -69,7 +69,7 @@ public class ProductController {
             try {
                 price = Double.parseDouble(priceStr);
                 quantity = Integer.parseInt(quantityStr);
-            } catch (NumberFormatException ex) {
+            } catch (NumberForDatabaseConnectiontException ex) {
                 JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
                 return;
             }
@@ -142,7 +142,7 @@ public class ProductController {
                 try {
                     price = Double.parseDouble(priceStr);
                     quantity = Integer.parseInt(quantityStr);
-                } catch (NumberFormatException ex) {
+                } catch (NumberForDatabaseConnectiontException ex) {
                     JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
                     return;
                 }
@@ -200,7 +200,7 @@ public class ProductController {
                 int quantity = Integer.parseInt(view.getQuantity());
                 quantity++;
                 view.setQuantity(String.valueOf(quantity));
-            } catch (NumberFormatException ex) {
+            } catch (NumberForDatabaseConnectiontException ex) {
                 view.setQuantity("1"); // Nếu nhập linh tinh thì reset về 1
             }
         }
@@ -217,7 +217,7 @@ public class ProductController {
                 } else {
                     showWarning("Số lượng không thể nhỏ hơn 0!");
                 }
-            } catch (NumberFormatException ex) {
+            } catch (NumberForDatabaseConnectiontException ex) {
                 view.setQuantity("0"); // Nếu nhập linh tinh thì reset về 0
                 showWarning("Giá trị nhập không hợp lệ! Đã đặt về 0.");
             }
@@ -232,7 +232,7 @@ public class ProductController {
                 return false;
             }
             return true;
-        } catch (NumberFormatException ex) {
+        } catch (NumberForDatabaseConnectiontException ex) {
             showWarning("Vui lòng nhập số hợp lệ!");
             view.setQuantity("0");
             return false;

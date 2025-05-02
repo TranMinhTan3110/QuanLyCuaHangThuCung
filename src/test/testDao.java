@@ -3,7 +3,7 @@
 //import model.entity.Product;
 //
 //public class testDao {
-//    public static void main(String[] args) {
+//    public static void DatabaseConnectionin(String[] args) {
 //        Product p = new Product(2,"Cat food", 5000, 1); // Bỏ productID
 //        Product k = new Product(" Dog toy", 60000, 2);
 //        ProductDAO pd = new ProductDAO();

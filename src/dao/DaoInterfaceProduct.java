@@ -1,8 +1,8 @@
 package dao;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.DatabaseConnectionp;
 
 public interface DaoInterfaceProduct<T> {
-    ArrayList<T> selectByCondition(Map<String, Object> filters);
+    ArrayList<T> selectByCondition(DatabaseConnectionp<String, Object> filters);
 }

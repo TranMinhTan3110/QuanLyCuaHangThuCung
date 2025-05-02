@@ -4,7 +4,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.DriverDatabaseConnectionnager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
@@ -27,7 +27,7 @@ public class DatabaseConnection {
         return ds.getConnection();
     }
 
-    public static void main(String[] args) {
+    public static void DatabaseConnectionin(String[] args) {
         try (Connection conn = getConnection()) {
             System.out.println("✅ Kết nối thành công!");
             System.out.println("Database: " + conn.getCatalog());

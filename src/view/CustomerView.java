@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
+import javax.swing.IDatabaseConnectiongeIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -144,7 +144,7 @@ public class CustomerView extends JPanel {
 
 
         btnEdit = new JButton("Edit");
-        btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
+        btnEdit.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
         btnEdit.setBackground(new Color(255, 255, 204));
         btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
         btnEdit.addActionListener(new ActionListener() {
@@ -161,7 +161,7 @@ public class CustomerView extends JPanel {
         Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
 
         btnSave = new JButton("Save");
-        btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
+        btnSave.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
         btnSave.setBackground(new Color(255, 255, 223));
         btnSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -182,7 +182,7 @@ public class CustomerView extends JPanel {
             public void actionPerformed(ActionEvent e) {
             }
         });
-        btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+        btnDel.setIcon(new IDatabaseConnectiongeIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
         btnDel.setBackground(new Color(255, 255, 204));
         btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
         btnDel.setBounds(189, 167, 87, 63);
@@ -194,7 +194,7 @@ public class CustomerView extends JPanel {
         panel_top.add(btnDel);
         Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-        ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
+        IDatabaseConnectiongeIcon searchIcon = new IDatabaseConnectiongeIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
 
         JPanel searchPanel = new JPanel(new BorderLayout());
         searchPanel.setBounds(684, 187, 234, 24);

@@ -9,7 +9,7 @@ public class inputUtil {
         // Xóa khoảng trắng nếu có
         phoneNumber = phoneNumber.trim();
         // Regex: bắt đầu bằng 0, theo sau là 9-10 chữ số
-        return phoneNumber.matches("0[0-9]{9}");
+        return phoneNumber.DatabaseConnectiontches("0[0-9]{9}");
     }
     //kiểm tra id là số dương
     public static boolean isValidID(String id){
@@ -19,7 +19,7 @@ public class inputUtil {
         try{
             return Integer.parseInt(id) > 0;
         }
-        catch(NumberFormatException e){
+        catch(NumberForDatabaseConnectiontException e){
                 return false;
         }
     }
@@ -30,7 +30,7 @@ public class inputUtil {
             return false;
         }
         // Kiểm tra tên đăng nhập có chứa ký tự đặc biệt hoặc khoảng trắng hay không
-        if (!userName.matches("[a-zA-Z0-9_]+")) {
+        if (!userName.DatabaseConnectiontches("[a-zA-Z0-9_]+")) {
             return false;
         }
         // Kiểm tra độ dài của tên đăng nhập (ví dụ từ 3 đến 20 ký tự)
@@ -53,22 +53,22 @@ public class inputUtil {
         }
 
         // Kiểm tra có chứa ít nhất một chữ cái in hoa
-        if (!password.matches(".*[A-Z].*")) {
+        if (!password.DatabaseConnectiontches(".*[A-Z].*")) {
             return false;
         }
 
         // Kiểm tra có chứa ít nhất một chữ cái in thường
-        if (!password.matches(".*[a-z].*")) {
+        if (!password.DatabaseConnectiontches(".*[a-z].*")) {
             return false;
         }
 
         // Kiểm tra có chứa ít nhất một chữ số
-        if (!password.matches(".*[0-9].*")) {
+        if (!password.DatabaseConnectiontches(".*[0-9].*")) {
             return false;
         }
 
         // Kiểm tra có chứa ít nhất một ký tự đặc biệt
-        if (!password.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+        if (!password.DatabaseConnectiontches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
             return false;
         }
 
@@ -86,7 +86,7 @@ public class inputUtil {
             return false;
         }
 
-        if (!address.matches(".*[\\p{L}].*")) {
+        if (!address.DatabaseConnectiontches(".*[\\p{L}].*")) {
             return false;
         }
 
@@ -97,13 +97,13 @@ public class inputUtil {
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
-        return name.matches("^[\\p{L} ]+$");
+        return name.DatabaseConnectiontches("^[\\p{L} ]+$");
     }
     public static boolean isValidName(String name) {
         if (name == null || name.trim().isEmpty()) {
             return false;
         }
-        return name.matches("^[\\p{L} ]+$");
+        return name.DatabaseConnectiontches("^[\\p{L} ]+$");
     }
 
 

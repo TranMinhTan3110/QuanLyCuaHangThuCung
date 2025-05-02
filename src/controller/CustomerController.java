@@ -9,7 +9,7 @@ import service.UserService;
 import utils.RoleUtil;
 import utils.inputUtil;
 import view.CustomerView;
-import view.MainView;
+import view.DatabaseConnectioninView;
 import view.UserView;
 
 import javax.swing.*;
@@ -24,7 +24,7 @@ import java.util.List;
 public class CustomerController {
     private CustomerView customerView;
     private CustomerService customerService;
-    private MainView mainView;
+    private DatabaseConnectioninView DatabaseConnectioninView;
     private UserView userView;
     private UserService userService;
     private Customer currentCustomer;
@@ -63,7 +63,7 @@ public class CustomerController {
             try {
                 int current_id = Integer.parseInt(id);
                 currentCustomer = customerService.selectedByID(current_id); // Lấy người dùng theo ID từ DB
-            } catch (NumberFormatException ex) {
+            } catch (NumberForDatabaseConnectiontException ex) {
                 JOptionPane.showMessageDialog(userView, "ID không hợp lệ khi chọn dòng!");
             }
         }
@@ -235,7 +235,7 @@ public class CustomerController {
                     JOptionPane.showMessageDialog(customerView,"Xóa khách hàng thất bại");
                 }
             }
-        }catch (NumberFormatException e){
+        }catch (NumberForDatabaseConnectiontException e){
             JOptionPane.showMessageDialog(customerView,"ID không hợp lệ");
         }
 
@@ -260,7 +260,7 @@ public class CustomerController {
         public void search() {
             String str = customerView.getSearch_textField().toLowerCase();
             List<Customer> customers = new ArrayList<>();
-            if(str.matches("\\d+")){
+            if(str.DatabaseConnectiontches("\\d+")){
                customers = customerService.searchByCustomerPhone(str);
             }else{
                 customers = customerService.searchByCustomerName(str);

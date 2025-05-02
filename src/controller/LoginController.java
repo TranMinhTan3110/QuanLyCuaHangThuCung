@@ -5,7 +5,7 @@ import service.AuthService;
 import utils.LoginUtil;
 import utils.RoleUtil;
 import view.LoginView;
-import view.MainView;
+import view.DatabaseConnectioninView;
 import view.notificationView.Notification;
 
 import java.awt.event.ActionEvent;
@@ -61,9 +61,9 @@ public class LoginController {
 
             // Hiển thị giao diện chính theo quyền
             RoleUtil roleUtil = new RoleUtil();
-            MainView mainView = new MainView(roleUtil.formatRole(check.getRole()));
-            new MainController(mainView);
-            mainView.setVisible(true);
+            DatabaseConnectioninView DatabaseConnectioninView = new DatabaseConnectioninView(roleUtil.forDatabaseConnectiontRole(check.getRole()));
+            new DatabaseConnectioninController(DatabaseConnectioninView);
+            DatabaseConnectioninView.setVisible(true);
             return true;
         } else {
             System.out.println("Đăng nhập thất bại!");
