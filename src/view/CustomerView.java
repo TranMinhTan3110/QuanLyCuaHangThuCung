@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 import view.UI.Hover;
@@ -57,9 +58,12 @@ public class CustomerView extends JPanel {
     public String getPhone_textField() {
         return Phone_textField.getText();
     }
-
+    public String getSearch_textField(){return Search_textField.getText();}
     public String getScore_textField() {
         return Score_textField.getText();
+    }
+    public JTable getCustomerTable() {
+        return table;
     }
 
     /**
@@ -254,6 +258,9 @@ public class CustomerView extends JPanel {
 
     public void setDeleteButtonListener(ActionListener listener) {
         btnDel.addActionListener(listener);
+    }
+    public void setSearchListener(DocumentListener listener){
+        Search_textField.getDocument().addDocumentListener(listener);
     }
 
     public JTable getTable() {

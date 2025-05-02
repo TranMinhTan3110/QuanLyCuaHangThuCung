@@ -5,6 +5,7 @@ import model.entity.Pet;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerDao implements  DaoInterface<Customer> {
     public boolean insert(Customer customer) {
@@ -173,7 +174,56 @@ public class CustomerDao implements  DaoInterface<Customer> {
 
         return false; // Nếu không tìm thấy
     }
+    public List<Customer> customerListByName(String name) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershiplevel " + // Lấy thêm các cột cần thiết
+                "FROM Customer c " +
+                "JOIN Person p ON c.id = p.id " + // Giả sử có cột person_id liên kết
+                "WHERE LOWER(p.name) LIKE ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, "%" + name.toLowerCase().trim() + "%"); // Thêm % vào chuỗi tìm kiếm và chuyển về chữ thường
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setName(rs.getString("name"));
+                customer.setPhone(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setLoyaltyPoints(rs.getInt("loyaltyPoints"));
+                customer.setMembershipLevel(rs.getString("membershipLevel")); // Giả sử có cột rank trong Customer hoặc Person
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
 
-
+    public List<Customer> customerListByPhone(String phone) {
+        List<Customer> customers = new ArrayList<>();
+        String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershiplevel " + // Lấy thêm các cột cần thiết
+                "FROM Customer c " +
+                "JOIN Person p ON c.id = p.id " + // Giả sử có cột person_id liên kết
+                "WHERE LOWER(p.phone) LIKE ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1,  phone.toLowerCase().trim() + "%"); // Thêm % vào chuỗi tìm kiếm và chuyển về chữ thường
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Customer customer = new Customer();
+                customer.setId(rs.getInt("id"));
+                customer.setName(rs.getString("name"));
+                customer.setPhone(rs.getString("phone"));
+                customer.setAddress(rs.getString("address"));
+                customer.setLoyaltyPoints(rs.getInt("loyaltyPoints"));
+                customer.setMembershipLevel(rs.getString("membershipLevel")); // Giả sử có cột rank trong Customer hoặc Person
+                customers.add(customer);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return customers; // Trả về danh sách khách hàng
+    }
 
 }
