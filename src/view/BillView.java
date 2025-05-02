@@ -48,6 +48,7 @@ public class BillView extends JPanel {
     private JButton petButton;
     private JButton customerButton;
     private JLabel lblProductList;
+    private JTextField totaltextField;
 
     public JTextField getNameTextField() {
         return nameTextField;
@@ -259,7 +260,7 @@ public class BillView extends JPanel {
         DefaultTableModel billModel = new DefaultTableModel(billColumns, 0);
         tableBillItems = new JTable(billModel);
         scrollPaneBill = new JScrollPane(tableBillItems);
-        scrollPaneBill.setBounds(508, 0, 450, 514);
+        scrollPaneBill.setBounds(508, 0, 450, 426);
         scrollPaneBill.setBorder(BorderFactory.createTitledBorder(
         	    BorderFactory.createEtchedBorder(),
         	    "Hóa Đơn",
@@ -306,7 +307,7 @@ public class BillView extends JPanel {
 			}
 		});
 		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnAdd.setBounds(746, 535, 45, 45);
+		btnAdd.setBounds(748, 530, 45, 45);
 		btnAdd.setFocusPainted(false);
 		btnAdd.setBorderPainted(false);
 		btnAdd.setContentAreaFilled(false);
@@ -323,7 +324,7 @@ public class BillView extends JPanel {
 		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
 		btnDel.setBackground(new Color(255, 255, 204));
 		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnDel.setBounds(817, 535, 45, 45);
+		btnDel.setBounds(817, 530, 45, 45);
 		btnDel.setFocusPainted(false);
 		btnDel.setBorderPainted(false);
 		btnDel.setContentAreaFilled(false);
@@ -331,6 +332,16 @@ public class BillView extends JPanel {
 		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+		
+		JLabel totallbl = new JLabel("Total");
+		totallbl.setFont(new Font("Arial", Font.PLAIN, 16));
+		totallbl.setBounds(656, 465, 45, 19);
+		add(totallbl);
+		
+		totaltextField = new JTextField();
+		totaltextField.setBounds(732, 459, 119, 25);
+		add(totaltextField);
+		totaltextField.setColumns(10);
         setupButtonListeners();
     }
 
