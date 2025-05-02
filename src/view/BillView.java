@@ -15,8 +15,10 @@ import view.UI.Hover;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -46,6 +48,7 @@ public class BillView extends JPanel {
     private JButton petButton;
     private JButton customerButton;
     private JLabel lblProductList;
+    private JTextField totaltextField;
 
     public JTextField getNameTextField() {
         return nameTextField;
@@ -207,7 +210,7 @@ public class BillView extends JPanel {
         scrollPaneProduct = new JScrollPane(tableProductList);
         scrollPaneProduct.setBounds(0, 346, 508, 395);
         scrollPaneProduct.setVisible(true);
-//        Hover.customizeTableHeader(tableProductList);
+        Hover.customizeTableHeader(tableProductList);
         add(scrollPaneProduct);
 
         // Bảng danh sách Pet
@@ -218,7 +221,7 @@ public class BillView extends JPanel {
         scrollPanePet = new JScrollPane(tablePetList);
         scrollPanePet.setBounds(0, 346, 506, 395);
         scrollPanePet.setVisible(false);
-//        Hover.customizeTableHeader(tablePetList);
+        Hover.customizeTableHeader(tablePetList);
         add(scrollPanePet);
 
         // Bảng danh sách Customer
@@ -229,7 +232,7 @@ public class BillView extends JPanel {
         scrollPaneCustomer = new JScrollPane(tableCustomerList);
         scrollPaneCustomer.setBounds(0, 346, 506, 395);
         scrollPaneCustomer.setVisible(false);
-//        Hover.customizeTableHeader(tableCustomerList);
+        Hover.customizeTableHeader(tableCustomerList);
         add(scrollPaneCustomer);
         
  
@@ -257,7 +260,7 @@ public class BillView extends JPanel {
         DefaultTableModel billModel = new DefaultTableModel(billColumns, 0);
         tableBillItems = new JTable(billModel);
         scrollPaneBill = new JScrollPane(tableBillItems);
-        scrollPaneBill.setBounds(508, 0, 450, 514);
+        scrollPaneBill.setBounds(508, 0, 450, 426);
         scrollPaneBill.setBorder(BorderFactory.createTitledBorder(
         	    BorderFactory.createEtchedBorder(),
         	    "Hóa Đơn",
@@ -265,14 +268,14 @@ public class BillView extends JPanel {
         	    TitledBorder.DEFAULT_POSITION,
         	    new Font("Arial", Font.BOLD, 20) // Cỡ chữ 16, đậm
         	));
-//        Hover.customizeTableHeader(tableBillItems);
+        Hover.customizeTableHeader(tableBillItems);
         add(scrollPaneBill);
 
         // Nút "Lưu"
         btnSave = new JButton("Lưu");
         btnSave.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
         btnSave.setFont(new Font("Arial", Font.BOLD, 14));
-        btnSave.setBounds(553, 570, 150, 70);
+        btnSave.setBounds(551, 609, 150, 70);
         btnSave.setFocusPainted(false);
         btnSave.setFocusPainted(false);
 		btnSave.setBorderPainted(false);
@@ -286,7 +289,7 @@ public class BillView extends JPanel {
         btnExport = new JButton("Xuất hóa đơn");
         btnExport.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
         btnExport.setFont(new Font("Arial", Font.BOLD, 14));
-        btnExport.setBounds(712, 572, 150, 67);
+        btnExport.setBounds(712, 611, 150, 67);
         btnExport.setFocusPainted(false);
         btnExport.setFocusPainted(false);
         btnExport.setBorderPainted(false);
@@ -295,11 +298,51 @@ public class BillView extends JPanel {
         btnExport.setVerticalTextPosition(SwingConstants.BOTTOM);
         Hover.addHoverButtonEffect(btnExport, new Color(0, 102, 204), 0.8f);
         add(btnExport);
-
-
+        
+        JButton btnAdd = new JButton("");
+		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setBackground(new Color(255, 255, 223));
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnAdd.setBounds(748, 530, 45, 45);
+		btnAdd.setFocusPainted(false);
+		btnAdd.setBorderPainted(false);
+		btnAdd.setContentAreaFilled(false);
+		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
+		add(btnAdd);
+		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
+        
+		JButton btnDel = new JButton("");
+		btnDel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setBackground(new Color(255, 255, 204));
+		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnDel.setBounds(817, 530, 45, 45);
+		btnDel.setFocusPainted(false);
+		btnDel.setBorderPainted(false);
+		btnDel.setContentAreaFilled(false);
+		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+		add(btnDel);
+		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+		
+		JLabel totallbl = new JLabel("Total");
+		totallbl.setFont(new Font("Arial", Font.PLAIN, 16));
+		totallbl.setBounds(656, 465, 45, 19);
+		add(totallbl);
+		
+		totaltextField = new JTextField();
+		totaltextField.setBounds(732, 459, 119, 25);
+		add(totaltextField);
+		totaltextField.setColumns(10);
         setupButtonListeners();
-
-
     }
 
     private void setupButtonListeners() {
@@ -348,7 +391,4 @@ public class BillView extends JPanel {
             }
         });
     }
-
-   
-
 }
