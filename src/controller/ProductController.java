@@ -275,6 +275,7 @@ public class ProductController {
         });
     }
 
+
     // Hàm này Controller tự xử lý
     private void fillFormFromSelectedRow(int selectedRow) {
         String productName = view.getValueAt(selectedRow, 1);

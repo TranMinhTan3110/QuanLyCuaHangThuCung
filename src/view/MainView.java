@@ -176,7 +176,7 @@ public class MainView extends JFrame {
         btnProduct = new JButton("Product");
 //        centerPanel.add(createProductPanel(), "Product");
         btnProduct.setIconTextGap(20);
-        btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Category_Icon.png")));
+        btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Cate_Icon.png")));
         btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
         btnProduct.setFocusPainted(false);
         btnProduct.setBorder(null);

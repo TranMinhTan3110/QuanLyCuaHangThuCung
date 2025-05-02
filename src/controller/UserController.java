@@ -16,6 +16,7 @@ public class UserController {
     private UserView userView;
     private UserService userService;
     private User currentUser;
+    private static int userId;
     public UserController(UserView userView, UserService userService) {
         this.userView = userView;
         this.userService = userService;
@@ -71,6 +72,7 @@ public class UserController {
         int selectedRow = userView.getTable().getSelectedRow();
         if (selectedRow != -1) {
             String idStr = userView.getTable().getValueAt(selectedRow, 0).toString();
+            userId = Integer.parseInt(idStr);
             String name = userView.getTable().getValueAt(selectedRow, 1).toString();
             String phone = userView.getTable().getValueAt(selectedRow, 2).toString();
             String username = userView.getTable().getValueAt(selectedRow, 3).toString();
@@ -224,21 +226,15 @@ public class UserController {
             return;
         }
         try {
-            String id = userView.getIdField();
             String name = userView.getNameField();
             String phone = userView.getPhoneField();
             String username = userView.getUsernameField();
             String password = userView.getPasswordField();
             String address = userView.getAddressField();
+            System.out.println(address);
             String roleStr = userView.getRoleField();
             Role role = RoleUtil.parseRole(roleStr);
-            int idStr = Integer.parseInt(id);
 
-
-            if (!inputUtil.isValidID(id)) {
-                JOptionPane.showMessageDialog(userView, "ID không hợp lệ! Phải là số nguyên dương.");
-                return;
-            }
 
             // Kiểm tra các trường bắt buộc còn lại không được để trống
             if (name.trim().isEmpty()) {
@@ -259,12 +255,6 @@ public class UserController {
             }
             if (address.trim().isEmpty()) {
                 JOptionPane.showMessageDialog(userView, "Địa chỉ không được để trống!");
-                return;
-            }
-            //ko cho đổi id
-            if(currentUser.getId() != idStr){
-                JOptionPane.showMessageDialog(userView,"Không được phép đổi id");
-                userView.getIdFieldJ().setText(String.valueOf(currentUser.getId()));
                 return;
             }
             // Kiểm tra nếu userName không giống uername ban đầu thì cần check
@@ -310,7 +300,14 @@ public class UserController {
                 JOptionPane.showMessageDialog(userView, "Role không hợp lệ!");
                 return;
             }
-            User user = new User(idStr, name, phone, address, username, password, role);
+            User user = new User();
+            user.setId(userId);
+            user.setName(name);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setRole(role);
             if (userService.update(user)) {
                 userView.updateUserInTable(selectedRow, String.valueOf(user.getId()), name, phone, username, password, address, RoleUtil.formatRole(role));
                 JOptionPane.showMessageDialog(userView, "Cập nhật nhân viên thành công!");

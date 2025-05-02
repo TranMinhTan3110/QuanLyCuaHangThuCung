@@ -2,10 +2,13 @@ package service;
 
 import dao.CustomerDao;
 import dao.DaoInterface;
+import dao.ProductDAO;
 import model.entity.Customer;
+import model.entity.Product;
 import model.entity.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CustomerService {
     private DaoInterface daoInterface;
@@ -36,18 +39,26 @@ public class CustomerService {
         return customer.getLoyaltyPoints();
     }
 
-    public String getRank(Customer customer) {
-        return customer.getMembershipLevel();
-    }
+        public String getRank(Customer customer){
+            return customer.getMembershipLevel();
+        }
+        public boolean checkPhone(String phone){
+            return customerDao.findByPhone(phone);
+        }
+        //hàm trả về một Customer
+        public Customer  selectedByID(int id){
+            return (Customer) daoInterface.selectByID(id);
+        }
 
-    public boolean checkPhone(String phone) {
-        return customerDao.findByPhone(phone);
-    }
+        //hàm trả về customer list searched theo name
+        public List<Customer> searchByCustomerName(String name) {
+          return customerDao.customerListByName(name);
+        }
+        //hàm trả về customer list searched  theo phone
+        public List<Customer> searchByCustomerPhone(String phone) {
+            return customerDao.customerListByPhone(phone);
+        }
 
-    //hàm trả về một Customer
-    public Customer selectedByID(int id) {
-        return (Customer) daoInterface.selectByID(id);
-    }
 }
 
 

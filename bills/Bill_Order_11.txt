@@ -1,0 +1,14 @@
+===== HÓA ĐƠN THANH TOÁN =====
+Mã hóa đơn: 11
+Khách hàng: A kha DZ
+Nhân viên: Pham Kha
+Ngày tạo: 02/05/2025 22:26
+-----------------------------------
+STT   Tên mặt hàng         SL       Giá       
+1     Xương gặm vệ sinh răng cho chó 4        150000.00 
+2     Pate cho mèo Me-O    1        25000.00  
+3     Lily                 1        1400000.00
+4     Buddy                1        900000.00 
+-----------------------------------
+Tổng cộng: 2,925,000.00 VNĐ
+Cảm ơn quý khách!

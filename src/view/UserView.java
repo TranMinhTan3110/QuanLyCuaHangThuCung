@@ -17,7 +17,6 @@ public class UserView extends JPanel {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButton btnAdd, btnEdit, btnDel;
-
 	public UserView() {
 		setLayout(null);
 		setBounds(0, 0, 950, 750);
@@ -191,10 +190,10 @@ public class UserView extends JPanel {
 	public String getIdField() {
 		return idField.getText();
 	}
+
 	public JTextField getIdFieldJ() {
 		return idField;
 	}
-
 
 
 	public String getPhoneField() {
@@ -274,7 +273,6 @@ public class UserView extends JPanel {
 	}
 
 	public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
-
 //		idField.setText(id);
 		phoneField.setText(phone);
 		usernameField.setText(username);

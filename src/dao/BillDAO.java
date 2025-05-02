@@ -138,7 +138,7 @@ public class BillDAO implements DaoInterface<Bill> {
 
     public ArrayList<Pet> getAllPet() {
         ArrayList<Pet> pets = new ArrayList<>();
-        String sql = "SELECT * FROM Pet WHERE trangThai = 'Chưa bán'";
+        String sql = "SELECT * FROM Pet WHERE trangThai = N'Chưa bán'";
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql);
