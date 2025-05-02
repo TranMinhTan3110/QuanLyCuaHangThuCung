@@ -5,11 +5,11 @@ public class Pet {
     private String name;
     private String species;// loại thú cưng(chó mèo)
     private String breed;//giống loài
-    private float age;
+    private int age;
     private double price;
     private  String gender;
 
-    public Pet(int petID, String name, String breed, String species, float age, double price, String gender) {
+    public Pet(int petID, String name, String breed, String species, int age, double price, String gender) {
         this.petID = petID;
         this.name = name;
         this.breed = breed;
@@ -63,11 +63,11 @@ public class Pet {
         this.breed = breed;
     }
 
-    public float getAge() {
+    public int getAge() {
         return age;
     }
 
-    public void setAge(float age) {
+    public void setAge(int age) {
         this.age = age;
     }
 

@@ -227,16 +227,16 @@ public class PetDAO implements DaoInterface<Pet>{
         return list;
     }
 
-    public ArrayList<Pet> filterAndSort(String species, String breed, String priceOrder) {
+    public ArrayList<Pet> filterAndSort(String species, String priceOrder) {
         ArrayList<Pet> list = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Pet WHERE 1=1");
 
         if (species != null && !species.isEmpty()) {
             sql.append(" AND species = ?");
         }
-        if (breed != null && !breed.isEmpty()) {
-            sql.append(" AND breed = ?");
-        }
+//        if (breed != null && !breed.isEmpty()) {
+//            sql.append(" AND breed = ?");
+//        }
         if (priceOrder != null && !priceOrder.isEmpty()) {
             sql.append(" ORDER BY price ").append(priceOrder); // ASC hoặc DESC
         }
@@ -248,9 +248,9 @@ public class PetDAO implements DaoInterface<Pet>{
             if (species != null && !species.isEmpty()) {
                 ps.setString(paramIndex++, species);
             }
-            if (breed != null && !breed.isEmpty()) {
-                ps.setString(paramIndex++, breed);
-            }
+//            if (breed != null && !breed.isEmpty()) {
+//                ps.setString(paramIndex++, breed);
+//            }
 
             ResultSet rs = ps.executeQuery(); // ✅ chỉ gọi sau khi đã set xong các tham số
 
@@ -272,6 +272,23 @@ public class PetDAO implements DaoInterface<Pet>{
 
         return list;
     }
+    public boolean isPetExists(String name) {
+        String sql = "SELECT COUNT(*) FROM Pet WHERE NAME = ?";
 
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setString(1, name);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    int count = rs.getInt(1); // Lấy giá trị COUNT(*)
+                    return count > 0; // Nếu > 0 nghĩa là đã có sản phẩm
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
