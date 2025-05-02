@@ -7,6 +7,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import database.DatabaseConnection;
+
 public class CustomerDao implements  DaoInterface<Customer> {
     public boolean insert(Customer customer) {
         String sqlPerson = "INSERT INTO Person(name, phone, address) VALUES(?, ?, ?)";

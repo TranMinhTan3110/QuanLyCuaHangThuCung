@@ -1,6 +1,6 @@
 package dao.LoginDAO.implement;
 
-import dao.DatabaseConnection;
+import database.DatabaseConnection;
 import model.entity.User;
 import model.request.LoginRequest;
 import respository.userRespositorty;
@@ -10,7 +10,9 @@ import java.sql.*;
 
 public class UserResposittoryImpl implements userRespositorty {
 
-    @Override
+//    private static final Statement DatabaseConnection = null;
+
+	@Override
     public User getUserWithUserNameAndPassWord(LoginRequest loginRequest) {
 
         // Không dùng roleId, JOIN trực tiếp bằng roleName

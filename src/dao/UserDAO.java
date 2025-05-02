@@ -7,6 +7,8 @@ import model.entity.User;
 import java.sql.*;
 import java.util.ArrayList;
 
+import database.DatabaseConnection;
+
 public class UserDAO implements DaoInterface<User>{
 
 

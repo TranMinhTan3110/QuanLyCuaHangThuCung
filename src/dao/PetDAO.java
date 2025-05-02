@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import database.DatabaseConnection;
+
 public class PetDAO implements DaoInterface<Pet>{
     @Override
     public boolean insert(Pet pet) {
