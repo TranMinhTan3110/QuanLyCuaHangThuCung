@@ -1,5 +1,5 @@
 package model.entity;
 
-public class    Inventory {
+public class Inventory {
 
 }

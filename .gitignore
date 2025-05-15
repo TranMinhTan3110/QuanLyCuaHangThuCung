@@ -28,4 +28,4 @@ bin/
 ### DatabaseConnectionc OS ###
 .DS_Store
 # Ignore database connection file
-src/dao/DatabaseConnection.java
+src/respository/dao/DatabaseConnection.java

@@ -1,5 +1,5 @@
 //package test;
-//import dao.ProductDAO;
+//import respository.dao.ProductDAO;
 //import model.entity.Product;
 //
 //public class testDao {

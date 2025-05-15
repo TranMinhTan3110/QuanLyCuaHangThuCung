@@ -17,6 +17,7 @@ public class UserView extends JPanel {
 	private JTable table;
 	private DefaultTableModel model;
 	private JButton btnAdd, btnEdit, btnDel;
+
 	public UserView() {
 		setLayout(null);
 		setBounds(0, 0, 950, 750);
@@ -87,7 +88,7 @@ public class UserView extends JPanel {
 		lblRole.setBounds(641, 118, 88, 21);
 		panel_top.add(lblRole);
 
-		roleComboBox = new JComboBox<>(new String[]{"Admin", "Employee"});
+		roleComboBox = new JComboBox<>(new String[] { "Admin", "Employee" });
 		roleComboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		roleComboBox.setBounds(742, 115, 125, 32);
 		panel_top.add(roleComboBox);
@@ -146,25 +147,18 @@ public class UserView extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setFont(new Font("Arial", Font.PLAIN, 16));
 		scrollPane.setBounds(0, 244, 950, 500);
-		scrollPane.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Color.BLACK),
-				"Manager Users",
-				TitledBorder.CENTER,
-				TitledBorder.TOP,
-				new Font("Arial", Font.BOLD, 16),
-				Color.BLACK
-		));
+		scrollPane.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK),
+				"Manager Users", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), Color.BLACK));
 		add(scrollPane);
 
 //		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
-		String[] columnNames = {"ID", "Name", "Phone", "Username", "Password", "Address", "Role"};
+		String[] columnNames = { "ID", "Name", "Phone", "Username", "Password", "Address", "Role" };
 		model = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
 		};
-
 
 		table = new JTable(model);
 		scrollPane.setViewportView(table);
@@ -194,7 +188,6 @@ public class UserView extends JPanel {
 	public JTextField getIdFieldJ() {
 		return idField;
 	}
-
 
 	public String getPhoneField() {
 		return phoneField.getText();
@@ -226,23 +219,26 @@ public class UserView extends JPanel {
 
 	public String getSelectedUserId() {
 		int row = getSelectedRow();
-		if (row != -1) return table.getValueAt(row, 0).toString();
+		if (row != -1)
+			return table.getValueAt(row, 0).toString();
 		return null;
 	}
 
 	public void clearFields() {
 
-		JTextField[] fields = { phoneField, usernameField, nameField, addressField, passwordField};
-		for (JTextField field : fields) field.setText("");
+		JTextField[] fields = { phoneField, usernameField, nameField, addressField, passwordField };
+		for (JTextField field : fields)
+			field.setText("");
 		roleComboBox.setSelectedIndex(0);
 	}
 
-
-	public void addUserToTable(String id, String name, String phone, String username, String password, String address, String role) {
-		model.addRow(new Object[]{id, name, phone, username, password, address, role});
+	public void addUserToTable(String id, String name, String phone, String username, String password, String address,
+			String role) {
+		model.addRow(new Object[] { id, name, phone, username, password, address, role });
 	}
 
-	public void updateUserInTable(int row, String id, String name, String phone, String username, String password, String address, String role) {
+	public void updateUserInTable(int row, String id, String name, String phone, String username, String password,
+			String address, String role) {
 		model.setValueAt(id, row, 0);
 		model.setValueAt(name, row, 1);
 		model.setValueAt(phone, row, 2);
@@ -272,7 +268,8 @@ public class UserView extends JPanel {
 		return table;
 	}
 
-	public void setEmployeeData(String id, String name, String phone, String address, String username, String password, String role) {
+	public void setEmployeeData(String id, String name, String phone, String address, String username, String password,
+			String role) {
 //		idField.setText(id);
 		phoneField.setText(phone);
 		usernameField.setText(username);

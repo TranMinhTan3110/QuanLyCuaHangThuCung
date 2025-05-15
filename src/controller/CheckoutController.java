@@ -1,8 +1,8 @@
 //package controller;
 //
-//import dao.BillDAO;
-//import dao.OrderDAO;
-//import dao.OrderDetailDAO;
+//import respository.dao.BillDAO;
+//import respository.dao.OrderDAO;
+//import respository.dao.OrderDetailDAO;
 //import model.Bill;
 //import model.Order;
 //import model.OrderDetail;

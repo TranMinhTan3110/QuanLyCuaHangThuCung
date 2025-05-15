@@ -1,29 +1,29 @@
 package model.entity;
 
 public class Category {
-    private int categoryID;
-    private String categoryName;
+	private int categoryID;
+	private String categoryName;
 
+	public Category(int categoryID, String categoryName) {
+		this.categoryID = categoryID;
+		this.categoryName = categoryName;
 
-    public Category(int categoryID, String categoryName) {
-        this.categoryID = categoryID;
-        this.categoryName = categoryName;
+	}
 
-    }
+	public int getCategoryID() {
+		return categoryID;
+	}
 
-    public int getCategoryID() {
-        return categoryID;
-    }
+	public String getCategoryName() {
+		return categoryName;
+	}
 
-    public String getCategoryName() {
-        return categoryName;
-    }
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
-    }
+	public void setCategoryName(String categoryName) {
+		this.categoryName = categoryName;
+	}
 
-    @Override
-    public String toString() {
-        return categoryName;
-    }
+	@Override
+	public String toString() {
+		return categoryName;
+	}
 }
