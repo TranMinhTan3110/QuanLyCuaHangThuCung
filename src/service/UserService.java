@@ -1,7 +1,7 @@
 package service;
 
-import dao.DaoInterface;
-import dao.UserDAO;
+import respository.dao.DaoInterface;
+import respository.dao.UserDAO;
 import model.entity.User;
 import utils.inputUtil;
 import view.UserView;

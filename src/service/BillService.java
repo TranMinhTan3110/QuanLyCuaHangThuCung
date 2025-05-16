@@ -1,7 +1,7 @@
 package service;
 
-import dao.BillDAO;
-import dao.DaoInterface;
+import respository.dao.BillDAO;
+import respository.dao.DaoInterface;
 import model.entity.Bill;
 import model.entity.Customer;
 import model.entity.Pet;

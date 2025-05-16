@@ -1,8 +1,8 @@
 package service;
 
-import dao.CustomerDao;
-import dao.DaoInterface;
-import dao.ProductDAO;
+import respository.dao.CustomerDao;
+import respository.dao.DaoInterface;
+import respository.dao.ProductDAO;
 import model.entity.Customer;
 import model.entity.Product;
 import model.entity.User;

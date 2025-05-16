@@ -1,7 +1,7 @@
 package service;
 
-import dao.DaoInterface;
-import dao.PetDAO;
+import respository.dao.DaoInterface;
+import respository.dao.PetDAO;
 import model.entity.Pet;
 
 import java.util.ArrayList;
