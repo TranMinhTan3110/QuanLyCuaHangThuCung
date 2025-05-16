@@ -186,7 +186,7 @@ public class PetView extends JPanel {
         panel_top.add(Arrange_comboBox);
 
         Species_comboBox = new JComboBox();
-        Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Dog", "Cat","Bird", "Tất cả" }));
+        Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Tất cả", "Dog","Cat","Bird" }));
         Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
         Species_comboBox.setBounds(443, 178, 76, 33);
         panel_top.add(Species_comboBox);

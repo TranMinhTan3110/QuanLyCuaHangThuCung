@@ -29,7 +29,9 @@ public class PetController {
         initController();
         addEventListeners();
         loadTableData();
+        filterPets();
     }
+
 
     private void initController() {
         // Khi chọn dòng trong bảng, load dữ liệu vào form
@@ -37,6 +39,7 @@ public class PetController {
             if (!e.getValueIsAdjusting() && view.getPetTable().getSelectedRow() != -1) {
                 loadSelectedPetIntoForm();
             }
+            loadTableData();
         });
     }
     //load dữ liệu lên ô nhập liệu
@@ -51,8 +54,6 @@ public class PetController {
             String comboBox = view.getPetTable().getValueAt(selectedRow,5).toString();
             String age = view.getPetTable().getValueAt(selectedRow,6).toString();
             view.setPetData(idStr, name, species, price, breed,comboBox, age);
-
-
         }
     }
     private void addEventListeners() {
@@ -79,8 +80,10 @@ public class PetController {
                         pet.getSpecies(),
                         pet.getPrice(),
                         pet.getBreed(),
+                        pet.getGender(),
                         pet.getAge()
                 });
+
             }
         }
 

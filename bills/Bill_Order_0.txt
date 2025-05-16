@@ -1,0 +1,4 @@
+===== HÓA ĐƠN THANH TOÁN =====
+Mã hóa đơn: 0
+Khách hàng: null
+Nhân viên: null

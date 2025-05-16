@@ -193,7 +193,7 @@ public class LoginView extends JFrame {
         //
         txtPass.setBorder(BorderFactory.createCompoundBorder(
                 new LineBorder(new Color(100, 100, 100), 1, true),  // Viền màu xám, bo tròn
-                BorderFactory.createEmptyBorder(5, 10, 5, 5) // Padding trong ô nhập
+                BorderFactory.createEmptyBorder(5, 10, 5, 5) // PaddingS trong ô nhập
         ));
         //tạo placehoder
         txtPass.setEchoChar((char) 0); // Ẩn dấu chấm tròn ban đầu
@@ -217,9 +217,37 @@ public class LoginView extends JFrame {
                 }
             }
         });
+// Tạo nút con mắt cho ẩn/hiện mật khẩu
+//        ImageIcon eyeIcon = new ImageIcon("/view/Icon/eye_icon.svg");      // Mắt mở
+//        ImageIcon eyeOffIcon = new ImageIcon("images/eye_off.png"); // Mắt đóng
+//
+//        JButton btnTogglePass = new JButton(eyeOffIcon);
+//
+//        btnTogglePass.setPreferredSize(new Dimension(30, 30));
+//        btnTogglePass.setFocusPainted(false);
+//        btnTogglePass.setBorderPainted(false);
+//        btnTogglePass.setContentAreaFilled(false);
+//        btnTogglePass.addActionListener(new ActionListener() {
+//            private boolean isPassword = false;
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                if(isPassword){
+//                    txtPass.setEchoChar('●'); // hoặc '*'
+//                    btnTogglePass.setIcon(eyeOffIcon);
+//                }else{
+//                    txtPass.setEchoChar((char) 0);
+//                    btnTogglePass.setIcon(eyeIcon);
+//                }
+//                isPassword = !isPassword;
+//            }
+//        });
+
+
 
 
         loginPanel.add(txtPass, gbc);
+
+
 
         // Nút Login và Cancel
         Dimension buttonSize = new Dimension(70, 25);

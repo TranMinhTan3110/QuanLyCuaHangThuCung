@@ -49,8 +49,8 @@ public class PetDAO implements DaoInterface<Pet>{
             e.printStackTrace();
             return false;
         }
-    }
 
+    }
     @Override
     public boolean delete(Pet pet) {
         if (pet == null) return false;
@@ -76,8 +76,8 @@ public class PetDAO implements DaoInterface<Pet>{
 
         try (Connection con = DatabaseConnection.getConnection();
              PreparedStatement st = con.prepareStatement(sql);
-             ResultSet rs = st.executeQuery()) {
-
+             ) {
+            ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Pet pet = new Pet(
                         rs.getInt("petID"),
