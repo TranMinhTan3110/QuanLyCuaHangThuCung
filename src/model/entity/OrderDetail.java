@@ -1,60 +1,84 @@
 package model.entity;
 
+import java.math.BigDecimal;
+
 public class OrderDetail {
-    private int orderDetailID;  // Mã chi tiết đơn hàng
-    private int orderID;        // Mã đơn hàng (liên kết với Order)
-    private int productID;      // Mã sản phẩm (liên kết với Product)
-    private int quantity;       // Số lượng sản phẩm
-    private double price;       // Giá tại thời điểm mua
+	private int orderDetailID;
+	private int orderID;
+	private Integer productID; // Có thể null nếu là pet
+	private Integer petID; // Có thể null nếu là product
+	private int quantity;
+	private BigDecimal price;
 
-    public OrderDetail(){
+	public OrderDetail() {
+	}
 
-    }
-    public OrderDetail(int orderDetailID, int orderID, int productID, int quantity, double price) {
-        this.orderDetailID = orderDetailID;
-        this.orderID = orderID;
-        this.productID = productID;//mã sản phẩm hoặc thú cưng
-        this.quantity = quantity;
-        this.price = price;
-    }
+	// Constructor không có orderDetailID (dùng khi thêm mới)
+	public OrderDetail(int orderID, Integer productID, Integer petID, int quantity, BigDecimal price) {
+		this.orderID = orderID;
+		this.productID = productID;
+		this.petID = petID;
+		this.quantity = quantity;
+		this.price = price;
+	}
 
-    public int getOrderDetailID() {
-        return orderDetailID;
-    }
+	// Constructor đầy đủ (dùng khi đọc từ DB)
+	public OrderDetail(int orderDetailID, int orderID, Integer productID, Integer petID, int quantity,
+			BigDecimal price) {
+		this.orderDetailID = orderDetailID;
+		this.orderID = orderID;
+		this.productID = productID;
+		this.petID = petID;
+		this.quantity = quantity;
+		this.price = price;
+	}
 
-    public void setOrderDetailID(int orderDetailID) {
-        this.orderDetailID = orderDetailID;
-    }
+	// Getters & Setters
+	public int getOrderDetailID() {
+		return orderDetailID;
+	}
 
-    public int getOrderID() {
-        return orderID;
-    }
+	public void setOrderDetailID(int orderDetailID) {
+		this.orderDetailID = orderDetailID;
+	}
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
+	public int getOrderID() {
+		return orderID;
+	}
 
-    public int getProductID() {
-        return productID;
-    }
+	public void setOrderID(int orderID) {
+		this.orderID = orderID;
+	}
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
+	public Integer getProductID() {
+		return productID;
+	}
 
-    public int getQuantity() {
-        return quantity;
-    }
+	public void setProductID(Integer productID) {
+		this.productID = productID;
+	}
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+	public Integer getPetID() {
+		return petID;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public void setPetID(Integer petID) {
+		this.petID = petID;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getPrice() {
+		return price;
+	}
+
+	public void setPrice(BigDecimal price) {
+		this.price = price;
+	}
 }

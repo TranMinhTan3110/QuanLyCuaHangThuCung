@@ -1,5 +1,4 @@
 package service;
-
 import model.entity.User;
 import model.request.LoginRequest;
 import model.response.LoginResponse;

@@ -40,12 +40,13 @@ public class PetView extends JPanel {
 	private JButton btnAdd;
 	private JButton btnDel;
 	private JButton btnEdit;
+
 	/**
 	 * Create the panel.
 	 */
 	public PetView() {
 		setLayout(null);
-		setBounds(0,0,950,750);
+		setBounds(0, 0, 950, 750);
 
 		JPanel panel_top = new JPanel();
 		panel_top.setBackground(new Color(255, 255, 223));
@@ -105,7 +106,6 @@ public class PetView extends JPanel {
 		Hover.addPlaceholder(Breed_textField, "Enter breed");
 		Hover.roundTextField(Breed_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-
 		JLabel lblAge = new JLabel("Age");
 		lblAge.setFont(new Font("Arial", Font.PLAIN, 16));
 		lblAge.setBounds(583, 107, 76, 33);
@@ -159,7 +159,6 @@ public class PetView extends JPanel {
 		panel_top.add(btnDel);
 		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-
 		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
 
 		JPanel searchPanel = new JPanel(new BorderLayout());
@@ -174,24 +173,22 @@ public class PetView extends JPanel {
 		Search_textField.setBorder(null);
 		Search_textField.setColumns(10);
 		searchPanel.add(Search_textField, BorderLayout.CENTER);
-		Hover.addPlaceholder(Search_textField,"search...");
-		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+		Hover.addPlaceholder(Search_textField, "search...");
+		Hover.roundPanel(searchPanel, 20, Color.WHITE, Color.GRAY);
 
 		panel_top.add(searchPanel);
 
 		Arrange_comboBox = new JComboBox();
-		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Tăng dần", "Giảm dần", "Tất cả"}));
+		Arrange_comboBox.setModel(new DefaultComboBoxModel(new String[] { "Tăng dần", "Giảm dần", "Tất cả" }));
 		Arrange_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Arrange_comboBox.setBounds(307, 178, 105, 33);
 		panel_top.add(Arrange_comboBox);
 
 		Species_comboBox = new JComboBox();
-		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Chó", "Mèo", "Tất cả" }));
+		Species_comboBox.setModel(new DefaultComboBoxModel(new String[] { "Chó", "Mèo", "Chim", "Tất cả" }));
 		Species_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		Species_comboBox.setBounds(443, 178, 76, 33);
 		panel_top.add(Species_comboBox);
-
-
 
 		JLabel lblGender = new JLabel("Gender");
 		lblGender.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -199,7 +196,7 @@ public class PetView extends JPanel {
 		panel_top.add(lblGender);
 
 		gender_comboBox = new JComboBox();
-		gender_comboBox.setModel(new DefaultComboBoxModel(new String[] {"Male", "Female"}));
+		gender_comboBox.setModel(new DefaultComboBoxModel(new String[] { "Male", "Female" }));
 		gender_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
 		gender_comboBox.setBounds(411, 107, 120, 33);
 		panel_top.add(gender_comboBox);
@@ -214,14 +211,9 @@ public class PetView extends JPanel {
 		add(Pet_ScrollPane);
 
 		Pet_Table = new JTable();
-		Pet_Table.setModel(new DefaultTableModel(
-				new Object[][] {
-						// dữ liệu nếu có
-				},
-				new String[] {
-						"ID", "Name", "Breed", "Price", "Species", "Gender", "Age"
-				}
-		) {
+		Pet_Table.setModel(new DefaultTableModel(new Object[][] {
+				// dữ liệu nếu có
+		}, new String[] { "ID", "Name", "Breed", "Price", "Species", "Gender", "Age" }) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // không cho sửa ô nào cả
@@ -257,6 +249,7 @@ public class PetView extends JPanel {
 	public String getBreed_textField() {
 		return Breed_textField.getText();
 	}
+
 	// Getters cho các ComboBox
 	public JComboBox getBreedComboBox() {
 		return Breed_comboBox;
@@ -281,6 +274,7 @@ public class PetView extends JPanel {
 	public void addSearchKeyListener(java.awt.event.KeyListener listener) {
 		Search_textField.addKeyListener(listener);
 	}
+
 	// Getter cho Table
 	public JTable getPetTable() {
 		return Pet_Table;
@@ -298,7 +292,6 @@ public class PetView extends JPanel {
 	public JButton getDeleteButton() {
 		return btnDel;
 	}
-
 
 	public void addAddButtonListener(ActionListener listener) {
 		btnAdd.addActionListener(listener);
@@ -329,7 +322,7 @@ public class PetView extends JPanel {
 
 	public void setBreed_textField(String breed) {
 		Breed_textField.setText(breed);
-}
+	}
 
 	public void setGender_comboBox(int index) {
 		this.gender_comboBox.setSelectedIndex(index);
@@ -343,7 +336,7 @@ public class PetView extends JPanel {
 		this.Price_textField.setText(price);
 	}
 
-	public void setSpecies_textField(String  species) {
+	public void setSpecies_textField(String species) {
 		this.Species_textField.setText(species);
 	}
 
@@ -351,7 +344,8 @@ public class PetView extends JPanel {
 		Object value = Pet_Table.getValueAt(row, column);
 		return value != null ? value.toString() : "";
 	}
-	//đẩy combobox từ dòng dc chọn lên
+
+	// đẩy combobox từ dòng dc chọn lên
 	public void setSelectedCategoryByName(String categoryName) {
 		for (int i = 0; i < gender_comboBox.getItemCount(); i++) {
 			Category cate = (Category) gender_comboBox.getItemAt(i);
@@ -361,14 +355,16 @@ public class PetView extends JPanel {
 			}
 		}
 	}
-	//set data cho ô nhập liệu
-	public void setPetData(String id, String name, String species, String price, String breed, String comboBox, String age) {
+
+	// set data cho ô nhập liệu
+	public void setPetData(String id, String name, String species, String price, String breed, String comboBox,
+			String age) {
 		Name_textField.setText(name);
 		Species_textField.setText(species);
 		Price_textField.setText(price);
 		Breed_textField.setText(breed);
 		gender_comboBox.setSelectedItem(comboBox); // giới tính
-		Age_textField.setText(age);                // tuổi
+		Age_textField.setText(age); // tuổi
 	}
 
 }

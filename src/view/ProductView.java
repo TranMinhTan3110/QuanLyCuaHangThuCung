@@ -33,7 +33,7 @@ public class ProductView extends JPanel {
 
 	public ProductView() {
 		setLayout(null);
-		setBounds(0,0,950,750);
+		setBounds(0, 0, 950, 750);
 
 		JPanel panel_top = new JPanel();
 		panel_top.setBackground(new Color(255, 255, 223));
@@ -183,8 +183,8 @@ public class ProductView extends JPanel {
 		Search_textField.setBorder(null);
 		Search_textField.setColumns(10);
 		searchPanel.add(Search_textField, BorderLayout.CENTER);
-		Hover.addPlaceholder(Search_textField,"search...");
-		Hover.roundPanel(searchPanel, 20,  Color.WHITE, Color.GRAY);
+		Hover.addPlaceholder(Search_textField, "search...");
+		Hover.roundPanel(searchPanel, 20, Color.WHITE, Color.GRAY);
 
 		panel_top.add(searchPanel);
 
@@ -194,10 +194,8 @@ public class ProductView extends JPanel {
 
 		Pro_table = new JTable();
 		Hover.customizeTableHeader(Pro_table);
-		Pro_table.setModel(new DefaultTableModel(
-				new Object[][] {},
-				new String[] {"ID", "Name", "Price","Quantity", "Category"}
-		) {
+		Pro_table.setModel(new DefaultTableModel(new Object[][] {},
+				new String[] { "ID", "Name", "Price", "Quantity", "Category" }) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false; // Không cho phép sửa bất kỳ ô nào
@@ -285,7 +283,6 @@ public class ProductView extends JPanel {
 		return value != null ? value.toString() : "";
 	}
 
-
 	public void setSelectedCategoryByName(String categoryName) {
 		for (int i = 0; i < CateName_comboBox.getItemCount(); i++) {
 			Category cate = CateName_comboBox.getItemAt(i);
@@ -305,22 +302,24 @@ public class ProductView extends JPanel {
 		return Pro_table;
 	}
 
-
 	class NumberOnlyFilter extends DocumentFilter {
 		@Override
-		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-			if (string.matches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
+		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr)
+				throws BadLocationException {
+			if (string.matches("[\\d.]*")) { // cho phép chữ số và dấu chấm
 				super.insertString(fb, offset, string, attr);
 			}
 		}
 
 		@Override
-		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-			if (text.matches("[\\d.]*")) {  // cho phép chữ số và dấu chấm
+		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs)
+				throws BadLocationException {
+			if (text.matches("[\\d.]*")) { // cho phép chữ số và dấu chấm
 				super.replace(fb, offset, length, text, attrs);
 			}
 		}
 	}
+
 	public void showMessage(String s) {
 	}
 

@@ -1,15 +1,10 @@
 <component name="libraryTable">
   <library name="iText-Core-9.2">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../../PDF/slf4j-api-2.0.9.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../../PDF/slf4j-simple-2.0.9.jar!/" />
-      <root url="file://$PROJECT_DIR$" />
-      <root url="file://$PROJECT_DIR$/../../PDF/iText-Core-9.1.0-only-jars" />
+      <root url="file://$PROJECT_DIR$/../../../../PDF/iText-Core-9.1.0-only-jars" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$PROJECT_DIR$/src" />
-    </SOURCES>
-    <jarDirectory url="file://$PROJECT_DIR$/../../PDF/iText-Core-9.1.0-only-jars" recursive="false" />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../PDF/iText-Core-9.1.0-only-jars" recursive="false" />
   </library>
 </component>

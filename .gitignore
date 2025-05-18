@@ -1,6 +1,6 @@
 ### IntelliJ IDEA ###
 out/
-!**/src/main/**/out/
+!**/src/DatabaseConnectionin/**/out/
 !**/src/test/**/out/
 
 ### Eclipse ###
@@ -12,7 +12,7 @@ out/
 .springBeans
 .sts4-cache
 bin/
-!**/src/main/**/bin/
+!**/src/DatabaseConnectionin/**/bin/
 !**/src/test/**/bin/
 
 ### NetBeans ###
@@ -25,7 +25,7 @@ bin/
 ### VS Code ###
 .vscode/
 
-### Mac OS ###
+### DatabaseConnectionc OS ###
 .DS_Store
 # Ignore database connection file
-src/dao/DatabaseConnection.java
+src/respository/dao/DatabaseConnection.java

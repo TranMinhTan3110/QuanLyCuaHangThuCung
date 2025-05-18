@@ -1,81 +1,91 @@
 package model.entity;
 
 public class Pet {
-    private int petID;
-    private String name;
-    private String species;// loại thú cưng(chó mèo)
-    private String breed;//giống loài
-    private int age;
-    private double price;
-    private  String gender;
+	private int petID;
+	private String name;
+	private String species;// loại thú cưng(chó mèo)
+	private String breed;// giống loài
+	private int age;
+	private double price;
+	private String gender;
+	private String trangThai; // thêm trạng thái
 
-    public Pet(int petID, String name, String breed, String species, int age, double price, String gender) {
-        this.petID = petID;
-        this.name = name;
-        this.breed = breed;
-        this.species = species;
-        this.age = age;
-        this.price = price;
-        this.gender = gender;
-    }
+	public Pet(int petID, String name, String breed, String species, int age, double price, String gender) {
+		this.petID = petID;
+		this.name = name;
+		this.breed = breed;
+		this.species = species;
+		this.age = age;
+		this.price = price;
+		this.gender = gender;
+	}
 
-    public String getGender() {
-        return gender;
-    }
+	// getter, setter cho tất cả thuộc tính
+	public String getTrangThai() {
+		return trangThai;
+	}
 
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+	public void setTrangThai(String trangThai) {
+		this.trangThai = trangThai;
+	}
 
-    public Pet() {
+	public String getGender() {
+		return gender;
+	}
 
-    }
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
 
-    public int getPetID() {
-        return petID;
-    }
+	public Pet() {
 
-    public void setPetID(int petID) {
-        this.petID = petID;
-    }
+	}
 
-    public String getName() {
-        return name;
-    }
+	public int getPetID() {
+		return petID;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setPetID(int petID) {
+		this.petID = petID;
+	}
 
-    public String getSpecies() {
-        return species;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setSpecies(String species) {
-        this.species = species;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getBreed() {
-        return breed;
-    }
+	public String getSpecies() {
+		return species;
+	}
 
-    public void setBreed(String breed) {
-        this.breed = breed;
-    }
+	public void setSpecies(String species) {
+		this.species = species;
+	}
 
-    public int getAge() {
-        return age;
-    }
+	public String getBreed() {
+		return breed;
+	}
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+	public void setBreed(String breed) {
+		this.breed = breed;
+	}
 
-    public double getPrice() {
-        return price;
-    }
+	public int getAge() {
+		return age;
+	}
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
 }
