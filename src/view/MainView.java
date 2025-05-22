@@ -246,9 +246,10 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel createHomePanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-		return panel;
+		PetCarePanel homePanel = new PetCarePanel();
+		PetServicesOrdersPanel petServicesOrdersPanel = new PetServicesOrdersPanel();
+		return petServicesOrdersPanel;
+//		return homePanel;
 	}
 
 	public void addUsersListener(ActionListener listener) {

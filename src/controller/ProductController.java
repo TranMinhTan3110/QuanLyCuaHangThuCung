@@ -48,9 +48,8 @@ public class ProductController {
 			String priceStr = view.getPrice().trim();
 			String quantityStr = view.getQuantity().trim();
 
-			// Kiểm tra nếu có ô nào bị để trống
-			if (name.isEmpty() || priceStr.isEmpty() || quantityStr.isEmpty() || priceStr.equals("Enter Price")
-					|| quantityStr.equals("Enter Quantity")) {
+			// Kiểm tra rỗng
+			if (name.isEmpty() || priceStr.isEmpty() || quantityStr.isEmpty()) {
 				JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
 				return;
 			}
@@ -60,8 +59,6 @@ public class ProductController {
 			}
 			double price;
 			int quantity;
-
-			// Kiểm tra định dạng số
 			try {
 				price = Double.parseDouble(priceStr);
 				quantity = Integer.parseInt(quantityStr);
@@ -69,42 +66,26 @@ public class ProductController {
 				JOptionPane.showMessageDialog(view, "Vui lòng nhập đúng định dạng số cho giá và số lượng!");
 				return;
 			}
-			if (!validateQuantity(quantity)) {
-				return; // Không cho thêm/xóa/sửa tiếp
-			}
+			if (!validateQuantity(quantity))
+				return;
+
 			Category selectedCategory = view.getCategory();
-			if (service.isProductExist(name)) {
-				JOptionPane.showMessageDialog(view, "Sản phẩm này đã tồn tại!");
-//                view.getTable().clearSelection();
-				return;
-			}
-			if (selectedCategory != null) {
-				int id = selectedCategory.getCategoryID();
-				String nameCat = selectedCategory.getCategoryName();
-//                System.out.println("ID: " + id + ", Name: " + name);
-				JOptionPane.showMessageDialog(view, "Thêm sản phẩm thành công!");
-			}
-			if (name == null || name.trim().isEmpty() || name.equals("Enter Price") || String.valueOf(price) == null
-					|| String.valueOf(price).trim().isEmpty()) {
-				JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
-				return;
-			}
 			if (selectedCategory == null) {
 				JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
 				return;
 			}
 			if (service.isProductExist(name)) {
 				JOptionPane.showMessageDialog(view, "Sản phẩm này đã tồn tại!");
-//                view.getTable().clearSelection();
 				return;
 			}
-			Product product = new Product(); // Không set ID
+			Product product = new Product();
 			product.setName(name);
 			product.setPrice(price);
 			product.setQuantity(quantity);
 			product.setCategory(selectedCategory);
-			System.out.println(product.getCategory().getCategoryID());
+
 			service.insert(product);
+			JOptionPane.showMessageDialog(view, "Thêm sản phẩm thành công!");
 			loadTable();
 			view.clearFields();
 		}
@@ -274,13 +255,10 @@ public class ProductController {
 
 	// Hàm này Controller tự xử lý
 	private void fillFormFromSelectedRow(int selectedRow) {
-		String productName = view.getValueAt(selectedRow, 1);
-		String price = view.getValueAt(selectedRow, 2);
-		String quantity = view.getValueAt(selectedRow, 3);
-		String categoryName = view.getValueAt(selectedRow, 4);
-		view.setProductName(productName);
-		view.setPrice(price);
-		view.setQuantity(quantity);
-		view.setSelectedCategoryByName(categoryName);
+		JTable table = view.getProductTable();
+		view.setProductName(table.getValueAt(selectedRow, 1).toString());
+		view.setPrice(table.getValueAt(selectedRow, 2).toString());
+		view.setQuantity(table.getValueAt(selectedRow, 3).toString());
+		view.setSelectedCategoryByName(table.getValueAt(selectedRow, 4).toString());
 	}
 }
