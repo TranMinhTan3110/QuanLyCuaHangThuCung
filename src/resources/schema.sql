@@ -1,3 +1,5 @@
+create DATABASE QuanLyCuaHangThuCung;
+
 CREATE TABLE Pet (
                      petID INT PRIMARY KEY IDENTITY(1,1),
                      name NVARCHAR(100) NOT NULL,
@@ -6,7 +8,7 @@ CREATE TABLE Pet (
                      age INT CHECK (age >= 0),       -- Tuổi thú cưng >= 0
                      gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')), -- Giới tính
                      price DECIMAL(10,2) NULL,       -- Giá thú cưng
-                     trangThai NVARCHAR(20) DEFAULT 'available'  -- Mặc định là 'available'
+                     trangThai NVARCHAR(20) DEFAULT 'Chưa bán'  -- Mặc định là 'available'
 );
 
 CREATE TABLE Product (
@@ -15,6 +17,7 @@ CREATE TABLE Product (
                          price DECIMAL(10,2) NULL,
                          categoryID INT NULL,
                          quantity INT NOT NULL DEFAULT 0,
+                         trangThai NVARCHAR(20) DEFAULT 'Còn hàng',
                          FOREIGN KEY (categoryID) REFERENCES Category(categoryID)
 );
 
@@ -88,7 +91,7 @@ CREATE TABLE Bill (
                       FOREIGN KEY (orderID) REFERENCES [Order](orderID)
 );
 
-create DATABASE QuanLyCuaHangThuCung;
+
 
 -- inser mẫu
 

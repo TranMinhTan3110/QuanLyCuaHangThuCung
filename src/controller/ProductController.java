@@ -134,14 +134,8 @@ public class ProductController {
 				}
 
 				Product p = new Product(id, name, price, quantity, selectedCategory);
-				if (quantity > 0) {
 					service.update(p);
 					JOptionPane.showMessageDialog(view, "Cập nhật sản phẩm thành công");
-				} else {
-					service.delete(p);
-					System.out.println("Xóa sản phẩm thành công");
-				}
-
 				loadTable();
 				view.clearFields();
 			} else {
