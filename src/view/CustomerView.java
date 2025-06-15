@@ -3,9 +3,15 @@ package view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,8 +21,6 @@ import javax.swing.table.DefaultTableModel;
 
 import view.UI.Hover;
 
-import javax.swing.JLabel;
-import java.awt.Rectangle;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
@@ -26,290 +30,393 @@ import java.awt.event.ActionEvent;
 
 public class CustomerView extends JPanel {
 
-	/**
-	 * Create the panel.
-	 */
+    private static final long serialVersionUID = 1L;
+    private JTable table;
+    private JTextField Name_textField;
+    private JTextField Phone_textField;
+    private JTextField Address_textField;
+    private JTextField Score_textField;
+    private JTextField Search_textField;
+    private DefaultTableModel model;
+    private JButton btnSave, btnEdit, btnDel;
 
-	private static final long serialVersionUID = 1L;
-	private JTable table;
-	private JTextField ID_textField;
-	private JTextField Name_textField;
-	private JTextField Address_textField;
-	private JTextField Phone_textField;
-	private JTextField Score_textField;
-	private JTextField Rank_textField;
-	private JTextField Search_textField;
-	private DefaultTableModel model;
-	// cac nut
-	private JButton btnDel, btnEdit, btnSave, ID_Button;
+    // Biến phân trang
+    private int currentPage = 1;
+    private int rowsPerPage = 21; // Số hàng trên mỗi trang 
+    private int totalRows = 0;
+    private int totalPages = 0;
+    private List<Object[]> allData = new ArrayList<>();
+    private JLabel pageLabel;
 
-	public String getName_textField() {
-		return Name_textField.getText();
-	}
+    public CustomerView() {
+        setLayout(null);
+        setBounds(0, 0, 950, 750);
 
-	public String getAddress_textField() {
-		return Address_textField.getText();
-	}
+        JPanel panel_top = new JPanel();
+        panel_top.setBackground(new Color(200, 220, 240)); // Màu nền xanh nhạt
+        panel_top.setBounds(0, 0, 950, 240);
+        add(panel_top);
+        panel_top.setLayout(null);
 
-	public String getID_textField() {
-		return ID_textField.getText();
-	}
+        JLabel lblName = new JLabel("Name");
+        lblName.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblName.setBounds(161, 32, 100, 25);
+        panel_top.add(lblName);
 
-	public String getPhone_textField() {
-		return Phone_textField.getText();
-	}
+        JLabel lblPhone = new JLabel("Phone");
+        lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblPhone.setBounds(497, 32, 100, 25);
+        panel_top.add(lblPhone);
 
-	public String getSearch_textField() {
-		return Search_textField.getText();
-	}
+        JLabel lblAddress = new JLabel("Address");
+        lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblAddress.setBounds(161, 80, 100, 25);
+        panel_top.add(lblAddress);
 
-	public String getScore_textField() {
-		return Score_textField.getText();
-	}
+        JLabel lblScore = new JLabel("Score");
+        lblScore.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblScore.setBounds(497, 80, 100, 25);
+        panel_top.add(lblScore);
 
-	public JTable getCustomerTable() {
-		return table;
-	}
+        Name_textField = new JTextField();
+        Name_textField.setBounds(288, 32, 100, 25);
+        panel_top.add(Name_textField);
+        Hover.addPlaceholder(Name_textField, "Enter Name");
+//        Hover.roundTextField(Name_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-	/**
-	 * Create the panel.
-	 */
-	public CustomerView() {
-		setLayout(null);
-		setBounds(0, 0, 950, 750);
+        Phone_textField = new JTextField();
+        Phone_textField.setBounds(607, 30, 100, 25);
+        panel_top.add(Phone_textField);
+        Hover.addPlaceholder(Phone_textField, "Enter Phone");
+//        Hover.roundTextField(Phone_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		JPanel panel_top = new JPanel();
-		panel_top.setBackground(new Color(255, 255, 223));
-		panel_top.setBounds(0, 0, 950, 240);
-		add(panel_top);
-		panel_top.setLayout(null);
+        Address_textField = new JTextField();
+        Address_textField.setBounds(288, 82, 100, 25);
+        panel_top.add(Address_textField);
+        Hover.addPlaceholder(Address_textField, "Enter Address");
+//        Hover.roundTextField(Address_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		JLabel lblName = new JLabel("Name");
-		lblName.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblName.setBounds(new Rectangle(176, 54, 55, 21));
-		lblName.setBounds(122, 55, 97, 21);
-		panel_top.add(lblName);
+        Score_textField = new JTextField();
+        Score_textField.setBounds(607, 82, 100, 25);
+        panel_top.add(Score_textField);
+        Hover.addPlaceholder(Score_textField, "Enter Score");
+//        Hover.roundTextField(Score_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		JLabel lblAddress = new JLabel("Address");
-		lblAddress.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblAddress.setBounds(new Rectangle(176, 36, 55, 21));
-		lblAddress.setBounds(122, 121, 100, 21);
-		panel_top.add(lblAddress);
+        btnSave = new JButton("Save");
+        btnSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Thêm logic lưu dữ liệu tại đây
+            }
+        });
+        btnSave.setIcon(new ImageIcon(CustomerView.class.getResource("/view/Icon/save_Icon.png")));
+        btnSave.setBackground(new Color(144, 238, 144)); // Màu xanh lá nhạt
+        btnSave.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnSave.setBounds(20, 164, 80, 57);
+        btnSave.setFocusPainted(false);
+        btnSave.setBorderPainted(false);
+        btnSave.setContentAreaFilled(false);
+        btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnSave);
+        Hover.addHoverButtonEffect(btnSave, new Color(0, 100, 0), 0.8f);
 
-		JLabel lblPhone = new JLabel("Phone");
-		lblPhone.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPhone.setBounds(new Rectangle(176, 54, 55, 21));
-		lblPhone.setBounds(454, 55, 55, 21);
-		panel_top.add(lblPhone);
+        btnEdit = new JButton("Edit");
+        btnEdit.setIcon(new ImageIcon(CustomerView.class.getResource("/view/Icon/Edit_Icon.png")));
+        btnEdit.setBackground(new Color(173, 216, 230)); // Màu xanh nhạt
+        btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnEdit.setBounds(100, 164, 80, 57);
+        btnEdit.setFocusPainted(false);
+        btnEdit.setBorderPainted(false);
+        btnEdit.setContentAreaFilled(false);
+        btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnEdit);
+        Hover.addHoverButtonEffect(btnEdit, new Color(0, 0, 139), 0.8f);
 
-//        JLabel lblRank = new JLabel("Rank");
-//        lblRank.setFont(new Font("Arial", Font.PLAIN, 16));
-//        lblRank.setBounds(new Rectangle(176, 36, 55, 21));
-//        lblRank.setBounds(370, 126, 55, 21);
-//        panel_top.add(lblRank);
+        btnDel = new JButton("Delete");
+        btnDel.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Thêm logic xóa dữ liệu tại đây
+            }
+        });
+        btnDel.setIcon(new ImageIcon(CustomerView.class.getResource("/view/Icon/delete_Icon.png")));
+        btnDel.setBackground(new Color(255, 182, 193)); // Màu hồng nhạt
+        btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnDel.setBounds(181, 164, 80, 57);
+        btnDel.setFocusPainted(false);
+        btnDel.setBorderPainted(false);
+        btnDel.setContentAreaFilled(false);
+        btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
+        btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
+        panel_top.add(btnDel);
+        Hover.addHoverButtonEffect(btnDel, new Color(139, 0, 0), 0.8f);
 
-		JLabel lblScore = new JLabel("Score");
-		lblScore.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblScore.setBounds(new Rectangle(176, 36, 55, 21));
-		lblScore.setBounds(454, 121, 55, 21);
-		panel_top.add(lblScore);
+        ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        searchPanel.setBounds(718, 191, 200, 30);
+        searchPanel.setBackground(Color.WHITE);
+        JLabel searchLabel = new JLabel(searchIcon);
+        searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        searchPanel.add(searchLabel, BorderLayout.WEST);
+        Hover.roundPanel(searchPanel, 15, Color.WHITE, Color.GRAY);
+        panel_top.add(searchPanel);
+        Search_textField = new JTextField();
+        searchPanel.add(Search_textField, BorderLayout.CENTER);
+        Search_textField.setBorder(null);
+        Search_textField.setColumns(10);
+        Hover.addPlaceholder(Search_textField, "search...");
+        
+        JButton DMButton = new JButton("DARK MODE");
+        DMButton.setBackground(new Color(240, 240, 240));
+        DMButton.setFont(new Font("Tahoma", Font.PLAIN, 10));
+        DMButton.setBounds(288, 182, 120, 30);
+        DMButton.setFocusPainted(false);
+        panel_top.add(DMButton);
 
-		Name_textField = new JTextField();
-		Name_textField.setBounds(238, 55, 140, 25); // Đặt Name ở vị trí ban đầu của Address
-		panel_top.add(Name_textField);
-		Hover.addPlaceholder(Name_textField, "Enter Name");
-		Hover.roundTextField(Name_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+        JScrollPane cus_List = new JScrollPane();
+        cus_List.setBounds(0, 250, 940, 395);
+        add(cus_List);
+        cus_List.setFont(new Font("Arial", Font.PLAIN, 16));
+        cus_List.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK),
+                "Customer List", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), Color.BLACK));
 
-		// Sửa vị trí của Phone_textField
-		Phone_textField = new JTextField();
-		Phone_textField.setColumns(10);
-		Phone_textField.setBounds(543, 55, 140, 25); // Cùng vị trí X với JLabel "Phone", Y có thể điều chỉnh
-		panel_top.add(Phone_textField);
-		Hover.addPlaceholder(Phone_textField, "Enter Phone");
-		Hover.roundTextField(Phone_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+        String[] columnNames = {"ID", "NAME", "PHONE", "ADDRESS", "SCORE", "RANK"};
+        model = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table = new JTable(model);
+        cus_List.setViewportView(table);
+        Hover.customizeTableHeader(table);
 
-		// Sửa vị trí của Address_textField
-		Address_textField = new JTextField();
-		Address_textField.setColumns(10);
-		Address_textField.setBounds(238, 121, 140, 25); // Cùng vị trí X với JLabel "Address" (gần đúng), Y có thể điều
-														// chỉnh
-		panel_top.add(Address_textField);
-		Hover.addPlaceholder(Address_textField, "Enter Address");
-		Hover.roundTextField(Address_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+        // Thêm sự kiện nhấp chuột để hiển thị popup
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int row = table.rowAtPoint(e.getPoint());
+                if (row >= 0 && row < table.getRowCount()) {
+                    showDetailsDialog(row);
+                }
+            }
+        });
 
-		Score_textField = new JTextField();
-		Score_textField.setColumns(10);
-		Score_textField.setBounds(543, 121, 140, 25); // Đặt Score ở vị trí ban đầu của Rank
-		panel_top.add(Score_textField);
-		Hover.addPlaceholder(Score_textField, "Enter Score");
-		Hover.roundTextField(Score_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
+        // Thêm điều khiển phân trang
+        JPanel paginationPanel = new JPanel();
+        paginationPanel.setBounds(0, 643, 950, 50);
+        paginationPanel.setBackground(new Color(240, 240, 240));
+        add(paginationPanel);
+        paginationPanel.setLayout(null);
 
-		btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
-		btnEdit.setBackground(new Color(255, 255, 204));
-		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnEdit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnEdit.setBounds(110, 167, 69, 63);
-		btnEdit.setFocusPainted(false);
-		btnEdit.setBorderPainted(false);
-		btnEdit.setContentAreaFilled(false);
-		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnEdit);
-		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
+        JButton btnPrev = new JButton("Prev");
+        btnPrev.setBounds(679, 10, 70, 30);
+        btnPrev.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnPrev.addActionListener(e -> {
+            if (currentPage > 1) {
+                currentPage--;
+                updateTableForCurrentPage();
+            }
+        });
+        paginationPanel.add(btnPrev);
 
-		btnSave = new JButton("Save");
-		btnSave.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/save_Icon.png")));
-		btnSave.setBackground(new Color(255, 255, 223));
-		btnSave.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnSave.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnSave.setBounds(20, 167, 69, 63);
-		btnSave.setFocusPainted(false);
-		btnSave.setBorderPainted(false);
-		btnSave.setContentAreaFilled(false);
-		btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnSave);
-		Hover.addHoverButtonEffect(btnSave, new Color(0, 102, 204), 0.8f);
+        pageLabel = new JLabel("Trang");
+        pageLabel.setBounds(766, 10, 70, 30);
+        pageLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        paginationPanel.add(pageLabel);
 
-		btnDel = new JButton("Delete");
-		btnDel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
-		btnDel.setBackground(new Color(255, 255, 204));
-		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnDel.setBounds(189, 167, 87, 63);
-		btnDel.setFocusPainted(false);
-		btnDel.setBorderPainted(false);
-		btnDel.setContentAreaFilled(false);
-		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnDel);
-		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+        JButton btnNext = new JButton("Next");
+        btnNext.setBounds(846, 10, 70, 30);
+        btnNext.setFont(new Font("Arial", Font.PLAIN, 16));
+        btnNext.addActionListener(e -> {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateTableForCurrentPage();
+            }
+        });
+        paginationPanel.add(btnNext);
 
-		ImageIcon searchIcon = new ImageIcon(CustomerView.class.getResource("/view/Icon/Search_Icon.png"));
+        // Thêm dữ liệu mẫu để kiểm tra phân trang
+        addSampleData();
+    }
 
-		JPanel searchPanel = new JPanel(new BorderLayout());
-		searchPanel.setBounds(684, 187, 234, 24);
-		searchPanel.setBackground(Color.WHITE);
+    private void addSampleData() {
+        // Thêm 105 dòng dữ liệu mẫu để kiểm tra phân trang (5 trang: 21 dòng/trang)
+        for (int i = 1; i <= 105; i++) {
+            String id = "ID" + i;
+            String name = "Name " + i;
+            String phone = "090" + (1000000 + i);
+            String address = "Address " + i;
+            String score = String.valueOf(i * 10);
+            String rank = (i % 3 == 0) ? "Gold" : (i % 3 == 1) ? "Silver" : "Diamond";
+            addCustomerToTable(id, name, phone, address, score, rank);
+        }
+    }
 
-		JLabel searchLabel = new JLabel(searchIcon);
-		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		searchPanel.add(searchLabel, BorderLayout.WEST);
+    private void updateTableForCurrentPage() {
+        model.setRowCount(0); // Xóa bảng
+        int startIndex = (currentPage - 1) * rowsPerPage;
+        int endIndex = Math.min(startIndex + rowsPerPage, allData.size());
 
-		Search_textField = new JTextField();
-		Search_textField.setBorder(null);
-		Search_textField.setColumns(10);
-		searchPanel.add(Search_textField, BorderLayout.CENTER);
-		Hover.addPlaceholder(Search_textField, "search...");
-		Hover.roundPanel(searchPanel, 20, Color.WHITE, Color.GRAY);
+        for (int i = startIndex; i < endIndex; i++) {
+            model.addRow(allData.get(i));
+        }
+        updatePaginationLabel();
+    }
 
-		panel_top.add(searchPanel);
+    private void updatePaginationLabel() {
+        pageLabel.setText("Page " + currentPage + "/" + totalPages);
+    }
 
-		JScrollPane cus_List = new JScrollPane();
-		cus_List.setBounds(0, 244, 950, 500);
-		add(cus_List);
-		cus_List.setFont(new Font("Arial", Font.PLAIN, 16));
-		// tạo title cho table
-		cus_List.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.BLACK),
-				"Customer List", TitledBorder.CENTER, TitledBorder.TOP, new Font("Arial", Font.BOLD, 16), Color.BLACK));
+    public void removeCustomerFromTable(int row) {
+        int globalIndex = (currentPage - 1) * rowsPerPage + row;
+        if (globalIndex >= 0 && globalIndex < allData.size()) {
+            allData.remove(globalIndex);
+            totalRows = allData.size();
+            totalPages = (int) Math.ceil((double) totalRows / rowsPerPage);
+            if (currentPage > totalPages && currentPage > 1) currentPage--;
+            updateTableForCurrentPage();
+        }
+    }
 
-		add(cus_List);
+    public void setAddButtonListener(ActionListener listener) {
+        btnSave.addActionListener(listener);
+    }
 
-//		model = new DefaultTableModel(new String[]{"ID", "Name", "Phone", "Username", "Password", "Address", "Role"}, 0);
-		String[] columnNames = { "Id", "Name", "Phone", "Address", "Score", "Rank" };
-		model = new DefaultTableModel(columnNames, 0) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
-			}
-		};
+    public void setEditButtonListener(ActionListener listener) {
+        btnEdit.addActionListener(listener);
+    }
 
-		table = new JTable(model);
-		cus_List.setViewportView(table);
-		Hover.customizeTableHeader(table);
-	}
+    public void setDeleteButtonListener(ActionListener listener) {
+        btnDel.addActionListener(listener);
+    }
 
-	public void removeCustomerFromTable(int row) {
-		model.removeRow(row);
-	}
+    public void setSearchListener(DocumentListener listener) {
+        Search_textField.getDocument().addDocumentListener(listener);
+    }
 
-	public void setAddButtonListener(ActionListener listener) {
-		btnSave.addActionListener(listener);
-	}
+    public JTable getTable() {
+        return table;
+    }
 
-	public void setEditButtonListener(ActionListener listener) {
-		btnEdit.addActionListener(listener);
-	}
+    public int getSelectedRow() {
+        return table.getSelectedRow();
+    }
 
-	public void setDeleteButtonListener(ActionListener listener) {
-		btnDel.addActionListener(listener);
-	}
+    public void clear() {
+        allData.clear();
+        totalRows = 0;
+        totalPages = 0;
+        currentPage = 1;
+        updateTableForCurrentPage();
+        Name_textField.setText("");
+        Phone_textField.setText("");
+        Address_textField.setText("");
+        Score_textField.setText("");
+    }
 
-	public void setSearchListener(DocumentListener listener) {
-		Search_textField.getDocument().addDocumentListener(listener);
-	}
+    public void addCustomerToTable(String id, String name, String phone, String address, String score, String rank) {
+        allData.add(new Object[]{id, name, phone, address, score, rank});
+        totalRows = allData.size();
+        totalPages = (int) Math.ceil((double) totalRows / rowsPerPage);
+        updateTableForCurrentPage();
+    }
 
-	public JTable getTable() {
-		return table;
-	}
+    public void updateCustomerInTable(int row, String id, String name, String phone, String address, String score, String rank) {
+        int globalIndex = (currentPage - 1) * rowsPerPage + row;
+        if (globalIndex >= 0 && globalIndex < allData.size()) {
+            allData.set(globalIndex, new Object[]{id, name, phone, address, score, rank});
+            updateTableForCurrentPage();
+        }
+    }
 
-	public int getSeclectedRow() {
-		return table.getSelectedRow();
-	}
+    public void setEmployeeData(String name, String phone, String address, String score) {
+        Name_textField.setText(name);
+        Phone_textField.setText(phone);
+        Address_textField.setText(address);
+        Score_textField.setText(score);
+    }
 
-	public void clear() {
-		Name_textField.setText("");
-		Address_textField.setText("");
-		Phone_textField.setText("");
-		Score_textField.setText("");
-	}
+    public JTextField getScoreTextField() {
+        return Score_textField;
+    }
 
-	public void addCustomerToTable(String id, String name, String phone, String address, int loyaltyPoints,
-			String membershipLevels) {
-		model.addRow(new Object[] { id, name, phone, address, loyaltyPoints, membershipLevels });
-	}
+    public void setScore_textField(String score) {
+        this.Score_textField.setText(score);
+    }
 
-	public void updateCustomerInTable(int row, String id, String name, String phone, String address, int point,
-			String member) {
-		model.setValueAt(id, row, 0);
-		model.setValueAt(name, row, 1);
-		model.setValueAt(phone, row, 2);
-		model.setValueAt(address, row, 3);
-		model.setValueAt(point, row, 4);
-		model.setValueAt(member, row, 5);
+    public String getName_textField() {
+        return Name_textField.getText();
+    }
 
-	}
+    public String getAddress_textField() {
+        return Address_textField.getText();
+    }
 
-	public void setEmployeeData(String id, String name, String phone, String address, int point) {
-		Name_textField.setText(name);
-		Phone_textField.setText(phone);
-		Address_textField.setText(address);
-		Score_textField.setText(String.valueOf(point));
-	}
+    public String getPhone_textField() {
+        return Phone_textField.getText();
+    }
 
-	public JTextField getScoreTextField() {
-		return Score_textField;
-	}
+    public String getSearch_textField() {
+        return Search_textField.getText();
+    }
 
-	public void setScore_textField(String score) {
-		this.Score_textField.setText(score);
-	}
+    public String getScore_textField() {
+        return Score_textField.getText();
+    }
 
-	public JTextField getRankTextField() {
-		return Rank_textField;
-	}
+    public JTable getCustomerTable() {
+        return table;
+    }
 
-	public JTextField getIDTextField() {
-		return ID_textField;
-	}
+    // Phương thức hiển thị cửa sổ chi tiết
+    private void showDetailsDialog(int row) {
+        // Lấy dữ liệu từ hàng được chọn trong bảng
+        Object[] data = allData.get((currentPage - 1) * rowsPerPage + row);
 
+        // Tạo JDialog
+        JDialog dialog = new JDialog((JDialog) null, "Customer Details", true);
+        dialog.getContentPane().setLayout(null);
+        dialog.setSize(400, 350);
+        dialog.setLocationRelativeTo(this);
+
+        // Thêm các label để hiển thị thông tin
+        JLabel lblId = new JLabel("ID: " + data[0]);
+        lblId.setBounds(20, 20, 250, 20);
+        dialog.getContentPane().add(lblId);
+
+        JLabel lblName = new JLabel("Name: " + data[1]);
+        lblName.setBounds(20, 50, 250, 20);
+        dialog.getContentPane().add(lblName);
+
+        JLabel lblPhone = new JLabel("Phone: " + data[2]);
+        lblPhone.setBounds(20, 80, 250, 20);
+        dialog.getContentPane().add(lblPhone);
+
+        JLabel lblAddress = new JLabel("Address: " + data[3]);
+        lblAddress.setBounds(20, 110, 250, 20);
+        dialog.getContentPane().add(lblAddress);
+
+        JLabel lblScore = new JLabel("Score: " + data[4]);
+        lblScore.setBounds(20, 140, 250, 20);
+        dialog.getContentPane().add(lblScore);
+
+        JLabel lblRank = new JLabel("Rank: " + data[5]);
+        lblRank.setBounds(20, 170, 250, 20);
+        dialog.getContentPane().add(lblRank);
+
+        // Thêm nút Edit và Delete 
+        JButton btnEDit = new JButton("Edit");
+        btnEDit.setBounds(200, 270, 80, 25);
+        btnEDit.setFocusPainted(false);
+        dialog.getContentPane().add(btnEDit);
+
+        JButton btnDelete = new JButton("Delete");
+        btnDelete.setBounds(300, 270, 80, 25);
+        btnDelete.setFocusPainted(false);
+        dialog.getContentPane().add(btnDelete);
+
+        // Hiển thị dialog
+        dialog.setVisible(true);
+    }
 }
