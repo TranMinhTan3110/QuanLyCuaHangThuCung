@@ -1,6 +1,5 @@
 package view;
 
-import respository.dao.*;
 import service.*;
 
 import javax.swing.*;
@@ -158,18 +157,18 @@ public class MainView extends JFrame {
 		lblNewLabel.setBounds(55, 81, 131, 135);
 		panel.add(lblNewLabel);
 
-		int id = UserSession.getInstance().getUser().getId();
-		String name = UserSession.getInstance().getUser().getName();
+//		int id = UserSession.getInstance().getUser().getId();
+//		String name = UserSession.getInstance().getUser().getName();
 
-		lblEmployeeName = new JLabel("Name: " + name);
-		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEmployeeName.setBounds(23, 226, 163, 25);
-		panel.add(lblEmployeeName);
-
-		lblEmployeeID = new JLabel("ID: " + id);
-		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblEmployeeID.setBounds(23, 261, 163, 25);
-		panel.add(lblEmployeeID);
+//		lblEmployeeName = new JLabel("Name: " + name);
+//		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblEmployeeName.setBounds(23, 226, 163, 25);
+//		panel.add(lblEmployeeName);
+//
+//		lblEmployeeID = new JLabel("ID: " + id);
+//		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
+//		lblEmployeeID.setBounds(23, 261, 163, 25);
+//		panel.add(lblEmployeeID);
 
 		btnProduct = new JButton("Product");
 //        centerPanel.add(createProductPanel(), "Product");
@@ -199,49 +198,49 @@ public class MainView extends JFrame {
 
 	private JPanel createPetsPanel() {
 		PetView petView = new PetView();
-		PetDAO petRepo = new PetDAO();
-		PetService petService = new PetService(petRepo);
-		new controller.PetController(petView, petService);
+//		PetDAO petRepo = new PetDAO();
+//		PetService petService = new PetService(petRepo);
+//		new controller.PetController(petView, petService);
 		return petView;
 	}
 
 	private JPanel createUsersPanel() {
 		System.out.println("Tạo User Panel");
 		UserView employeeView = new UserView();
-		DaoInterface userRepo = new UserDAO();
-		UserService userService = new UserService(userRepo);
-		new controller.UserController(employeeView, userService);
+//		DaoInterface userRepo = new UserDAO();
+//		UserService userService = new UserService(userRepo);
+//		new controller.UserController(employeeView, userService);
 		return employeeView;
 	}
 
 	private JPanel createCustomersPanel() {
 		System.out.println("Tạo Customer Panel");
 		CustomerView customerView = new CustomerView();
-		DaoInterface userRepo = new CustomerDao();
-		CustomerService customerService = new CustomerService(userRepo);
-		new controller.CustomerController(customerView, customerService);
+//		DaoInterface userRepo = new CustomerDao();
+//		CustomerService customerService = new CustomerService(userRepo);
+//		new controller.CustomerController(customerView, customerService);
 		return customerView;
 	}
 
 	private JPanel createBillingsPanel() {
 		BillView billView = new BillView();
-		DaoInterface billRepo = new BillDAO();
-		BillService billService = new BillService(billRepo);
-		DaoInterface userRepo = new CustomerDao();
-		CustomerService customerService = new CustomerService(userRepo);
-		DaoInterface productRepo = new ProductDAO();
-		ProductService productService = new ProductService(productRepo);
-		PetDAO petRepo = new PetDAO();
-		PetService petService = new PetService(petRepo);
-		new controller.BillController(billView, billService, productService, petService, customerService);
+////		DaoInterface billRepo = new BillDAO();
+////		BillService billService = new BillService(billRepo);
+////		DaoInterface userRepo = new CustomerDao();
+////		CustomerService customerService = new CustomerService(userRepo);
+////		DaoInterface productRepo = new ProductDAO();
+////		ProductService productService = new ProductService(productRepo);
+////		PetDAO petRepo = new PetDAO();
+////		PetService petService = new PetService(petRepo);
+//		new controller.BillController(billView, billService, productService, petService, customerService);
 		return billView;
 	}
 
 	private JPanel createProductPanel() {
 		ProductView productView = new ProductView();
-		DaoInterface productRepo = new ProductDAO();
-		ProductService productService = new ProductService(productRepo);
-		new controller.ProductController(productView, productService);
+//		DaoInterface productRepo = new ProductDAO();
+//		ProductService productService = new ProductService(productRepo);
+//		new controller.ProductController(productView, productService);
 		return productView;
 	}
 
