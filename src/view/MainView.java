@@ -23,7 +23,7 @@ public class MainView extends JFrame {
 	private JButton btnLogout;
 	private CardLayout cardLayout;
 	private JPanel centerPanel;
-
+	private JButton btnService;
 	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -88,6 +88,7 @@ public class MainView extends JFrame {
 		centerPanel.add(createCustomersPanel(), "Customers");
 		centerPanel.add(createBillingsPanel(), "Bills");
 		centerPanel.add(createHomePanel(), "Home");
+		centerPanel.add(createServicePanel(), "Service");
 
 		panel.setBackground(new Color(255, 255, 204));
 		panel.setBounds(0, -16, 250, 750);
@@ -193,6 +194,18 @@ public class MainView extends JFrame {
 		btnHome.setBounds(13, 370, 173, 31);
 		panel.add(btnHome);
 
+// After adding btnAdmin (if admin), add Service button below Admin
+		btnService = new JButton("Service");
+		btnService.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnService.setIconTextGap(20);
+		btnService.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/customer-service.png"))); // Updated icon path
+		btnService.setFocusPainted(false);
+		btnService.setBorder(null);
+		btnService.setBackground(new Color(255, 255, 204));
+		btnService.setBounds(18, 626, 173, 31); // Move below Admin (Admin at 591)
+		addHoverEffect(btnService, new Color(128, 128, 100), new Color(255, 255, 204));
+		panel.add(btnService);
+
 		centerPanel.setVisible(true);
 
 	}
@@ -246,10 +259,16 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel createHomePanel() {
-		PetCarePanel homePanel = new PetCarePanel();
-		PetServicesOrdersPanel petServicesOrdersPanel = new PetServicesOrdersPanel();
-		return petServicesOrdersPanel;
+		BookingView homePanel = new BookingView();
+		CheckDonView checkDonView = new CheckDonView();
+		return checkDonView;
 //		return homePanel;
+	}
+
+	private JPanel createServicePanel() {
+		System.out.println("Tạo Service Panel");
+		ServiceView Service = new ServiceView();
+		return Service;
 	}
 
 	public void addUsersListener(ActionListener listener) {
@@ -283,10 +302,14 @@ public class MainView extends JFrame {
 		btnHome.addActionListener(listener);
 	}
 
+	public void addServiceListener(ActionListener listener) {
+		btnService.addActionListener(listener);
+	}
+
 	public void showPanel(String panelName) {
-		;
 		cardLayout.show(centerPanel, panelName);
 	}
+
 
 	// Thêm phương thức cập nhật tên/ID
 	public void setEmployeeInfo(String name, String id) {

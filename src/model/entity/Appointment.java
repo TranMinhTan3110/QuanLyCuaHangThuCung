@@ -5,6 +5,7 @@ import java.util.Date;
 public class Appointment {
     private int appointmentID;
     private int customerID;
+    private int staffID;
     private String petName;
     private Date bookingDate;
     private Date completionDate;
@@ -14,9 +15,10 @@ public class Appointment {
 
     public Appointment() {}
 
-    public Appointment(int appointmentID, int customerID, String petName, Date bookingDate, Date completionDate, Date appointmentDate, String note, String status) {
+    public Appointment(int appointmentID, int customerID,int staffID, String petName, Date bookingDate, Date completionDate, Date appointmentDate, String note, String status) {
         this.appointmentID = appointmentID;
         this.customerID = customerID;
+        this.staffID = staffID;
         this.petName = petName;
         this.bookingDate = bookingDate;
         this.completionDate = completionDate;
@@ -31,6 +33,9 @@ public class Appointment {
     public int getCustomerID() { return customerID; }
     public void setCustomerID(int customerID) { this.customerID = customerID; }
 
+    public int getStaffID() { return staffID; }
+    public void setStaffID(int staffID) { this.staffID = staffID; }
+
     public String getPetName() { return petName; }
     public void setPetName(String petName) { this.petName = petName; }
 
@@ -40,7 +45,7 @@ public class Appointment {
     public Date getCompletionDate() { return completionDate; }
     public void setCompletionDate(Date completionDate) { this.completionDate = completionDate; }
 
-    public Date getAppointmentDate() { return appointmentDate; }
+    public Date getAppointmentDate() { return  appointmentDate; }
     public void setAppointmentDate(Date appointmentDate) { this.appointmentDate = appointmentDate; }
 
     public String getNote() { return note; }

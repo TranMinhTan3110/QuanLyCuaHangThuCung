@@ -1,10 +1,10 @@
 <component name="libraryTable">
   <library name="iText-Core-9.1">
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/../../../../iText-Core-9.1.0-only-jars" />
+      <root url="file://$PROJECT_DIR$/../../../../PDF/iText-Core-9.1.0-only-jars" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
-    <jarDirectory url="file://$PROJECT_DIR$/../../../../iText-Core-9.1.0-only-jars" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/../../../../PDF/iText-Core-9.1.0-only-jars" recursive="false" />
   </library>
 </component>
