@@ -10,6 +10,7 @@ import javax.swing.event.DocumentListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -187,8 +188,7 @@ public class BookingController {
         String note = view.getNote();
         List<String> selectedServices = view.getSelectedServices();
 
-        System.out.println(petName + " - " + selectedCustomer + " - " + date + " - " + note + " - " + selectedServices);
-
+        // Kiểm tra các trường bắt buộc
         if (petName.isEmpty() || selectedCustomer == null || date.isEmpty()) {
             JOptionPane.showMessageDialog(view,
                     "Vui lòng điền đầy đủ thông tin",
@@ -210,6 +210,22 @@ public class BookingController {
             Date appointmentDate = dateFormat.parse(date);
             Date bookingDate = new Date();
 
+            // Kiểm tra ngày hẹn không được trước ngày hiện tại
+            Calendar appointmentCal = Calendar.getInstance();
+            appointmentCal.setTime(appointmentDate);
+            setTimeToMidnight(appointmentCal);
+
+            Calendar bookingCal = Calendar.getInstance();
+            setTimeToMidnight(bookingCal);
+
+            if (appointmentCal.before(bookingCal)) {
+                JOptionPane.showMessageDialog(view,
+                        "Ngày hẹn không được trước ngày hiện tại",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             Appointment appointment = new Appointment();
             appointment.setCustomerID(selectedCustomer.getId());
             appointment.setPetName(petName);
@@ -217,6 +233,7 @@ public class BookingController {
             appointment.setBookingDate(bookingDate);
             appointment.setNote(note);
             appointment.setStatus(PENDING);
+
             if (appointmentService.insertWithServices(appointment, selectedServices)) {
                 JOptionPane.showMessageDialog(view,
                         "Đặt lịch thành công!",
@@ -235,6 +252,14 @@ public class BookingController {
                     "Lỗi",
                     JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // Hàm helper để set thời gian về 00:00:00
+    private void setTimeToMidnight(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
     }
     private void clearForm() {
         SwingUtilities.invokeLater(() -> {

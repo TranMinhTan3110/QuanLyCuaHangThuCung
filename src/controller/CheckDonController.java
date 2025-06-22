@@ -10,6 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class CheckDonController {
         this.view = view;
         this.appointmentService = appointmentService;
         this.dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        this.refreshTimer = new Timer(30000, e -> loadAppointments());
+        this.refreshTimer = new Timer(3000, e -> loadAppointments());
         this.staffList = appointmentService.getAllStaff();
         this.customerList = appointmentService.getAllCustomers();
         initController();
@@ -59,9 +60,6 @@ public class CheckDonController {
     private void loadAppointments() {
         try {
             List<Appointment> appointments = appointmentService.getAllAppointments();
-            DefaultTableModel model = (DefaultTableModel) view.getTableModel();
-            model.setRowCount(0);
-
             Object[][] data = new Object[appointments.size()][5];
             int row = 0;
 
@@ -78,7 +76,16 @@ public class CheckDonController {
                 row++;
             }
 
+            // Lưu lại trang hiện tại trước khi cập nhật
+            int currentPage = view.getCurrentPage();
+
             view.setAllData(data);
+            view.filterTable();
+
+            // Khôi phục lại trang sau khi cập nhật
+            if (currentPage <= view.getTotalPages()) {
+                view.setCurrentPage(currentPage);
+            }
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(view,
@@ -100,12 +107,36 @@ public class CheckDonController {
         }
 
         CheckDonView.OrderDetailDialog dialog = view.new OrderDetailDialog(orderData);
+        String currentOwnerName = orderData[1].toString(); // Lấy tên chủ hiện tại
 
-        // Chuyển đổi danh sách khách hàng thành CustomerComboItem
-        CheckDonView.CustomerComboItem[] customerItems = customerList.stream()
-                .map(customer -> view.new CustomerComboItem(customer.getId(), customer.getName()))
-                .toArray(CheckDonView.CustomerComboItem[]::new);
-        dialog.getOwnerNameComboBox().setModel(new DefaultComboBoxModel<>(customerItems));
+        // Tạo danh sách ComboItem với khách hàng hiện tại ở đầu
+        List<CheckDonView.CustomerComboItem> sortedCustomers = new ArrayList<>();
+        CheckDonView.CustomerComboItem currentCustomer = null;
+
+        // Chuyển đổi và sắp xếp danh sách khách hàng
+        for (Customer customer : customerList) {
+            CheckDonView.CustomerComboItem comboItem = view.new CustomerComboItem(
+                    customer.getId(),
+                    customer.getName()
+            );
+
+            if (customer.getName().equals(currentOwnerName)) {
+                currentCustomer = comboItem;
+                sortedCustomers.add(0, comboItem); // Thêm vào đầu danh sách
+            } else {
+                sortedCustomers.add(comboItem); // Thêm vào cuối danh sách
+            }
+        }
+
+        // Cập nhật model cho ComboBox
+        DefaultComboBoxModel<CheckDonView.CustomerComboItem> model =
+                new DefaultComboBoxModel<>(sortedCustomers.toArray(new CheckDonView.CustomerComboItem[0]));
+        dialog.getOwnerNameComboBox().setModel(model);
+
+        // Set selected item là khách hàng hiện tại
+        if (currentCustomer != null) {
+            dialog.getOwnerNameComboBox().setSelectedItem(currentCustomer);
+        }
 
         // Set staff names from staffList
         String[] staffNames = staffList.stream()

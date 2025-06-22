@@ -45,6 +45,7 @@ public class AppointmentService {
         return customerService.selectedByID(customerId);
     }
     public boolean updateAppointmentStatus(int appointmentId, int staffId, String status, List<String> services) {
+        // Gọi phương thức có xử lý completionDate
         return appointmentDao.updateAppointmentWithServices(appointmentId, staffId, status, services);
     }
 

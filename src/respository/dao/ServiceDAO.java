@@ -111,5 +111,19 @@ public class ServiceDAO implements DaoInterface<Service> {
         return null;
     }
 
+    public double getPriceByName(String serviceName) {
+        String sql = "SELECT price FROM Service WHERE serviceName = ?";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement st = con.prepareStatement(sql)) {
+            st.setString(1, serviceName);
+            ResultSet rs = st.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble("price");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+    }
     // Add more methods as needed, e.g., selectByNameLike, isServiceExists, etc.
 }

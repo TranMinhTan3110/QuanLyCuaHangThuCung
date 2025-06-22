@@ -696,6 +696,9 @@ public class BookingView extends JPanel {
 
     private void updateCalendarDays(JButton[][] dayButtons, Calendar calendar) {
         int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        Calendar today = Calendar.getInstance();
+
+        // Reset all buttons
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 dayButtons[row][col].setText("");
@@ -704,27 +707,52 @@ public class BookingView extends JPanel {
                 dayButtons[row][col].setEnabled(false);
             }
         }
+
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         int firstDayOfMonth = calendar.get(Calendar.DAY_OF_WEEK) - 1;
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int day = 1;
+
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 if (row == 0 && col < firstDayOfMonth) continue;
                 if (day > daysInMonth) break;
+
                 dayButtons[row][col].setText(String.valueOf(day));
-                dayButtons[row][col].setEnabled(true);
-                Calendar today = Calendar.getInstance();
-                if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
-                        today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
-                        today.get(Calendar.DAY_OF_MONTH) == day) {
-                    dayButtons[row][col].setBackground(new Color(121, 162, 219));
-                    dayButtons[row][col].setForeground(Color.WHITE);
+
+                // Kiểm tra xem ngày có trong quá khứ không
+                Calendar btnDate = (Calendar) calendar.clone();
+                btnDate.set(Calendar.DAY_OF_MONTH, day);
+                setTimeToMidnight(btnDate);
+                setTimeToMidnight(today);
+
+                // Vô hiệu hóa các ngày trong quá khứ
+                if (btnDate.before(today)) {
+                    dayButtons[row][col].setEnabled(false);
+                    dayButtons[row][col].setBackground(new Color(240, 240, 240));
+                    dayButtons[row][col].setForeground(Color.GRAY);
+                } else {
+                    dayButtons[row][col].setEnabled(true);
+
+                    // Highlight ngày hiện tại
+                    if (today.get(Calendar.YEAR) == calendar.get(Calendar.YEAR) &&
+                            today.get(Calendar.MONTH) == calendar.get(Calendar.MONTH) &&
+                            today.get(Calendar.DAY_OF_MONTH) == day) {
+                        dayButtons[row][col].setBackground(new Color(121, 162, 219));
+                        dayButtons[row][col].setForeground(Color.WHITE);
+                    }
                 }
                 day++;
             }
         }
         calendar.set(Calendar.DAY_OF_MONTH, currentDay);
+    }
+
+    private void setTimeToMidnight(Calendar calendar) {
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
     }
 
     private void updateMonthYearLabel(JLabel label, Calendar calendar) {

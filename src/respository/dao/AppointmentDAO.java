@@ -353,6 +353,7 @@ public class AppointmentDAO implements DaoInterface<Appointment> {
         }
     }
 
+    // In AppointmentDAO.java
     public boolean updateAppointmentWithServices(int appointmentId, int staffId, String status, List<String> services) {
         Connection conn = null;
         try {
@@ -362,14 +363,28 @@ public class AppointmentDAO implements DaoInterface<Appointment> {
             // 1. Cập nhật thông tin cuộc hẹn
             String appointmentSql = "UPDATE Appointment SET " +
                     "staffID = ?, " +
-                    "status = ? " +
+                    "status = ?, " +
+                    "completionDate = ? " +  // Thêm trường completionDate
                     "WHERE appointmentID = ?";
 
             try (PreparedStatement stmt = conn.prepareStatement(appointmentSql)) {
                 stmt.setInt(1, staffId);
+
                 stmt.setString(2, status);
-                stmt.setInt(3, appointmentId);
-                stmt.executeUpdate();
+
+                // Set completionDate based on status
+                if (status.equals("Hoàn thành") || status.equals("Đã thanh toán")) {
+                    stmt.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+                } else {
+                    stmt.setNull(3, Types.TIMESTAMP);
+                }
+
+                stmt.setInt(4, appointmentId);
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected == 0) {
+                    throw new SQLException("Không tìm thấy cuộc hẹn với ID: " + appointmentId);
+                }
             }
 
             // 2. Xóa các dịch vụ cũ
