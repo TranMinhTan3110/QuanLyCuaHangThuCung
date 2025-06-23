@@ -236,21 +236,6 @@ public class CustomerView extends JPanel {
         });
         paginationPanel.add(btnNext);
 
-        // Thêm dữ liệu mẫu để kiểm tra phân trang
-        addSampleData();
-    }
-
-    private void addSampleData() {
-        // Thêm 105 dòng dữ liệu mẫu để kiểm tra phân trang (5 trang: 21 dòng/trang)
-        for (int i = 1; i <= 105; i++) {
-            String id = "ID" + i;
-            String name = "Name " + i;
-            String phone = "090" + (1000000 + i);
-            String address = "Address " + i;
-            String score = String.valueOf(i * 10);
-            String rank = (i % 3 == 0) ? "Gold" : (i % 3 == 1) ? "Silver" : "Diamond";
-            addCustomerToTable(id, name, phone, address, score, rank);
-        }
     }
 
     private void updateTableForCurrentPage() {
