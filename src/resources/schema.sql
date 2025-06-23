@@ -1,224 +1,97 @@
-CREATE DATABASE QuanLyCuaHangThuCung;
+create DATABASE QuanLyCuaHangThuCung;
 
-USE [QuanLyCuaHangThuCung]
-GO
-/****** Object:  Table [dbo].[Bill]    Script Date: 03/05/2025 2:15:50 SA ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[Bill](
-    [billID] [int] IDENTITY(1,1) NOT NULL,
-    [billMethod] [varchar](50) NULL,
-    [amount] [decimal](10, 2) NULL,
-    [billTime] [datetime] NULL,
-    [orderID] [int] NULL,
-    CONSTRAINT [PK_Bill] PRIMARY KEY CLUSTERED
-(
-[billID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Category]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Category](
-    [categoryID] [int] NOT NULL,
-    [categoryName] [nvarchar](100) NULL,
-    PRIMARY KEY CLUSTERED
-(
-[categoryID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Customer]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Customer](
-    [id] [int] NOT NULL,
-    [loyaltyPoints] [int] NULL,
-    [membershipLevel] [varchar](50) NULL,
-    CONSTRAINT [PK_Customer] PRIMARY KEY CLUSTERED
-(
-[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Order]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Order](
-    [orderID] [int] IDENTITY(1,1) NOT NULL,
-    [userID] [int] NULL,
-    [customerID] [int] NULL,
-    [totalPrice] [decimal](10, 2) NULL,
-    [orderDate] [datetime] NULL,
-    PRIMARY KEY CLUSTERED
-(
-[orderID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[OrderDetail]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[OrderDetail](
-    [orderDetailID] [int] IDENTITY(1,1) NOT NULL,
-    [orderID] [int] NULL,
-    [productID] [int] NULL,
-    [quantity] [int] NULL,
-    [price] [decimal](10, 2) NULL,
-    [petID] [int] NULL,
-    PRIMARY KEY CLUSTERED
-(
-[orderDetailID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Person]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Person](
-    [id] [int] IDENTITY(1,1) NOT NULL,
-    [name] [varchar](255) NULL,
-    [phone] [varchar](50) NULL,
-    [address] [varchar](255) NULL,
-    PRIMARY KEY CLUSTERED
-(
-[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Pet]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Pet](
-    [petID] [int] IDENTITY(1,1) NOT NULL,
-    [name] [varchar](255) NULL,
-    [species] [varchar](100) NULL,
-    [breed] [varchar](100) NULL,
-    [age] [float] NULL,
-    [price] [decimal](10, 2) NULL,
-    [gender] [nvarchar](10) NULL,
-    [trangThai] [nvarchar](20) NULL,
-    PRIMARY KEY CLUSTERED
-(
-[petID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Product]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Product](
-    [productID] [int] IDENTITY(1,1) NOT NULL,
-    [name] [nvarchar](200) NOT NULL,
-    [price] [decimal](10, 2) NULL,
-    [categoryID] [int] NULL,
-    [quantity] [int] NULL,
-    PRIMARY KEY CLUSTERED
-(
-[productID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[Role]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[Role](
-    [roleName] [varchar](50) NOT NULL,
-    PRIMARY KEY CLUSTERED
-(
-[roleName] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-/****** Object:  Table [dbo].[User]    Script Date: 03/05/2025 2:15:50 SA ******/
-    SET ANSI_NULLS ON
-    GO
-    SET QUOTED_IDENTIFIER ON
-    GO
-CREATE TABLE [dbo].[User](
-    [id] [int] NOT NULL,
-    [username] [varchar](100) NULL,
-    [password] [varchar](255) NULL,
-    [roleName] [varchar](50) NULL,
-    PRIMARY KEY CLUSTERED
-(
-[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY],
-    UNIQUE NONCLUSTERED
-(
-[username] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-    ) ON [PRIMARY]
-    GO
-ALTER TABLE [dbo].[Bill] ADD  DEFAULT (getdate()) FOR [billTime]
-    GO
-ALTER TABLE [dbo].[Order] ADD  DEFAULT (getdate()) FOR [orderDate]
-    GO
-ALTER TABLE [dbo].[Pet] ADD  DEFAULT ('available') FOR [trangThai]
-    GO
-ALTER TABLE [dbo].[Product] ADD  DEFAULT ((0)) FOR [quantity]
-    GO
-ALTER TABLE [dbo].[Bill]  WITH CHECK ADD  CONSTRAINT [FK_Bill_Order] FOREIGN KEY([orderID])
-    REFERENCES [dbo].[Order] ([orderID])
-    GO
-ALTER TABLE [dbo].[Bill] CHECK CONSTRAINT [FK_Bill_Order]
-    GO
-ALTER TABLE [dbo].[Customer]  WITH CHECK ADD  CONSTRAINT [FK_Customer_Person] FOREIGN KEY([id])
-    REFERENCES [dbo].[Person] ([id])
-    GO
-ALTER TABLE [dbo].[Customer] CHECK CONSTRAINT [FK_Customer_Person]
-    GO
-ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([customerID])
-    REFERENCES [dbo].[Customer] ([id])
-    GO
-ALTER TABLE [dbo].[Order]  WITH CHECK ADD FOREIGN KEY([userID])
-    REFERENCES [dbo].[User] ([id])
-    GO
-ALTER TABLE [dbo].[OrderDetail]  WITH CHECK ADD FOREIGN KEY([orderID])
-    REFERENCES [dbo].[Order] ([orderID])
-    GO
-ALTER TABLE [dbo].[OrderDetail]  WITH CHECK ADD FOREIGN KEY([productID])
-    REFERENCES [dbo].[Product] ([productID])
-    GO
-ALTER TABLE [dbo].[OrderDetail]  WITH CHECK ADD  CONSTRAINT [FK_OrderDetail_Pet] FOREIGN KEY([petID])
-    REFERENCES [dbo].[Pet] ([petID])
-    GO
-ALTER TABLE [dbo].[OrderDetail] CHECK CONSTRAINT [FK_OrderDetail_Pet]
-    GO
-ALTER TABLE [dbo].[Product]  WITH CHECK ADD  CONSTRAINT [FK_Product_Category] FOREIGN KEY([categoryID])
-    REFERENCES [dbo].[Category] ([categoryID])
-    GO
-ALTER TABLE [dbo].[Product] CHECK CONSTRAINT [FK_Product_Category]
-    GO
-ALTER TABLE [dbo].[User]  WITH CHECK ADD FOREIGN KEY([id])
-    REFERENCES [dbo].[Person] ([id])
-    GO
-ALTER TABLE [dbo].[User]  WITH CHECK ADD FOREIGN KEY([roleName])
-    REFERENCES [dbo].[Role] ([roleName])
-    GO
-ALTER TABLE [dbo].[OrderDetail]  WITH CHECK ADD  CONSTRAINT [CK_OnlyOneItem] CHECK  (([productID] IS NOT NULL AND [petID] IS NULL OR [productID] IS NULL AND [petID] IS NOT NULL))
-    GO
-ALTER TABLE [dbo].[OrderDetail] CHECK CONSTRAINT [CK_OnlyOneItem]
-    GO
+CREATE TABLE Pet (
+                     petID INT PRIMARY KEY IDENTITY(1,1),
+                     name NVARCHAR(100) NOT NULL,
+                     species NVARCHAR(50) NOT NULL,  -- Loài (Chó, Mèo, ...)
+                     breed NVARCHAR(100) NULL,       -- Giống loài (Golden Retriever, Maine Coon, ...)
+                     age INT CHECK (age >= 0),       -- Tuổi thú cưng >= 0
+                     gender NVARCHAR(10) CHECK (gender IN ('Male', 'Female')), -- Giới tính
+                     price DECIMAL(10,2) NULL,       -- Giá thú cưng
+                     trangThai NVARCHAR(20) DEFAULT 'Chưa bán'  -- Mặc định là 'available'
+);
+
+CREATE TABLE Product (
+                         productID INT PRIMARY KEY IDENTITY(1,1),
+                         name NVARCHAR(200) NOT NULL,
+                         price DECIMAL(10,2) NULL,
+                         categoryID INT NULL,
+                         quantity INT NOT NULL DEFAULT 0,
+                         trangThai NVARCHAR(20) DEFAULT 'Còn hàng',
+                         FOREIGN KEY (categoryID) REFERENCES Category(categoryID)
+);
+
+CREATE TABLE Role (
+                      roleName VARCHAR(50) PRIMARY KEY
+);
+
+CREATE TABLE [User] (
+                        id INT PRIMARY KEY,
+                        username VARCHAR(100) UNIQUE,
+                        password VARCHAR(255),
+                        roleName VARCHAR(50),
+                        FOREIGN KEY (id) REFERENCES Person(id),
+                        FOREIGN KEY (roleName) REFERENCES Role(roleName)
+);
+
+CREATE TABLE OrderDetail (
+                             orderDetailID INT PRIMARY KEY IDENTITY(1,1),
+                             orderID INT,
+                             productID INT,
+                             petID INT,
+                             quantity INT,
+                             price DECIMAL(10,2),
+
+                             FOREIGN KEY (orderID) REFERENCES [Order](orderID),
+                             FOREIGN KEY (productID) REFERENCES Product(productID),
+                             FOREIGN KEY (petID) REFERENCES Pet(petID),
+
+                             CHECK (
+                                 (productID IS NOT NULL AND petID IS NULL)
+                                     OR
+                                 (productID IS NULL AND petID IS NOT NULL)
+                                 )
+);
+
+CREATE TABLE Person (
+                        id INT PRIMARY KEY IDENTITY(1,1),
+                        name VARCHAR(255),
+                        phone VARCHAR(50),
+                        address VARCHAR(255)
+);
+
+CREATE TABLE [Order] (
+                         orderID INT PRIMARY KEY IDENTITY(1,1),
+                         userID INT,
+                         customerID INT,
+                         totalPrice DECIMAL(10,2),
+                         orderDate DATETIME DEFAULT GETDATE(),
+                         FOREIGN KEY (userID) REFERENCES [User](id),
+                         FOREIGN KEY (customerID) REFERENCES Customer(id)
+);
+
+CREATE TABLE Customer (
+                          id INT PRIMARY KEY,
+                          loyaltyPoints INT,
+                          membershipLevel VARCHAR(50),
+                          FOREIGN KEY (id) REFERENCES Person(id)
+);
+
+CREATE TABLE Category (
+                          categoryID INT PRIMARY KEY,
+                          categoryName NVARCHAR(100)
+);
+
+CREATE TABLE Bill (
+                      billID INT PRIMARY KEY IDENTITY(1,1),
+                      billMethod VARCHAR(50),
+                      amount DECIMAL(10,2),
+                      billTime DATETIME DEFAULT GETDATE(),
+                      orderID INT,
+                      FOREIGN KEY (orderID) REFERENCES [Order](orderID)
+);
+
+
 
 -- inser mẫu
 

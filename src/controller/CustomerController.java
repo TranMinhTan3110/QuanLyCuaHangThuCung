@@ -158,14 +158,28 @@ public class CustomerController {
 		customer.setMembershipLevel(membershipLevel);
 
 		if (customerService.insert(customer)) {
-			customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, String.valueOf(loyaltyPoints),
-					membershipLevel);
+			refreshCustomerTableFromDB(); // Thay vì chỉ addCustomerToTable
 			JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
 			customerView.clear();
 		} else {
 			JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thất bại");
 		}
 
+	}
+
+	private void refreshCustomerTableFromDB() {
+		customerView.clear();
+		ArrayList<Customer> customers = customerService.getAll();
+		for (Customer customer : customers) {
+			customerView.addCustomerToTable(
+					String.valueOf(customer.getId()),
+					customer.getName(),
+					customer.getPhone(),
+					customer.getAddress(),
+					customerService.getPoint(customer),
+					customerService.getRank(customer)
+			);
+		}
 	}
 
 	// chỉnh sửa khách hàng

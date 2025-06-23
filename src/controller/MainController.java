@@ -20,6 +20,7 @@ public class MainController {
 		this.view.addLogoutListener(e -> onLogoutClicked());
 		this.view.addProductListener(e -> onProductClicked());
 		this.view.addHomeListener(e -> onHomeClicked());
+		this.view.addServiceListener(e -> onServiceClicked());
 	}
 
 	private void onHomeClicked() {
@@ -52,6 +53,10 @@ public class MainController {
 		view.showPanel("Product");
 	}
 
+	private void onServiceClicked() {
+		System.out.println("Service button clicked!");
+		view.showPanel("Service");
+	}
 	private void onLogoutClicked() {
 		System.out.println("Logout clicked!");
 		view.dispose(); // Đóng MainView hiện tại
