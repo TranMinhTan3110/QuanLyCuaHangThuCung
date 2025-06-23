@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="kernel-9.1.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../../PDF/iText-Core-9.1.0-only-jars/kernel-9.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../PDF/iText-Core-9.1.0-only-jars/io-9.1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../../PDF/iText-Core-9.1.0-only-jars/layout-9.1.0.jar!/" />
+      <root url="file://$PROJECT_DIR$" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/src" />
+    </SOURCES>
+  </library>
+</component>
