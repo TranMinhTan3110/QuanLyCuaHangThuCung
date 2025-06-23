@@ -236,23 +236,10 @@ public class UserView extends JPanel {
         btnNext.setFocusPainted(false);
         paginationPanel.add(btnNext);
 
-        // Thêm dữ liệu mẫu
-        addSampleData();
+
     }
 
-    private void addSampleData() {
-        // Thêm 105 người dùng mẫu để kiểm tra phân trang
-        for (int i = 1; i <= 105; i++) {
-            String id = "ID" + i;
-            String name = "Tên " + i;
-            String phone = "090" + (1000000 + i);
-            String username = "user" + i;
-            String password = "pass" + i;
-            String address = "Địa chỉ " + i;
-            String role = (i % 2 == 0) ? "Admin" : "Employee";
-            addUserToTable(id, name, phone, username, password, address, role);
-        }
-    }
+
 
     private void updateTableForCurrentPage() {
         model.setRowCount(0);
