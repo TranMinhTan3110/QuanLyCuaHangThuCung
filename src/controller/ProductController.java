@@ -1,4 +1,5 @@
 package controller;
+
 import model.entity.Category;
 import model.entity.Product;
 import service.ProductService;
@@ -75,9 +76,6 @@ public class ProductController {
 					p.getCategory().getCategoryName()
 			});
 		}
-		view.getPageInfoLabel().setText("Page " + currentPage + "/" + totalPage);
-		view.getPrevPageButton().setEnabled(currentPage > 1);
-		view.getNextPageButton().setEnabled(currentPage < totalPage);
 	}
 
 	class AddListener implements ActionListener {
@@ -98,6 +96,8 @@ public class ProductController {
 			}
 			double price;
 			int quantity;
+
+			// Kiểm tra định dạng số
 			try {
 				price = Double.parseDouble(priceStr);
 				quantity = Integer.parseInt(quantityStr);
@@ -117,12 +117,18 @@ public class ProductController {
 				JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
 				return;
 			}
+			if (service.isProductExist(name)) {
+				JOptionPane.showMessageDialog(view, "Sản phẩm này đã tồn tại!");
+				return;
+			}
 			Product product = new Product();
 			product.setName(name);
 			product.setPrice(price);
 			product.setQuantity(quantity);
 			product.setCategory(selectedCategory);
+
 			service.insert(product);
+			JOptionPane.showMessageDialog(view, "Thêm sản phẩm thành công!");
 			loadTable();
 			view.clearFields();
 		}
@@ -150,6 +156,7 @@ public class ProductController {
 				}
 				double price;
 				int quantity;
+				// Kiểm tra định dạng số
 				try {
 					price = Double.parseDouble(priceStr);
 					quantity = Integer.parseInt(quantityStr);
@@ -172,6 +179,7 @@ public class ProductController {
 				} else {
 					service.delete(p);
 				}
+					JOptionPane.showMessageDialog(view, "Cập nhật sản phẩm thành công");
 				loadTable();
 				view.clearFields();
 			} else {
@@ -244,6 +252,7 @@ public class ProductController {
 			return false;
 		}
 	}
+
 	private void showWarning(String message) {
 		JOptionPane.showMessageDialog(view, message, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
 	}
@@ -271,14 +280,12 @@ public class ProductController {
 		});
 	}
 
+	// Hàm này Controller tự xử lý
 	private void fillFormFromSelectedRow(int selectedRow) {
-		String productName = view.getValueAt(selectedRow, 1);
-		String price = view.getValueAt(selectedRow, 2);
-		String quantity = view.getValueAt(selectedRow, 3);
-		String categoryName = view.getValueAt(selectedRow, 4);
-		view.setProductName(productName);
-		view.setPrice(price);
-		view.setQuantity(quantity);
-		view.setSelectedCategoryByName(categoryName);
+		JTable table = view.getProductTable();
+		view.setProductName(table.getValueAt(selectedRow, 1).toString());
+		view.setPrice(table.getValueAt(selectedRow, 2).toString());
+		view.setQuantity(table.getValueAt(selectedRow, 3).toString());
+		view.setSelectedCategoryByName(table.getValueAt(selectedRow, 4).toString());
 	}
 }

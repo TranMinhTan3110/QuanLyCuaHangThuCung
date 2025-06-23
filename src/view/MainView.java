@@ -1,4 +1,3 @@
-// src/view/MainView.java
 package view;
 
 
@@ -25,12 +24,13 @@ public class MainView extends JFrame {
 	private JButton btnLogout;
 	private CardLayout cardLayout;
 	private JPanel centerPanel;
-
+	private JButton btnService;
 	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				button.setBackground(hoverColor);
 			}
+
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				button.setBackground(defaultColor);
 			}
@@ -40,6 +40,7 @@ public class MainView extends JFrame {
 	private void addPlaceholder(JTextField textField, String placeholder) {
 		textField.setText(placeholder);
 		textField.setForeground(Color.GRAY);
+
 		textField.addFocusListener(new java.awt.event.FocusAdapter() {
 			@Override
 			public void focusGained(java.awt.event.FocusEvent e) {
@@ -48,6 +49,7 @@ public class MainView extends JFrame {
 					textField.setForeground(Color.BLACK);
 				}
 			}
+
 			@Override
 			public void focusLost(java.awt.event.FocusEvent e) {
 				if (textField.getText().isEmpty()) {
@@ -58,6 +60,9 @@ public class MainView extends JFrame {
 		});
 	}
 
+	/**
+	 * Create the frame.
+	 */
 	public MainView(String role) {
 		panel = new JPanel();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserView.class.getResource("/view/Icon/users_Icon.png")));
@@ -72,16 +77,19 @@ public class MainView extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
+		// SỬA Ở ĐÂY: gán cho biến class, không phải tạo biến cục bộ
 		cardLayout = new CardLayout();
 		centerPanel = new JPanel(cardLayout);
 		centerPanel.setBounds(250, 0, 950, 750); // Increased height to 750
 		contentPane.add(centerPanel);
 
+		// Thêm các panel
 		centerPanel.add(createPetsPanel(), "Pets");
 		centerPanel.add(createProductPanel(), "Product");
 		centerPanel.add(createCustomersPanel(), "Customers");
 		centerPanel.add(createBillingsPanel(), "Bills");
 		centerPanel.add(createHomePanel(), "Home");
+		centerPanel.add(createServicePanel(), "Service");
 
 		panel.setBackground(new Color(255, 255, 204));
 		panel.setBounds(0, -16, 250, 750);
@@ -99,6 +107,7 @@ public class MainView extends JFrame {
 		addHoverEffect(btnPets, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnPets);
 
+		// Nếu là admin thì mới hiển thị nút Admin
 		if ("admin".equals(role)) {
 			centerPanel.add(createUsersPanel(), "Admin");
 			btnAdmin = new JButton("Admin");
@@ -165,6 +174,7 @@ public class MainView extends JFrame {
 		panel.add(lblEmployeeID);
 
 		btnProduct = new JButton("Product");
+//        centerPanel.add(createProductPanel(), "Product");
 		btnProduct.setIconTextGap(20);
 		btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Cate_Icon.png")));
 		btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -185,7 +195,20 @@ public class MainView extends JFrame {
 		btnHome.setBounds(13, 370, 173, 31);
 		panel.add(btnHome);
 
+// After adding btnAdmin (if admin), add Service button below Admin
+		btnService = new JButton("Service");
+		btnService.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btnService.setIconTextGap(20);
+		btnService.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/customer-service.png"))); // Updated icon path
+		btnService.setFocusPainted(false);
+		btnService.setBorder(null);
+		btnService.setBackground(new Color(255, 255, 204));
+		btnService.setBounds(18, 626, 173, 31); // Move below Admin (Admin at 591)
+		addHoverEffect(btnService, new Color(128, 128, 100), new Color(255, 255, 204));
+		panel.add(btnService);
+
 		centerPanel.setVisible(true);
+
 	}
 
 	private JPanel createPetsPanel() {
@@ -197,6 +220,7 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel createUsersPanel() {
+		System.out.println("Tạo User Panel");
 		UserView employeeView = new UserView();
 		DaoInterface userRepo = new UserDAO();
 		UserService userService = new UserService(userRepo);
@@ -205,6 +229,7 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel createCustomersPanel() {
+		System.out.println("Tạo Customer Panel");
 		CustomerView customerView = new CustomerView();
 		DaoInterface userRepo = new CustomerDao();
 		CustomerService customerService = new CustomerService(userRepo);
@@ -235,9 +260,16 @@ public class MainView extends JFrame {
 	}
 
 	private JPanel createHomePanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new JLabel("Home Panel", SwingConstants.CENTER), BorderLayout.NORTH);
-		return panel;
+		BookingView homePanel = new BookingView();
+		CheckDonView checkDonView = new CheckDonView();
+		return checkDonView;
+//		return homePanel;
+	}
+
+	private JPanel createServicePanel() {
+		System.out.println("Tạo Service Panel");
+		ServiceView Service = new ServiceView();
+		return Service;
 	}
 
 	public void addUsersListener(ActionListener listener) {
@@ -270,10 +302,16 @@ public class MainView extends JFrame {
 		btnHome.addActionListener(listener);
 	}
 
+	public void addServiceListener(ActionListener listener) {
+		btnService.addActionListener(listener);
+	}
+
 	public void showPanel(String panelName) {
 		cardLayout.show(centerPanel, panelName);
 	}
 
+
+	// Thêm phương thức cập nhật tên/ID
 	public void setEmployeeInfo(String name, String id) {
 		lblEmployeeName.setText("Name: " + name);
 		lblEmployeeID.setText("ID: " + id);

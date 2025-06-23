@@ -6,10 +6,18 @@ public class Product {
 	private double price;
 	private int quantity;
 	private Category category;
-
+	private String trangThai;
 	// Constructor không tham số
 	public Product() {
 	};
+
+	public String gettrangThai() {
+		return trangThai;
+	}
+
+	public void settrangThai(String trangThai) {
+		this.trangThai = trangThai;
+	}
 
 	// Constructor đầy đủ
 	public Product(int productID, String name, double price, int quantity, Category category) {

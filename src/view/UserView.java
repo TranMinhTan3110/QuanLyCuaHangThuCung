@@ -235,10 +235,7 @@ public class UserView extends JPanel {
         });
         btnNext.setFocusPainted(false);
         paginationPanel.add(btnNext);
-
-
     }
-
 
 
     private void updateTableForCurrentPage() {

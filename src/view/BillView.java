@@ -1,20 +1,14 @@
-
 package view;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
-
+import java.awt.*;
+import java.awt.event.*;
+import java.util.List;
 import model.entity.Product;
 import view.UI.Hover;
-
-import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.ActionEvent;
-import java.util.List;
 
 public class BillView extends JPanel {
 
@@ -46,165 +40,128 @@ public class BillView extends JPanel {
 	private JComboBox pay_comboBox;
 	private int idCustomer;
 
+	private static final Color PRIMARY_COLOR = new Color(121, 162, 219);
+	private static final Color PRIMARY_HOVER = new Color(100, 140, 200);
+	private static final Color BTN_ADD = new Color(46, 204, 113);
+	private static final Color BTN_ADD_HOVER = new Color(36, 170, 90);
+	private static final Color BTN_DEL = new Color(231, 76, 60);
+	private static final Color BTN_DEL_HOVER = new Color(200, 50, 40);
+	private static final Color BG_FORM = new Color(245, 250, 255);
+	private static final Color TEXT_MAIN = new Color(40, 40, 40);
+
 	public BillView() {
 		setLayout(null);
 		setBounds(0, 0, 950, 750);
+		setBackground(new Color(200, 220, 240));
 
-		// Panel chứa thông tin khách hàng
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 255, 223));
-		panel.setBounds(0, 0, 508, 345);
+		// Custom Scrollbar UI globally
+		UIManager.put("ScrollBar.thumb", new Color(200, 220, 240));
+		UIManager.put("ScrollBar.thumbHighlight", PRIMARY_COLOR);
+		UIManager.put("ScrollBar.thumbShadow", PRIMARY_COLOR);
+		UIManager.put("ScrollBar.thumbDarkShadow", PRIMARY_COLOR);
+		UIManager.put("ScrollBar.track", BG_FORM);
+
+		// Customer Info Panel
+		JPanel panel = new JPanel() {
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(BG_FORM);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+				g2.dispose();
+			}
+		};
+		panel.setBackground(BG_FORM);
+		panel.setBounds(15, 15, 480, 340);
 		add(panel);
 		panel.setLayout(null);
 
-		// Nhãn và trường nhập "Nhập Tên Khách hàng"
 		JLabel lblCustomerName = new JLabel("Tên Khách hàng");
-		lblCustomerName.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblCustomerName.setBounds(25, 20, 150, 20);
+		lblCustomerName.setFont(new Font("SansSerif", Font.BOLD, 15));
+		lblCustomerName.setForeground(TEXT_MAIN);
+		lblCustomerName.setBounds(30, 22, 150, 20);
 		panel.add(lblCustomerName);
 
-		nameTextField = new JTextField();
-		nameTextField.setBounds(25, 43, 150, 30);
-		Hover.addPlaceholder(nameTextField, "Enter Customer's Name");
+		nameTextField = createRoundTextField("Enter Customer's Name");
+		nameTextField.setBounds(30, 45, 170, 32);
 		panel.add(nameTextField);
-		nameTextField.setColumns(10);
-		Hover.roundTextField(nameTextField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Nhãn và trường nhập "Số điện thoại"
 		JLabel lblPhone = new JLabel("Số điện thoại");
-		lblPhone.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblPhone.setBounds(245, 20, 150, 20);
+		lblPhone.setFont(new Font("SansSerif", Font.BOLD, 15));
+		lblPhone.setForeground(TEXT_MAIN);
+		lblPhone.setBounds(250, 22, 120, 20);
 		panel.add(lblPhone);
 
-		phoneTextField = new JTextField();
-		phoneTextField.setColumns(10);
-		phoneTextField.setBounds(245, 43, 150, 30);
-		Hover.addPlaceholder(phoneTextField, "Enter Phone Number");
+		phoneTextField = createRoundTextField("Enter Phone Number");
+		phoneTextField.setBounds(250, 45, 170, 32);
 		panel.add(phoneTextField);
-		Hover.roundTextField(phoneTextField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Nhãn và trường nhập "Địa chỉ"
 		JLabel lblAddress = new JLabel("Địa chỉ");
-		lblAddress.setFont(new Font("Arial", Font.PLAIN, 14));
-		lblAddress.setBounds(25, 88, 150, 20);
+		lblAddress.setFont(new Font("SansSerif", Font.BOLD, 15));
+		lblAddress.setForeground(TEXT_MAIN);
+		lblAddress.setBounds(30, 90, 150, 20);
 		panel.add(lblAddress);
 
-		addressTextField = new JTextField();
-		addressTextField.setColumns(10);
-		addressTextField.setBounds(25, 111, 370, 30);
-		Hover.addPlaceholder(addressTextField, "Enter Address");
+		addressTextField = createRoundTextField("Enter Address");
+		addressTextField.setBounds(30, 115, 390, 32);
 		panel.add(addressTextField);
-		Hover.roundTextField(addressTextField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Nút "Product"
-		productButton = new JButton("Product");
-		productButton.setForeground(new Color(255, 255, 255));
-		productButton.setBackground(new Color(135, 206, 250));
-		productButton.setFont(new Font("Arial", Font.BOLD, 16));
-		productButton.setBounds(49, 219, 110, 30);
-		productButton.setFocusPainted(false);
-		Hover.addHoverEffect(productButton, new Color(50, 50, 50), new Color(135, 206, 250));
+		// Tab buttons
+		productButton = createTabButton("Product", true);
+		productButton.setBounds(38, 175, 110, 36);
 		panel.add(productButton);
 
-		// Nút "Pet"
-		petButton = new JButton("Pet");
-		petButton.setForeground(new Color(255, 255, 255));
-		petButton.setBackground(new Color(135, 206, 250));
-		petButton.setFont(new Font("Arial", Font.BOLD, 16));
-		petButton.setBounds(201, 219, 110, 30);
-		petButton.setFocusPainted(false);
-		Hover.addHoverEffect(petButton, new Color(50, 50, 50), new Color(135, 206, 250));
+		petButton = createTabButton("Pet", false);
+		petButton.setBounds(178, 175, 110, 36);
 		panel.add(petButton);
 
-		// Nút "Customer"
-		customerButton = new JButton("Customer");
-		customerButton.setForeground(new Color(255, 255, 255));
-		customerButton.setBackground(new Color(135, 206, 250));
-		customerButton.setFont(new Font("Arial", Font.BOLD, 16));
-		customerButton.setBounds(351, 219, 110, 30);
-		customerButton.setFocusPainted(false);
-		Hover.addHoverEffect(customerButton, new Color(50, 50, 50), new Color(135, 206, 250));
+		customerButton = createTabButton("Customer", false);
+		customerButton.setBounds(318, 175, 110, 36);
 		panel.add(customerButton);
 
-		// Thanh tìm kiếm cho Product
-		searchProductField = new JTextField();
-		searchProductField.setBounds(49, 260, 412, 30);
-		Hover.addPlaceholder(searchProductField, "Search Product ID...");
+		// Search fields
+		searchProductField = createRoundTextField("Search Product ID...");
+		searchProductField.setBounds(38, 222, 390, 32);
 		searchProductField.setVisible(true);
 		panel.add(searchProductField);
-		searchProductField.setColumns(10);
-		Hover.roundTextField(searchProductField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Thanh tìm kiếm cho Pet
-		searchPetField = new JTextField();
-		searchPetField.setBounds(49, 260, 412, 30);
-		Hover.addPlaceholder(searchPetField, "Search Pet ID...");
+		searchPetField = createRoundTextField("Search Pet ID...");
+		searchPetField.setBounds(38, 222, 390, 32);
 		searchPetField.setVisible(false);
 		panel.add(searchPetField);
-		searchPetField.setColumns(10);
-		Hover.roundTextField(searchPetField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Thanh tìm kiếm cho Customer
-		searchCustomerField = new JTextField();
-		searchCustomerField.setBounds(49, 260, 412, 30);
-		Hover.addPlaceholder(searchCustomerField, "Search Customer ID...");
+		searchCustomerField = createRoundTextField("Search Customer ID...");
+		searchCustomerField.setBounds(38, 222, 390, 32);
 		searchCustomerField.setVisible(false);
 		panel.add(searchCustomerField);
-		searchCustomerField.setColumns(10);
-		Hover.roundTextField(searchCustomerField, 15, Color.WHITE, Color.LIGHT_GRAY);
 
-		// Nhãn "Danh sách hàng hóa"
+		// List label
 		lblProductList = new JLabel("Danh sách hàng hóa");
-		lblProductList.setFont(new Font("Arial", Font.BOLD, 14));
-		lblProductList.setBounds(10, 320, 200, 25);
+		lblProductList.setFont(new Font("SansSerif", Font.BOLD, 16));
+		lblProductList.setForeground(PRIMARY_COLOR);
+		lblProductList.setBounds(35, 365, 250, 25);
 		add(lblProductList);
 
-		// Bảng danh sách Product
-		tableProductList = new JTable();
-		Hover.customizeTableHeader(tableProductList);
-		tableProductList.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID", "Name", "Price", "Quantity", "Category" }) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Không cho phép sửa bất kỳ ô nào
-			}
-		});
-		scrollPaneProduct = new JScrollPane(tableProductList);
-		scrollPaneProduct.setBounds(0, 346, 508, 395);
+		// Table Product
+		tableProductList = createModernTable(new String[] { "ID", "Name", "Price", "Quantity", "Category" });
+		scrollPaneProduct = createModernScrollPane(tableProductList);
+		scrollPaneProduct.setBounds(15, 400, 480, 320);
 		scrollPaneProduct.setVisible(true);
-//        Hover.customizeTableHeader(tableProductList);
 		add(scrollPaneProduct);
 
-		// Bảng danh sách Pet
-		tablePetList = new JTable();
-		Hover.customizeTableHeader(tablePetList);
-		tablePetList.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID", "Name", "Species", "Price", "Breed", "Age" }) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Không cho phép sửa bất kỳ ô nào
-			}
-		});
-		scrollPanePet = new JScrollPane(tablePetList);
-		scrollPanePet.setBounds(0, 346, 506, 395);
+		// Table Pet
+		tablePetList = createModernTable(new String[] { "ID", "Name", "Species", "Price", "Breed", "Age" });
+		scrollPanePet = createModernScrollPane(tablePetList);
+		scrollPanePet.setBounds(15, 400, 480, 320);
 		scrollPanePet.setVisible(false);
-//        Hover.customizeTableHeader(tablePetList);
 		add(scrollPanePet);
 
-		// Bảng danh sách Customer
-		tableCustomerList = new JTable();
-		Hover.customizeTableHeader(tableCustomerList);
-		tableCustomerList.setModel(new DefaultTableModel(new Object[][] {},
-				new String[] { "ID", "Name", "Address", "Phone", "Rank", "Score" }) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false; // Không cho phép sửa bất kỳ ô nào
-			}
-		});
-		scrollPaneCustomer = new JScrollPane(tableCustomerList);
-		scrollPaneCustomer.setBounds(0, 346, 506, 395);
+		// Table Customer
+		tableCustomerList = createModernTable(new String[] { "ID", "Name", "Address", "Phone", "Rank", "Score" });
+		scrollPaneCustomer = createModernScrollPane(tableCustomerList);
+		scrollPaneCustomer.setBounds(15, 400, 480, 320);
 		scrollPaneCustomer.setVisible(false);
-//        Hover.customizeTableHeader(tableCustomerList);
 		add(scrollPaneCustomer);
 
 		tableCustomerList.getSelectionModel().addListSelectionListener(e -> {
@@ -227,191 +184,230 @@ public class BillView extends JPanel {
 			}
 		});
 
-		// Bảng hóa đơn
-		tableBillItems = new JTable();
-		Hover.customizeTableHeader(tableBillItems);
-		tableBillItems.setModel(
-				new DefaultTableModel(new Object[][] {}, new String[] { "ID", "Name", "Quantity", "Price", "Total" }) {
-					@Override
-					public boolean isCellEditable(int row, int column) {
-						return false; // Không cho phép sửa bất kỳ ô nào
-					}
-				});
-		scrollPaneBill = new JScrollPane(tableBillItems);
-		scrollPaneBill.setBounds(508, 0, 450, 426);
-		scrollPaneBill.setBorder(
-				BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Hóa Đơn", TitledBorder.CENTER, // Canh
-																														// giữa
-																														// tiêu
-																														// đề
-						TitledBorder.DEFAULT_POSITION, new Font("Arial", Font.BOLD, 20) // Cỡ chữ 16, đậm
-				));
-//        Hover.customizeTableHeader(tableBillItems);
-		add(scrollPaneBill);
-
-		// Nút "Lưu"
-		btnSave = new JButton("Lưu");
-		btnSave.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/save_ICon.png")));
-		btnSave.setFont(new Font("Arial", Font.BOLD, 14));
-		btnSave.setBounds(553, 610, 150, 70);
-		btnSave.setFocusPainted(false);
-		btnSave.setFocusPainted(false);
-		btnSave.setBorderPainted(false);
-		btnSave.setContentAreaFilled(false);
-		btnSave.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnSave.setVerticalTextPosition(SwingConstants.BOTTOM);
-		Hover.addHoverButtonEffect(btnSave, new Color(0, 102, 204), 0.8f);
-		add(btnSave);
-
-		// Nút "Xuất hóa đơn"
-		btnExport = new JButton("Xuất hóa đơn");
-		btnExport.setIcon(new ImageIcon(BillView.class.getResource("/view/Icon/file_Icon.png")));
-		btnExport.setFont(new Font("Arial", Font.BOLD, 14));
-		btnExport.setBounds(712, 610, 150, 67);
-		btnExport.setFocusPainted(false);
-		btnExport.setFocusPainted(false);
-		btnExport.setBorderPainted(false);
-		btnExport.setContentAreaFilled(false);
-		btnExport.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnExport.setVerticalTextPosition(SwingConstants.BOTTOM);
-		Hover.addHoverButtonEffect(btnExport, new Color(0, 102, 204), 0.8f);
-		add(btnExport);
-
-		btnAdd = new JButton("");
-		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
-		btnAdd.setBackground(new Color(255, 255, 223));
-		btnAdd.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		// Bill Panel
+		JPanel billPanel = new JPanel() {
+			@Override protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(BG_FORM);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 20, 20);
+				g2.dispose();
 			}
-		});
-		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnAdd.setBounds(746, 535, 45, 45);
-		btnAdd.setFocusPainted(false);
-		btnAdd.setBorderPainted(false);
-		btnAdd.setContentAreaFilled(false);
-		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
-		add(btnAdd);
-		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
+		};
+		billPanel.setBounds(510, 15, 420, 705);
+		billPanel.setLayout(null);
+		add(billPanel);
 
-		btnDel = new JButton("");
-		btnDel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
-		btnDel.setBackground(new Color(255, 255, 204));
-		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnDel.setBounds(817, 535, 45, 45);
-		btnDel.setFocusPainted(false);
-		btnDel.setBorderPainted(false);
-		btnDel.setContentAreaFilled(false);
-		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
-		add(btnDel);
-		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
+		JLabel billHeader = new JLabel("Hóa Đơn");
+		billHeader.setFont(new Font("SansSerif", Font.BOLD, 22));
+		billHeader.setForeground(PRIMARY_COLOR);
+		billHeader.setBounds(140, 18, 160, 32);
+		billPanel.add(billHeader);
+
+		tableBillItems = createModernTable(new String[] { "ID", "Name", "Quantity", "Price", "Total" });
+		scrollPaneBill = createModernScrollPane(tableBillItems);
+		scrollPaneBill.setBounds(20, 65, 380, 280);
+		billPanel.add(scrollPaneBill);
 
 		JLabel totallbl = new JLabel("Total");
-		totallbl.setFont(new Font("Arial", Font.PLAIN, 16));
-		totallbl.setBounds(535, 446, 45, 19);
-		add(totallbl);
+		totallbl.setFont(new Font("SansSerif", Font.BOLD, 16));
+		totallbl.setForeground(TEXT_MAIN);
+		totallbl.setBounds(60, 370, 60, 25);
+		billPanel.add(totallbl);
 
-		totaltextField = new JTextField();
-		totaltextField.setBounds(732, 445, 150, 25);
-		add(totaltextField);
-		totaltextField.setColumns(10);
-
-		pay_comboBox = new JComboBox();
-		pay_comboBox.setFont(new Font("Arial", Font.PLAIN, 16));
-		pay_comboBox.setModel(new DefaultComboBoxModel(new String[] { "Tiền mặt", "Chuyển Khoản" }));
-		pay_comboBox.setBounds(732, 495, 150, 21);
-		add(pay_comboBox);
+		totaltextField = createRoundTextField("");
+		totaltextField.setBounds(140, 370, 180, 30);
+		billPanel.add(totaltextField);
 
 		JLabel paylbl = new JLabel("Phương thức thanh toán");
-		paylbl.setFont(new Font("Arial", Font.PLAIN, 16));
-		paylbl.setBounds(535, 491, 176, 25);
-		add(paylbl);
+		paylbl.setFont(new Font("SansSerif", Font.BOLD, 16));
+		paylbl.setForeground(TEXT_MAIN);
+		paylbl.setBounds(40, 415, 200, 25);
+		billPanel.add(paylbl);
+
+		pay_comboBox = new JComboBox(new String[] { "Tiền mặt", "Chuyển Khoản" });
+		pay_comboBox.setUI(new ModernComboBoxUI());
+		pay_comboBox.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		pay_comboBox.setBackground(Color.WHITE);
+		pay_comboBox.setBounds(240, 415, 110, 27);
+		billPanel.add(pay_comboBox);
+
+		btnAdd = createCircleButton("+", BTN_ADD, BTN_ADD_HOVER);
+		btnAdd.setBounds(120, 470, 50, 50);
+		billPanel.add(btnAdd);
+
+		btnDel = createCircleButton("-", BTN_DEL, BTN_DEL_HOVER);
+		btnDel.setBounds(200, 470, 50, 50);
+		billPanel.add(btnDel);
+
+		btnSave = createModernButton("Lưu", PRIMARY_COLOR, PRIMARY_HOVER);
+		btnSave.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnSave.setBounds(60, 550, 130, 48);
+		billPanel.add(btnSave);
+
+		btnExport = createModernButton("Xuất hóa đơn", PRIMARY_COLOR, PRIMARY_HOVER);
+		btnExport.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnExport.setBounds(220, 550, 150, 48);
+		billPanel.add(btnExport);
 
 		setupButtonListeners();
-
 	}
 
-	public JTextField getTotaltextField() {
-		return totaltextField;
+	private JTextField createRoundTextField(String placeholder) {
+		JTextField tf = new JTextField();
+		tf.setFont(new Font("SansSerif", Font.PLAIN, 15));
+		tf.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
+		tf.setBackground(Color.WHITE);
+		tf.setOpaque(true);
+		Hover.addPlaceholder(tf, placeholder);
+		return tf;
 	}
 
-	public void setTotaltextField(Double price) {
-		this.totaltextField.setText(String.valueOf(price));
+	private JButton createTabButton(String text, boolean selected) {
+		JButton btn = new JButton(text);
+		btn.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btn.setFocusPainted(false);
+		btn.setBorderPainted(false);
+		btn.setOpaque(true);
+		btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btn.setBackground(selected ? PRIMARY_COLOR : new Color(230, 240, 250));
+		btn.setForeground(selected ? Color.WHITE : PRIMARY_COLOR);
+		btn.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) { if (!btn.getBackground().equals(PRIMARY_COLOR)) btn.setBackground(PRIMARY_HOVER);}
+			public void mouseExited(MouseEvent e) { if (!btn.getBackground().equals(PRIMARY_COLOR)) btn.setBackground(new Color(230, 240, 250)); }
+		});
+		return btn;
 	}
 
-	public JComboBox getPay_comboBox() {
-		return pay_comboBox;
+	private JButton createModernButton(String text, Color color, Color hover) {
+		return new FancyButton(text, color, hover, 15);
 	}
 
-	public int getIDCustomer() {
-		return idCustomer;
+	private JButton createCircleButton(String text, Color color, Color hover) {
+		FancyButton btn = new FancyButton(text, color, hover, 30);
+		btn.setFont(new Font("SansSerif", Font.BOLD, 22));
+		btn.setForeground(Color.WHITE);
+		btn.setPreferredSize(new Dimension(48, 48));
+		return btn;
 	}
 
-	public JButton getBtnAdd() {
-		return btnAdd;
+	private JScrollPane createModernScrollPane(JTable table) {
+		JScrollPane sp = new JScrollPane(table);
+		sp.setBorder(BorderFactory.createEmptyBorder());
+		sp.setBackground(BG_FORM);
+		sp.getViewport().setBackground(BG_FORM);
+		// Custom scrollbar UI
+		sp.getVerticalScrollBar().setUI(new ModernScrollBarUI(PRIMARY_COLOR));
+		sp.getHorizontalScrollBar().setUI(new ModernScrollBarUI(PRIMARY_COLOR));
+		return sp;
 	}
 
-	public JButton getBtnDel() {
-		return btnDel;
+	private JTable createModernTable(String[] columns) {
+		JTable table = new JTable();
+		table.setModel(new DefaultTableModel(new Object[][] {}, columns) {
+			@Override public boolean isCellEditable(int row, int column) { return false; }
+		});
+		table.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		table.setRowHeight(38);
+		table.setSelectionBackground(new Color(230, 240, 255));
+		table.setSelectionForeground(TEXT_MAIN);
+		JTableHeader header = table.getTableHeader();
+		header.setFont(new Font("SansSerif", Font.BOLD, 17));
+		header.setBackground(PRIMARY_COLOR);
+		header.setForeground(Color.WHITE);
+		return table;
 	}
 
-	public JTextField getNameTextField() {
-		return nameTextField;
+	class FancyButton extends JButton {
+		private final Color baseColor, hoverColor;
+		private final int arc;
+		private boolean hover = false;
+		public FancyButton(String text, Color baseColor, Color hoverColor, int arc) {
+			super(text);
+			this.baseColor = baseColor;
+			this.hoverColor = hoverColor;
+			this.arc = arc;
+			setFocusPainted(false);
+			setContentAreaFilled(false);
+			setBorderPainted(false);
+			setOpaque(false);
+			setCursor(new Cursor(Cursor.HAND_CURSOR));
+			addMouseListener(new MouseAdapter() {
+				public void mouseEntered(MouseEvent e) { hover = true; repaint(); }
+				public void mouseExited(MouseEvent e) { hover = false; repaint(); }
+			});
+		}
+		@Override
+		protected void paintComponent(Graphics g) {
+			Graphics2D g2 = (Graphics2D)g.create();
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			Color fill = hover ? hoverColor : baseColor;
+			g2.setColor(fill);
+			g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+			FontMetrics fm = g2.getFontMetrics();
+			String txt = getText();
+			int textWidth = fm.stringWidth(txt);
+			int x = (getWidth() - textWidth) / 2;
+			int y = (getHeight() - fm.getHeight()) / 2 + fm.getAscent();
+			g2.setFont(getFont());
+			g2.setColor(getForeground());
+			g2.drawString(txt, x, y);
+			g2.dispose();
+		}
 	}
 
-	public JTextField getPhoneTextField() {
-		return phoneTextField;
+	class ModernComboBoxUI extends javax.swing.plaf.basic.BasicComboBoxUI {
+		@Override
+		protected JButton createArrowButton() {
+			JButton button = new JButton("▼");
+			button.setBorder(BorderFactory.createEmptyBorder());
+			button.setBackground(Color.WHITE);
+			button.setForeground(PRIMARY_COLOR);
+			button.setContentAreaFilled(false);
+			button.setFocusPainted(false);
+			return button;
+		}
+		@Override
+		public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
+			g.setColor(Color.WHITE);
+			g.fillRoundRect(bounds.x, bounds.y, bounds.width, bounds.height, 15, 15);
+		}
 	}
 
-	public JTextField getAddressTextField() {
-		return addressTextField;
+	class ModernScrollBarUI extends javax.swing.plaf.basic.BasicScrollBarUI {
+		private final Color thumbColor;
+		public ModernScrollBarUI(Color thumbColor) { this.thumbColor = thumbColor; }
+		@Override
+		protected void configureScrollBarColors() {
+			trackColor = new Color(240, 240, 245);
+		}
+		@Override
+		protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+			Graphics2D g2 = (Graphics2D) g.create();
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2.setColor(thumbColor);
+			g2.fillRoundRect(thumbBounds.x, thumbBounds.y, thumbBounds.width, thumbBounds.height, 10, 10);
+			g2.dispose();
+		}
+		@Override
+		protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+			Graphics2D g2 = (Graphics2D) g.create();
+			g2.setColor(new Color(240, 240, 245));
+			g2.fillRoundRect(trackBounds.x, trackBounds.y, trackBounds.width, trackBounds.height, 10, 10);
+			g2.dispose();
+		}
 	}
-
-	public JTable getTableProductList() {
-		return tableProductList;
-	}
-
-	public JTable getTablePetList() {
-		return tablePetList;
-	}
-
-	public JTable getTableCustomerList() {
-		return tableCustomerList;
-	}
-
-	public JTable getTableBillItems() {
-		return tableBillItems;
-	}
-
-	public JButton getBtnSave() {
-		return btnSave;
-	}
-
-	public JButton getBtnExport() {
-		return btnExport;
-	}
-
-	public JButton getProductButton() {
-		return productButton;
-	}
-
-	public JButton getPetButton() {
-		return petButton;
-	}
-
-	public JButton getCustomerButton() {
-		return customerButton;
-	}
-
 	private void setupButtonListeners() {
-		// Nút "Product"
 		productButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				productButton.setBackground(PRIMARY_COLOR);
+				productButton.setForeground(Color.WHITE);
+				petButton.setBackground(new Color(230, 240, 250));
+				petButton.setForeground(PRIMARY_COLOR);
+				customerButton.setBackground(new Color(230, 240, 250));
+				customerButton.setForeground(PRIMARY_COLOR);
+
 				scrollPaneProduct.setVisible(true);
 				scrollPanePet.setVisible(false);
 				scrollPaneCustomer.setVisible(false);
@@ -423,10 +419,15 @@ public class BillView extends JPanel {
 				lblProductList.setText("Danh sách hàng hóa");
 			}
 		});
-
-		// Nút "Pet"
 		petButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				productButton.setBackground(new Color(230, 240, 250));
+				productButton.setForeground(PRIMARY_COLOR);
+				petButton.setBackground(PRIMARY_COLOR);
+				petButton.setForeground(Color.WHITE);
+				customerButton.setBackground(new Color(230, 240, 250));
+				customerButton.setForeground(PRIMARY_COLOR);
+
 				scrollPaneProduct.setVisible(false);
 				scrollPanePet.setVisible(true);
 				scrollPaneCustomer.setVisible(false);
@@ -438,10 +439,15 @@ public class BillView extends JPanel {
 				lblProductList.setText("Danh sách thú cưng");
 			}
 		});
-
-		// Nút "Customer"
 		customerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				productButton.setBackground(new Color(230, 240, 250));
+				productButton.setForeground(PRIMARY_COLOR);
+				petButton.setBackground(new Color(230, 240, 250));
+				petButton.setForeground(PRIMARY_COLOR);
+				customerButton.setBackground(PRIMARY_COLOR);
+				customerButton.setForeground(Color.WHITE);
+
 				scrollPaneProduct.setVisible(false);
 				scrollPanePet.setVisible(false);
 				scrollPaneCustomer.setVisible(true);
@@ -454,7 +460,6 @@ public class BillView extends JPanel {
 			}
 		});
 
-		// Tìm kiếm trong bảng Product
 		searchProductField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -464,8 +469,6 @@ public class BillView extends JPanel {
 				sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchProductField.getText().trim(), 0));
 			}
 		});
-
-		// Tìm kiếm trong bảng Pet
 		searchPetField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -475,8 +478,6 @@ public class BillView extends JPanel {
 				sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchPetField.getText().trim(), 0));
 			}
 		});
-
-		// Tìm kiếm trong bảng Customer
 		searchCustomerField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
@@ -488,32 +489,31 @@ public class BillView extends JPanel {
 		});
 	}
 
-	// Trong lớp BillView:
-
-	public JScrollPane getScrollPaneProduct() {
-		return scrollPaneProduct;
-	}
-
-	public JScrollPane getScrollPanePet() {
-		return scrollPanePet;
-	}
-
-	public JScrollPane getScrollPaneCustomer() {
-		return scrollPaneCustomer;
-	}
-
-	public JTextField getSearchProductField() {
-		return searchProductField;
-	}
-
-	public JTextField getSearchPetField() {
-		return searchPetField;
-	}
-
-	public JTextField getSearchCustomerField() {
-		return searchCustomerField;
-	}
-
+	// Getter methods
+	public JTextField getTotaltextField() { return totaltextField; }
+	public void setTotaltextField(Double price) { this.totaltextField.setText(String.valueOf(price)); }
+	public JComboBox getPay_comboBox() { return pay_comboBox; }
+	public int getIDCustomer() { return idCustomer; }
+	public JButton getBtnAdd() { return btnAdd; }
+	public JButton getBtnDel() { return btnDel; }
+	public JTextField getNameTextField() { return nameTextField; }
+	public JTextField getPhoneTextField() { return phoneTextField; }
+	public JTextField getAddressTextField() { return addressTextField; }
+	public JTable getTableProductList() { return tableProductList; }
+	public JTable getTablePetList() { return tablePetList; }
+	public JTable getTableCustomerList() { return tableCustomerList; }
+	public JTable getTableBillItems() { return tableBillItems; }
+	public JButton getBtnSave() { return btnSave; }
+	public JButton getBtnExport() { return btnExport; }
+	public JButton getProductButton() { return productButton; }
+	public JButton getPetButton() { return petButton; }
+	public JButton getCustomerButton() { return customerButton; }
+	public JScrollPane getScrollPaneProduct() { return scrollPaneProduct; }
+	public JScrollPane getScrollPanePet() { return scrollPanePet; }
+	public JScrollPane getScrollPaneCustomer() { return scrollPaneCustomer; }
+	public JTextField getSearchProductField() { return searchProductField; }
+	public JTextField getSearchPetField() { return searchPetField; }
+	public JTextField getSearchCustomerField() { return searchCustomerField; }
 	public void setProductTableData(List<Product> products) {
 		DefaultTableModel model = (DefaultTableModel) tableProductList.getModel();
 		model.setRowCount(0); // clear existing data
@@ -521,5 +521,4 @@ public class BillView extends JPanel {
 			model.addRow(new Object[] { p.getProductID(), p.getName(), p.getPrice(), p.getQuantity() });
 		}
 	}
-
 }
