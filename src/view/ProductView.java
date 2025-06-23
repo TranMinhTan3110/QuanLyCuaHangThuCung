@@ -1,8 +1,10 @@
-package view;
+		package view;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.*;
 import javax.swing.text.*;
@@ -39,67 +41,78 @@ public class ProductView extends JPanel {
 		panel_top.setLayout(null);
 		add(panel_top);
 
+		Font labelFont = new Font("Segoe UI", Font.PLAIN, 16);
+		Font inputFont = new Font("Segoe UI", Font.PLAIN, 16);
+
+		Border inputBorder = BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(new Color(180, 200, 220), 1, true),
+				new EmptyBorder(6, 12, 6, 12)
+		);
+
+		JLabel lblPro_Name = new JLabel("Product Name");
+		lblPro_Name.setFont(labelFont);
+		lblPro_Name.setBounds(78, 58, 122, 24);
+		panel_top.add(lblPro_Name);
+
+		ProName_textField = new JTextField();
+		ProName_textField.setBounds(210, 56, 140, 36);
+		ProName_textField.setFont(inputFont);
+		ProName_textField.setBorder(inputBorder);
+		ProName_textField.setBackground(Color.WHITE);
+		Hover.addPlaceholder(ProName_textField, "Enter Name");
+		panel_top.add(ProName_textField);
+
 		JLabel lblQuanti = new JLabel("Quantity");
-		lblQuanti.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblQuanti.setFont(labelFont);
 		lblQuanti.setBounds(444, 61, 77, 24);
 		panel_top.add(lblQuanti);
 
 		JPanel quantityPanel = new JPanel();
 		quantityPanel.setLayout(new BorderLayout());
-		quantityPanel.setBounds(596, 61, 132, 34);
-		quantityPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		quantityPanel.setBounds(596, 61, 140, 36);
+		quantityPanel.setBorder(inputBorder);
+		quantityPanel.setBackground(Color.WHITE);
 
 		btnMinus = new JButton("−");
 		btnMinus.setBackground(new Color(232, 150, 89));
 		btnMinus.setMargin(new Insets(0, 5, 0, 5));
 		btnMinus.setFocusPainted(false);
-		btnMinus.setFont(new Font("Arial", Font.BOLD, 12));
+		btnMinus.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnMinus.setPreferredSize(new Dimension(40, 36));
 
 		Quan_textField = new JTextField("0");
 		Quan_textField.setHorizontalAlignment(JTextField.CENTER);
-		Quan_textField.setFont(new Font("Arial", Font.PLAIN, 14));
+		Quan_textField.setFont(inputFont);
 		Quan_textField.setBorder(null);
-		((AbstractDocument) Quan_textField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+		Quan_textField.setBackground(Color.WHITE);
 
 		btnPlus = new JButton("+");
 		btnPlus.setBackground(new Color(232, 150, 89));
 		btnPlus.setMargin(new Insets(0, 5, 0, 5));
 		btnPlus.setFocusPainted(false);
-		btnPlus.setFont(new Font("Arial", Font.BOLD, 12));
+		btnPlus.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		btnPlus.setPreferredSize(new Dimension(40, 36));
 
 		quantityPanel.add(btnMinus, BorderLayout.WEST);
 		quantityPanel.add(Quan_textField, BorderLayout.CENTER);
 		quantityPanel.add(btnPlus, BorderLayout.EAST);
-		Hover.roundPanel(quantityPanel, 15, Color.WHITE, Color.GRAY);
 		panel_top.add(quantityPanel);
 
-		JLabel lblPro_Name = new JLabel("Product Name");
-		lblPro_Name.setFont(new Font("Arial", Font.PLAIN, 16));
-		lblPro_Name.setBounds(78, 58, 122, 24);
-		panel_top.add(lblPro_Name);
-
-		ProName_textField = new JTextField();
-		ProName_textField.setColumns(10);
-		ProName_textField.setBounds(210, 56, 132, 34);
-		panel_top.add(ProName_textField);
-		Hover.addPlaceholder(ProName_textField, "Enter Name");
-		Hover.roundTextField(ProName_textField, 15, Color.WHITE, Color.LIGHT_GRAY);
-
 		JLabel lblPrice = new JLabel("Price");
-		lblPrice.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblPrice.setFont(labelFont);
 		lblPrice.setBounds(78, 120, 77, 24);
 		panel_top.add(lblPrice);
 
 		Price_textField = new JTextField();
-		Price_textField.setColumns(10);
-		Price_textField.setBounds(210, 118, 132, 34);
-		panel_top.add(Price_textField);
+		Price_textField.setBounds(210, 118, 140, 36);
+		Price_textField.setFont(inputFont);
+		Price_textField.setBorder(inputBorder);
+		Price_textField.setBackground(Color.WHITE);
 		Hover.addPlaceholder(Price_textField, "Enter Price");
-		Hover.roundTextField(Price_textField, 10, Color.WHITE, Color.LIGHT_GRAY);
-		((AbstractDocument) Price_textField.getDocument()).setDocumentFilter(new NumberOnlyFilter());
+		panel_top.add(Price_textField);
 
 		JLabel lblCate_Name = new JLabel("Category Name");
-		lblCate_Name.setFont(new Font("Arial", Font.PLAIN, 16));
+		lblCate_Name.setFont(labelFont);
 		lblCate_Name.setBounds(444, 120, 120, 24);
 		panel_top.add(lblCate_Name);
 
@@ -111,29 +124,18 @@ public class ProductView extends JPanel {
 		CateName_comboBox.addItem(cat1);
 		CateName_comboBox.addItem(cat2);
 		CateName_comboBox.addItem(cat3);
-		CateName_comboBox.setFont(new Font("Arial", Font.PLAIN, 14));
-		CateName_comboBox.setBounds(596, 118, 132, 34);
+		CateName_comboBox.setFont(inputFont);
+		CateName_comboBox.setBounds(596, 118, 140, 36);
+		CateName_comboBox.setBackground(Color.WHITE);
+		CateName_comboBox.setBorder(inputBorder);
+		CateName_comboBox.setUI(new ModernComboBoxUI());
 		panel_top.add(CateName_comboBox);
-		Hover.roundComboBox(CateName_comboBox, 15, Color.WHITE, Color.LIGHT_GRAY);
 
 		Dimension actionBtnSize = new Dimension(87, 63);
 
-		btnEdit = new JButton("Edit");
-		btnEdit.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/Edit_Icon.png")));
-		btnEdit.setFont(new Font("Arial", Font.PLAIN, 16));
-		btnEdit.setBounds(110, 167, 87, 63);
-		btnEdit.setPreferredSize(actionBtnSize);
-		btnEdit.setFocusPainted(false);
-		btnEdit.setBorderPainted(false);
-		btnEdit.setContentAreaFilled(false);
-		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
-		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
-		panel_top.add(btnEdit);
-		Hover.addHoverButtonEffect(btnEdit, new Color(0, 102, 204), 0.8f);
-
 		btnAdd = new JButton("Add");
-		btnAdd.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/add_Icon.png")));
-		btnAdd.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnAdd.setIcon(new ImageIcon(getClass().getResource("/view/Icon/add_Icon.png")));
+		btnAdd.setFont(labelFont);
 		btnAdd.setBounds(20, 167, 87, 63);
 		btnAdd.setPreferredSize(actionBtnSize);
 		btnAdd.setFocusPainted(false);
@@ -142,11 +144,22 @@ public class ProductView extends JPanel {
 		btnAdd.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnAdd.setVerticalTextPosition(SwingConstants.BOTTOM);
 		panel_top.add(btnAdd);
-		Hover.addHoverButtonEffect(btnAdd, new Color(0, 102, 204), 0.8f);
+
+		btnEdit = new JButton("Edit");
+		btnEdit.setIcon(new ImageIcon(getClass().getResource("/view/Icon/edit_Icon.png")));
+		btnEdit.setFont(labelFont);
+		btnEdit.setBounds(110, 167, 87, 63);
+		btnEdit.setPreferredSize(actionBtnSize);
+		btnEdit.setFocusPainted(false);
+		btnEdit.setBorderPainted(false);
+		btnEdit.setContentAreaFilled(false);
+		btnEdit.setHorizontalTextPosition(SwingConstants.CENTER);
+		btnEdit.setVerticalTextPosition(SwingConstants.BOTTOM);
+		panel_top.add(btnEdit);
 
 		btnDel = new JButton("Delete");
-		btnDel.setIcon(new ImageIcon(ProductView.class.getResource("/view/Icon/delete_Icon.png")));
-		btnDel.setFont(new Font("Arial", Font.PLAIN, 16));
+		btnDel.setIcon(new ImageIcon(getClass().getResource("/view/Icon/delete_Icon.png")));
+		btnDel.setFont(labelFont);
 		btnDel.setBounds(209, 167, 87, 63);
 		btnDel.setPreferredSize(actionBtnSize);
 		btnDel.setFocusPainted(false);
@@ -155,12 +168,14 @@ public class ProductView extends JPanel {
 		btnDel.setHorizontalTextPosition(SwingConstants.CENTER);
 		btnDel.setVerticalTextPosition(SwingConstants.BOTTOM);
 		panel_top.add(btnDel);
-		Hover.addHoverButtonEffect(btnDel, new Color(0, 102, 204), 0.8f);
 
-		ImageIcon searchIcon = new ImageIcon(ProductView.class.getResource("/view/Icon/Search_Icon.png"));
+		// Beautiful rounded search box (like CustomerView, PetView)
+		ImageIcon searchIcon = new ImageIcon(getClass().getResource("/view/Icon/Search_Icon.png"));
 		JPanel searchPanel = new JPanel(new BorderLayout());
-		searchPanel.setBounds(684, 187, 234, 24);
+		searchPanel.setBounds(714, 187, 200, 36);
 		searchPanel.setBackground(Color.WHITE);
+		searchPanel.setBorder(inputBorder);
+		Hover.roundPanel(searchPanel, 15, Color.WHITE, Color.GRAY);
 
 		JLabel searchLabel = new JLabel(searchIcon);
 		searchLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
@@ -168,10 +183,10 @@ public class ProductView extends JPanel {
 
 		Search_textField = new JTextField();
 		Search_textField.setBorder(null);
-		Search_textField.setColumns(10);
+		Search_textField.setFont(inputFont);
+		Search_textField.setBackground(Color.WHITE);
 		searchPanel.add(Search_textField, BorderLayout.CENTER);
 		Hover.addPlaceholder(Search_textField, "search...");
-		Hover.roundPanel(searchPanel, 20, Color.WHITE, Color.GRAY);
 		panel_top.add(searchPanel);
 
 		// Table panel
@@ -181,70 +196,73 @@ public class ProductView extends JPanel {
 		Pro_list.setBackground(new Color(200, 220, 240));
 		add(Pro_list);
 
-		Pro_table = new JTable();
-		Pro_table.setFont(new Font("Arial", Font.PLAIN, 16));
-		Pro_table.setRowHeight(36);
-		Pro_table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 18));
-		Pro_table.getTableHeader().setBackground(new Color(255, 250, 245));
-		Pro_table.getTableHeader().setForeground(new Color(40, 40, 40));
-		Pro_table.setShowGrid(false);
-		Pro_table.setIntercellSpacing(new Dimension(0, 0));
-		((DefaultTableCellRenderer) Pro_table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
-
-		Pro_table.setModel(new DefaultTableModel(
-				new Object[][] {},
-				new String[] {"ID", "Name", "Price", "Quantity", "Category"}
-		) {
+		// Table columns
+		String[] columnNames = {"ID", "NAME", "QUANTITY", "PRICE", "CATEGORY"};
+		DefaultTableModel model = new DefaultTableModel(columnNames, 0) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
-		});
+		};
 
-		Pro_table.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+		Pro_table = new JTable(model) {
 			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				if (!isSelected) {
-					c.setBackground(Color.WHITE);
-				} else {
-					c.setBackground(new Color(255, 255, 153)); // vàng nhạt
-
-				}
+			public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				Component c = super.prepareRenderer(renderer, row, column);
+				if (!isRowSelected(row)) c.setBackground(Color.WHITE);
+				else c.setBackground(new Color(255, 255, 153)); // light yellow
 				c.setForeground(new Color(40, 40, 40));
 				return c;
 			}
-		});
+		};
+		Pro_table.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+		Pro_table.setRowHeight(36);
+		Pro_table.setShowGrid(false);
+		Pro_table.setIntercellSpacing(new Dimension(0, 0));
+		Pro_table.setSelectionBackground(new Color(255, 255, 153));
+		Pro_table.setSelectionForeground(new Color(40, 40, 40));
+		Pro_table.setBackground(Color.WHITE);
+
+		JTableHeader th = Pro_table.getTableHeader();
+		th.setFont(new Font("Segoe UI", Font.BOLD, 18));
+		th.setBackground(Color.WHITE);
+		th.setForeground(new Color(33, 70, 120));
+		((DefaultTableCellRenderer) th.getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
 
 		Pro_list.setViewportView(Pro_table);
 
 		// Pagination panel
-		JPanel paginationPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		paginationPanel.setBounds(0, 630, 950, 40);
+		JPanel paginationPanel = new JPanel(null);
+		paginationPanel.setBounds(0, 630, 950, 56);
 		paginationPanel.setBackground(new Color(200, 220, 240));
+		add(paginationPanel);
+
+		int btnWidth = 120;
+		int btnHeight = 38;
+		int spacing = 10;
+		int rightPadding = 24;
+		int startX = 950 - rightPadding - (btnWidth * 2 + spacing + 80);
 
 		btnPrevPage = new JButton("Previous");
-		btnNextPage = new JButton("Next");
-		lblPageInfo = new JLabel("Page 1/1");
-
-		Dimension btnSize = new Dimension(100, 30);
-		btnPrevPage.setPreferredSize(btnSize);
-		btnNextPage.setPreferredSize(btnSize);
-
-		btnPrevPage.setFont(new Font("Arial", Font.PLAIN, 14));
-		btnNextPage.setFont(new Font("Arial", Font.PLAIN, 14));
+		btnPrevPage.setFont(new Font("Arial", Font.PLAIN, 15));
 		btnPrevPage.setFocusPainted(false);
-		btnNextPage.setFocusPainted(false);
 		btnPrevPage.setBackground(Color.WHITE);
-		btnNextPage.setBackground(Color.WHITE);
-		Hover.addHoverButtonEffect(btnPrevPage, new Color(0, 102, 204), 0.8f);
-		Hover.addHoverButtonEffect(btnNextPage, new Color(0, 102, 204), 0.8f);
-
+		btnPrevPage.setBounds(startX, 10, btnWidth, btnHeight);
+		btnPrevPage.setEnabled(false);
 		paginationPanel.add(btnPrevPage);
-		paginationPanel.add(lblPageInfo);
-		paginationPanel.add(btnNextPage);
 
-		add(paginationPanel);
+		lblPageInfo = new JLabel("Page 1/1");
+		lblPageInfo.setFont(new Font("Segoe UI", Font.BOLD, 16));
+		lblPageInfo.setBounds(startX + btnWidth, 10, 80, btnHeight);
+		lblPageInfo.setHorizontalAlignment(SwingConstants.CENTER);
+		paginationPanel.add(lblPageInfo);
+
+		btnNextPage = new JButton("Next");
+		btnNextPage.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnNextPage.setFocusPainted(false);
+		btnNextPage.setBackground(Color.WHITE);
+		btnNextPage.setBounds(startX + btnWidth + 80 + spacing, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnNextPage);
 	}
 
 	public String getProductName() { return ProName_textField.getText(); }
@@ -276,10 +294,10 @@ public class ProductView extends JPanel {
 	}
 	public void setSelectedCategoryByName(String categoryName) {
 		for (int i = 0; i < CateName_comboBox.getItemCount(); i++) {
-			Category cate = CateName_comboBox.getItemAt(i);
-			if (cate.getCategoryName().equals(categoryName)) {
+			Category cat = CateName_comboBox.getItemAt(i);
+			if (cat.getName().equals(categoryName)) {
 				CateName_comboBox.setSelectedIndex(i);
-				return;
+				break;
 			}
 		}
 	}
@@ -296,13 +314,13 @@ public class ProductView extends JPanel {
 	class NumberOnlyFilter extends DocumentFilter {
 		@Override
 		public void insertString(FilterBypass fb, int offset, String string, AttributeSet attr) throws BadLocationException {
-			if (string.matches("[\\d.]*")) {
+			if (string.matches("\\d+")) {
 				super.insertString(fb, offset, string, attr);
 			}
 		}
 		@Override
 		public void replace(FilterBypass fb, int offset, int length, String text, AttributeSet attrs) throws BadLocationException {
-			if (text.matches("[\\d.]*")) {
+			if (text.matches("\\d+")) {
 				super.replace(fb, offset, length, text, attrs);
 			}
 		}
