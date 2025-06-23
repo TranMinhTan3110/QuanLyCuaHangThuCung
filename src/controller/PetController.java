@@ -177,18 +177,20 @@ public class PetController {
 	}
 
 	private void deletePet() {
-		int row =  view.getPetTable().getSelectedRow();
+		int row = view.getPetTable().getSelectedRow();
 		if (row >= 0) {
-			int confirm = JOptionPane.showConfirmDialog(view, "Bạn có chắc chắn muốn xóa pet này?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+			int confirm = JOptionPane.showConfirmDialog(view,
+					"Bạn có chắc chắn muốn ngừng kinh doanh pet này?",
+					"Xác nhận", JOptionPane.YES_NO_OPTION);
 			if (confirm == JOptionPane.YES_OPTION) {
 				int id = Integer.parseInt(view.getPetTable().getValueAt(row, 0).toString());
-				Pet pet = service.selectByID(id);
-				service.delete(pet);
+				// Thay vì xóa, cập nhật trạng thái
+				service.updateTrangThai(id, "ngừng kinh doanh");
 				loadTableData();
 				view.clearFields();
 			}
 		} else {
-			JOptionPane.showMessageDialog(view, "Vui lòng chọn pet để xóa.");
+			JOptionPane.showMessageDialog(view, "Vui lòng chọn pet để ngừng kinh doanh.");
 		}
 	}
 
@@ -227,13 +229,13 @@ public class PetController {
 		for (int i = start; i < end; i++) {
 			Pet pet = currentPetList.get(i);
 			model.addRow(new Object[]{
-					pet.getPetID(),
-					pet.getName(),
-					pet.getSpecies(),
-					pet.getPrice(),
-					pet.getBreed(),
-					pet.getGender(),
-					pet.getAge()
+					pet.getPetID(),    // ID
+					pet.getName(),     // Name
+					pet.getBreed(),    // Breed
+					pet.getSpecies(),  // Species
+					pet.getGender(),   // Gender
+					pet.getAge(),      // Age
+					pet.getPrice()     // Price
 			});
 		}
 		view.getPageInfoLabel().setText("Page " + currentPage + "/" + (totalPage == 0 ? 1 : totalPage));

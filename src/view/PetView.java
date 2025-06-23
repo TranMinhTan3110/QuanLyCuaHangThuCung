@@ -25,7 +25,7 @@ public class PetView extends JPanel {
 	private JButton btnAdd;
 	private JButton btnDel;
 	private JButton btnEdit;
-	private String[] columns = {"ID", "Name", "Breed", "Price", "Species", "Gender", "Age"};
+	private String[] columns = {"ID", "Name", "Breed", "Species", "Gender", "Age", "Price"};
 	private DefaultTableModel model;
 
 	// Pagination controls

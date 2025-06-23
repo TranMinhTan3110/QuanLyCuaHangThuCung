@@ -1,6 +1,5 @@
 package view;
 
-
 import respository.dao.*;
 import service.*;
 
@@ -25,14 +24,24 @@ public class MainView extends JFrame {
 	private CardLayout cardLayout;
 	private JPanel centerPanel;
 	private JButton btnService;
+
+	// Màu sắc chủ đạo và style hiện đại
+	private static final Color SIDE_BG = new Color(255, 255, 204);
+	private static final Color SIDE_HOVER = new Color(231, 234, 255);
+	private static final Color BTN_BG = new Color(121, 162, 219);
+	private static final Color BTN_BG_HOVER = new Color(80, 120, 180);
+	private static final Color TEXT_MAIN = new Color(40, 40, 40);
+
 	private void addHoverEffect(JButton button, Color hoverColor, Color defaultColor) {
 		button.addMouseListener(new java.awt.event.MouseAdapter() {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				button.setBackground(hoverColor);
+				button.setForeground(Color.WHITE);
 			}
 
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				button.setBackground(defaultColor);
+				button.setForeground(TEXT_MAIN);
 			}
 		});
 	}
@@ -64,12 +73,13 @@ public class MainView extends JFrame {
 	 * Create the frame.
 	 */
 	public MainView(String role) {
-		panel = new JPanel();
+		setUndecorated(false); // Đảm bảo vẫn có thanh tiêu đề, có thể thêm custom nếu muốn
+		setResizable(false);   // LOCK không cho resize cửa sổ
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE); // LOCK không cho tắt trực tiếp, chỉ logout mới tắt
+		setTitle("PetShop");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserView.class.getResource("/view/Icon/users_Icon.png")));
 		setFont(new Font("Arial", Font.PLAIN, 14));
-		setTitle("PetShop");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 1200, 750);
+		setBounds(100, 100, 1210, 775);
 		setLocationRelativeTo(null);
 
 		contentPane = new JPanel();
@@ -77,10 +87,21 @@ public class MainView extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		// SỬA Ở ĐÂY: gán cho biến class, không phải tạo biến cục bộ
 		cardLayout = new CardLayout();
-		centerPanel = new JPanel(cardLayout);
-		centerPanel.setBounds(250, 0, 950, 750); // Increased height to 750
+		centerPanel = new JPanel(cardLayout) {
+			// Bo tròn content center
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(new Color(245, 250, 255));
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 30, 30);
+				g2.dispose();
+			}
+		};
+		centerPanel.setBounds(250, 0, 950, 750);
+		centerPanel.setOpaque(false);
 		contentPane.add(centerPanel);
 
 		// Thêm các panel
@@ -91,70 +112,23 @@ public class MainView extends JFrame {
 		centerPanel.add(createHomePanel(), "Home");
 		centerPanel.add(createServicePanel(), "Service");
 
-		panel.setBackground(new Color(255, 255, 204));
+		panel = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(SIDE_BG);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 22, 22);
+				g2.dispose();
+			}
+		};
+		panel.setBackground(SIDE_BG);
 		panel.setBounds(0, -16, 250, 750);
 		panel.setLayout(null);
 		contentPane.add(panel);
 
-		btnPets = new JButton("Pets");
-		btnPets.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnPets.setBackground(new Color(255, 255, 204));
-		btnPets.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/pets_Icon.png")));
-		btnPets.setBorder(null);
-		btnPets.setFocusPainted(false);
-		btnPets.setIconTextGap(20);
-		btnPets.setBounds(13, 316, 173, 31);
-		addHoverEffect(btnPets, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel.add(btnPets);
-
-		// Nếu là admin thì mới hiển thị nút Admin
-		if ("admin".equals(role)) {
-			centerPanel.add(createUsersPanel(), "Admin");
-			btnAdmin = new JButton("Admin");
-			btnAdmin.setFont(new Font("Tahoma", Font.BOLD, 16));
-			btnAdmin.setIconTextGap(20);
-			btnAdmin.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user1_Icon.png")));
-			btnAdmin.setFocusPainted(false);
-			btnAdmin.setBorder(null);
-			btnAdmin.setBackground(new Color(255, 255, 204));
-			btnAdmin.setBounds(13, 591, 173, 31);
-			addHoverEffect(btnAdmin, new Color(128, 128, 100), new Color(255, 255, 204));
-			panel.add(btnAdmin);
-		}
-
-		btnCusTomers = new JButton("Customers");
-		btnCusTomers.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnCusTomers.setIconTextGap(20);
-		btnCusTomers.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/users_Icon.png")));
-		btnCusTomers.setFocusPainted(false);
-		btnCusTomers.setBorder(null);
-		btnCusTomers.setBackground(new Color(255, 255, 204));
-		btnCusTomers.setBounds(33, 481, 173, 31);
-		addHoverEffect(btnCusTomers, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel.add(btnCusTomers);
-
-		btnBills = new JButton("Bills");
-		btnBills.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnBills.setIconTextGap(20);
-		btnBills.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/bill_Icon.png")));
-		btnBills.setFocusPainted(false);
-		btnBills.setBorder(null);
-		btnBills.setBackground(new Color(255, 255, 204));
-		btnBills.setBounds(11, 536, 173, 31);
-		addHoverEffect(btnBills, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel.add(btnBills);
-
-		btnLogout = new JButton("Logout");
-		btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
-		btnLogout.setIconTextGap(20);
-		btnLogout.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/logout_Icon.png")));
-		btnLogout.setFocusPainted(false);
-		btnLogout.setBorder(null);
-		btnLogout.setBackground(new Color(255, 255, 204));
-		btnLogout.setBounds(0, 688, 112, 31);
-		addHoverEffect(btnLogout, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel.add(btnLogout);
-
+		// Icon + Avatar
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon(UserView.class.getResource("/view/Icon/user_main_Icon.png")));
 		lblNewLabel.setBounds(55, 81, 131, 135);
@@ -173,42 +147,54 @@ public class MainView extends JFrame {
 		lblEmployeeID.setBounds(23, 261, 163, 25);
 		panel.add(lblEmployeeID);
 
-		btnProduct = new JButton("Product");
-//        centerPanel.add(createProductPanel(), "Product");
-		btnProduct.setIconTextGap(20);
-		btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Cate_Icon.png")));
-		btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnProduct.setFocusPainted(false);
-		btnProduct.setBorder(null);
-		btnProduct.setBackground(new Color(255, 255, 204));
-		btnProduct.setBounds(18, 426, 173, 31);
-		addHoverEffect(btnProduct, new Color(128, 128, 100), new Color(255, 255, 204));
-		panel.add(btnProduct);
-
-		btnHome = new JButton("Home");
-		btnHome.setIconTextGap(20);
-		btnHome.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Category_Icon.png")));
-		btnHome.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnHome.setFocusPainted(false);
-		btnHome.setBorder(null);
-		btnHome.setBackground(new Color(255, 255, 204));
-		btnHome.setBounds(13, 370, 173, 31);
+		btnHome = createSideBarButton("Home", "/view/Icon/Category_Icon.png", 13, 370);
 		panel.add(btnHome);
 
-// After adding btnAdmin (if admin), add Service button below Admin
-		btnService = new JButton("Service");
-		btnService.setFont(new Font("Tahoma", Font.BOLD, 16));
-		btnService.setIconTextGap(20);
-		btnService.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/customer-service.png"))); // Updated icon path
-		btnService.setFocusPainted(false);
-		btnService.setBorder(null);
-		btnService.setBackground(new Color(255, 255, 204));
-		btnService.setBounds(18, 626, 173, 31); // Move below Admin (Admin at 591)
-		addHoverEffect(btnService, new Color(128, 128, 100), new Color(255, 255, 204));
+		btnPets = createSideBarButton("Pets", "/view/Icon/pets_Icon.png", 13, 316);
+		panel.add(btnPets);
+
+		btnProduct = createSideBarButton("Product", "/view/Icon/Cate_Icon.png", 18, 426);
+		panel.add(btnProduct);
+
+		btnCusTomers = createSideBarButton("Customers", "/view/Icon/users_Icon.png", 33, 481);
+		panel.add(btnCusTomers);
+
+		btnBills = createSideBarButton("Bills", "/view/Icon/bill_Icon.png", 11, 536);
+		panel.add(btnBills);
+
+		if ("admin".equals(role)) {
+			centerPanel.add(createUsersPanel(), "Admin");
+			btnAdmin = createSideBarButton("Admin", "/view/Icon/user1_Icon.png", 13, 591);
+			panel.add(btnAdmin);
+		}
+
+		btnService = createSideBarButton("Service", "/view/Icon/customer-service.png", 18, 626);
 		panel.add(btnService);
 
-		centerPanel.setVisible(true);
+		btnLogout = createSideBarButton("Logout", "/view/Icon/logout_Icon.png", 0, 688);
+		btnLogout.setFont(new Font("Tahoma", Font.ITALIC, 14));
+		panel.add(btnLogout);
 
+		// Disable maximize, resizing, and lock close
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setResizable(false);
+
+		centerPanel.setVisible(true);
+	}
+
+
+	private JButton createSideBarButton(String text, String iconPath, int x, int y) {
+		JButton btn = new JButton(text);
+		btn.setFont(new Font("Tahoma", Font.BOLD, 16));
+		btn.setIconTextGap(20);
+		btn.setIcon(new ImageIcon(getClass().getResource(iconPath)));
+		btn.setFocusPainted(false);
+		btn.setBorder(null);
+		btn.setBackground(SIDE_BG);
+		btn.setForeground(TEXT_MAIN);
+		btn.setBounds(x, y, 173, 31);
+		addHoverEffect(btn, BTN_BG, SIDE_BG);
+		return btn;
 	}
 
 	private JPanel createPetsPanel() {
@@ -263,7 +249,6 @@ public class MainView extends JFrame {
 		BookingView homePanel = new BookingView();
 		CheckDonView checkDonView = new CheckDonView();
 		return checkDonView;
-//		return homePanel;
 	}
 
 	private JPanel createServicePanel() {
@@ -310,8 +295,6 @@ public class MainView extends JFrame {
 		cardLayout.show(centerPanel, panelName);
 	}
 
-
-	// Thêm phương thức cập nhật tên/ID
 	public void setEmployeeInfo(String name, String id) {
 		lblEmployeeName.setText("Name: " + name);
 		lblEmployeeID.setText("ID: " + id);

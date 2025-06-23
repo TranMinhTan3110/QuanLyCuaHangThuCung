@@ -68,6 +68,7 @@ public class PetService {
         return petDAO.filterAndSort(species, priceOrder);
     }
 
+
     // Kiểm tra tên Pet đã tồn tại chưa
     public boolean isProductExist(String name) {
         return petDAO.isPetExists(name);

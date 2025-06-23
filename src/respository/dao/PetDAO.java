@@ -71,7 +71,7 @@ public class PetDAO implements DaoInterface<Pet> {
 	@Override
 	public ArrayList<Pet> getAll() {
 		ArrayList<Pet> pets = new ArrayList<>();
-		String sql = "SELECT * FROM Pet WHERE trangThai = N'available'";
+		String sql = "SELECT * FROM Pet WHERE trangThai = N'chua bán'";
 
 		try (Connection con = DatabaseConnection.getConnection();
 				PreparedStatement st = con.prepareStatement(sql);
