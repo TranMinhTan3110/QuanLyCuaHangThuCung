@@ -4,8 +4,6 @@ import respository.dao.CustomerDao;
 import respository.dao.DaoInterface;
 import respository.dao.ProductDAO;
 import model.entity.Customer;
-import model.entity.Product;
-import model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +33,9 @@ public class CustomerService {
         return daoInterface.delete(customer);
     }
 
-    public int getPoint(Customer customer) {
-        return customer.getLoyaltyPoints();
+    public String getPoint(Customer customer) {
+        return String.valueOf(customer.getLoyaltyPoints());
     }
-
         public String getRank(Customer customer){
             return customer.getMembershipLevel();
         }

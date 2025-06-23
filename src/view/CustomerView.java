@@ -330,14 +330,14 @@ public class CustomerView extends JPanel {
         }
     }
 
-    public void setEmployeeData(String name, String phone, String address, String score) {
+    public void setEmployeeData(String id, String name, String phone, String address, int point) {
         Name_textField.setText(name);
         Phone_textField.setText(phone);
         Address_textField.setText(address);
-        Score_textField.setText(score);
+        Score_textField.setText(String.valueOf(point));
     }
 
-    public JTextField getScoreTextField() {
+        public JTextField getScoreTextField() {
         return Score_textField;
     }
 
@@ -418,5 +418,9 @@ public class CustomerView extends JPanel {
 
         // Hiển thị dialog
         dialog.setVisible(true);
+    }
+
+    public int getSeclectedRow() {
+        return table.getSelectedRow();
     }
 }

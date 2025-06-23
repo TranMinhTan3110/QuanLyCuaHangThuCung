@@ -158,7 +158,7 @@ public class CustomerController {
 		customer.setMembershipLevel(membershipLevel);
 
 		if (customerService.insert(customer)) {
-			customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, loyaltyPoints,
+			customerView.addCustomerToTable(String.valueOf(customer.getId()), name, phone, address, String.valueOf(loyaltyPoints),
 					membershipLevel);
 			JOptionPane.showMessageDialog(customerView, "Thêm khách hàng thành công");
 			customerView.clear();
@@ -236,7 +236,7 @@ public class CustomerController {
 		if (customerService.update(customer)) {
 			JOptionPane.showMessageDialog(customerView, "Cập nhật  khách hàng thành công");
 			customerView.updateCustomerInTable(selectedRow, String.valueOf(customer.getId()), name, phone, address,
-					loyaltyPoints, membershipLevel);
+                    String.valueOf(loyaltyPoints), membershipLevel);
 			customerView.getTable().clearSelection();
 		} else {
 			JOptionPane.showMessageDialog(customerView, "Cập nhật khách hàng không thành công");

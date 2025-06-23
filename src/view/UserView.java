@@ -435,4 +435,15 @@ public class UserView extends JPanel {
         updateTableForCurrentPage();
         clearFields();
     }
+
+    public void setEmployeeData(String id, String name, String phone, String address, String username, String password,
+            String role) {
+//		idField.setText(id);
+        phoneField.setText(phone);
+        usernameField.setText(username);
+        nameField.setText(name);
+        addressField.setText(address);
+        passwordField.setText(password);
+        roleComboBox.setSelectedItem(role);
+    }
 }

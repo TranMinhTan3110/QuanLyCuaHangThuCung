@@ -1,5 +1,8 @@
+// src/view/MainView.java
 package view;
 
+
+import respository.dao.*;
 import service.*;
 
 import javax.swing.*;
@@ -28,7 +31,6 @@ public class MainView extends JFrame {
 			public void mouseEntered(java.awt.event.MouseEvent evt) {
 				button.setBackground(hoverColor);
 			}
-
 			public void mouseExited(java.awt.event.MouseEvent evt) {
 				button.setBackground(defaultColor);
 			}
@@ -38,7 +40,6 @@ public class MainView extends JFrame {
 	private void addPlaceholder(JTextField textField, String placeholder) {
 		textField.setText(placeholder);
 		textField.setForeground(Color.GRAY);
-
 		textField.addFocusListener(new java.awt.event.FocusAdapter() {
 			@Override
 			public void focusGained(java.awt.event.FocusEvent e) {
@@ -47,7 +48,6 @@ public class MainView extends JFrame {
 					textField.setForeground(Color.BLACK);
 				}
 			}
-
 			@Override
 			public void focusLost(java.awt.event.FocusEvent e) {
 				if (textField.getText().isEmpty()) {
@@ -58,9 +58,6 @@ public class MainView extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public MainView(String role) {
 		panel = new JPanel();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(UserView.class.getResource("/view/Icon/users_Icon.png")));
@@ -75,13 +72,11 @@ public class MainView extends JFrame {
 		contentPane.setLayout(null);
 		setContentPane(contentPane);
 
-		// SỬA Ở ĐÂY: gán cho biến class, không phải tạo biến cục bộ
 		cardLayout = new CardLayout();
 		centerPanel = new JPanel(cardLayout);
-		centerPanel.setBounds(250, 0, 950, 720);
+		centerPanel.setBounds(250, 0, 950, 750); // Increased height to 750
 		contentPane.add(centerPanel);
 
-		// Thêm các panel
 		centerPanel.add(createPetsPanel(), "Pets");
 		centerPanel.add(createProductPanel(), "Product");
 		centerPanel.add(createCustomersPanel(), "Customers");
@@ -104,7 +99,6 @@ public class MainView extends JFrame {
 		addHoverEffect(btnPets, new Color(128, 128, 100), new Color(255, 255, 204));
 		panel.add(btnPets);
 
-		// Nếu là admin thì mới hiển thị nút Admin
 		if ("admin".equals(role)) {
 			centerPanel.add(createUsersPanel(), "Admin");
 			btnAdmin = new JButton("Admin");
@@ -157,21 +151,20 @@ public class MainView extends JFrame {
 		lblNewLabel.setBounds(55, 81, 131, 135);
 		panel.add(lblNewLabel);
 
-//		int id = UserSession.getInstance().getUser().getId();
-//		String name = UserSession.getInstance().getUser().getName();
+		int id = UserSession.getInstance().getUser().getId();
+		String name = UserSession.getInstance().getUser().getName();
 
-//		lblEmployeeName = new JLabel("Name: " + name);
-//		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		lblEmployeeName.setBounds(23, 226, 163, 25);
-//		panel.add(lblEmployeeName);
-//
-//		lblEmployeeID = new JLabel("ID: " + id);
-//		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
-//		lblEmployeeID.setBounds(23, 261, 163, 25);
-//		panel.add(lblEmployeeID);
+		lblEmployeeName = new JLabel("Name: " + name);
+		lblEmployeeName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblEmployeeName.setBounds(23, 226, 163, 25);
+		panel.add(lblEmployeeName);
+
+		lblEmployeeID = new JLabel("ID: " + id);
+		lblEmployeeID.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblEmployeeID.setBounds(23, 261, 163, 25);
+		panel.add(lblEmployeeID);
 
 		btnProduct = new JButton("Product");
-//        centerPanel.add(createProductPanel(), "Product");
 		btnProduct.setIconTextGap(20);
 		btnProduct.setIcon(new ImageIcon(MainView.class.getResource("/view/Icon/Cate_Icon.png")));
 		btnProduct.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -193,54 +186,51 @@ public class MainView extends JFrame {
 		panel.add(btnHome);
 
 		centerPanel.setVisible(true);
-
 	}
 
 	private JPanel createPetsPanel() {
 		PetView petView = new PetView();
-//		PetDAO petRepo = new PetDAO();
-//		PetService petService = new PetService(petRepo);
-//		new controller.PetController(petView, petService);
+		DaoInterface petRepo = new PetDAO();
+		PetService petService = new PetService((PetDAO) petRepo);
+		new controller.PetController(petView, petService);
 		return petView;
 	}
 
 	private JPanel createUsersPanel() {
-		System.out.println("Tạo User Panel");
 		UserView employeeView = new UserView();
-//		DaoInterface userRepo = new UserDAO();
-//		UserService userService = new UserService(userRepo);
-//		new controller.UserController(employeeView, userService);
+		DaoInterface userRepo = new UserDAO();
+		UserService userService = new UserService(userRepo);
+		new controller.UserController(employeeView, userService);
 		return employeeView;
 	}
 
 	private JPanel createCustomersPanel() {
-		System.out.println("Tạo Customer Panel");
 		CustomerView customerView = new CustomerView();
-//		DaoInterface userRepo = new CustomerDao();
-//		CustomerService customerService = new CustomerService(userRepo);
-//		new controller.CustomerController(customerView, customerService);
+		DaoInterface userRepo = new CustomerDao();
+		CustomerService customerService = new CustomerService(userRepo);
+		new controller.CustomerController(customerView, customerService);
 		return customerView;
 	}
 
 	private JPanel createBillingsPanel() {
 		BillView billView = new BillView();
-////		DaoInterface billRepo = new BillDAO();
-////		BillService billService = new BillService(billRepo);
-////		DaoInterface userRepo = new CustomerDao();
-////		CustomerService customerService = new CustomerService(userRepo);
-////		DaoInterface productRepo = new ProductDAO();
-////		ProductService productService = new ProductService(productRepo);
-////		PetDAO petRepo = new PetDAO();
-////		PetService petService = new PetService(petRepo);
-//		new controller.BillController(billView, billService, productService, petService, customerService);
+		DaoInterface billRepo = new BillDAO();
+		BillService billService = new BillService(billRepo);
+		DaoInterface userRepo = new CustomerDao();
+		CustomerService customerService = new CustomerService(userRepo);
+		DaoInterface productRepo = new ProductDAO();
+		ProductService productService = new ProductService(productRepo);
+		DaoInterface petRepo = new PetDAO();
+		PetService petService = new PetService((PetDAO) petRepo);
+		new controller.BillController(billView, billService, productService, petService, customerService);
 		return billView;
 	}
 
 	private JPanel createProductPanel() {
 		ProductView productView = new ProductView();
-//		DaoInterface productRepo = new ProductDAO();
-//		ProductService productService = new ProductService(productRepo);
-//		new controller.ProductController(productView, productService);
+		DaoInterface productRepo = new ProductDAO();
+		ProductService productService = new ProductService(productRepo);
+		new controller.ProductController(productView, productService);
 		return productView;
 	}
 
@@ -251,7 +241,6 @@ public class MainView extends JFrame {
 	}
 
 	public void addUsersListener(ActionListener listener) {
-		// Kiểm tra xem btnAdmin có null không trước khi thêm ActionListener
 		if (btnAdmin != null) {
 			btnAdmin.addActionListener(listener);
 		}
@@ -282,11 +271,9 @@ public class MainView extends JFrame {
 	}
 
 	public void showPanel(String panelName) {
-		;
 		cardLayout.show(centerPanel, panelName);
 	}
 
-	// Thêm phương thức cập nhật tên/ID
 	public void setEmployeeInfo(String name, String id) {
 		lblEmployeeName.setText("Name: " + name);
 		lblEmployeeID.setText("ID: " + id);
