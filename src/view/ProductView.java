@@ -28,6 +28,8 @@ public class ProductView extends JPanel {
 	private JButton btnPrevPage;
 	private JButton btnNextPage;
 	private JLabel lblPageInfo;
+	private JButton btnShowDiscontinued;
+	private JButton btnShowAvailable;
 
 	public ProductView() {
 		setLayout(null);
@@ -263,8 +265,26 @@ public class ProductView extends JPanel {
 		btnNextPage.setBackground(Color.WHITE);
 		btnNextPage.setBounds(startX + btnWidth + 80 + spacing, 10, btnWidth, btnHeight);
 		paginationPanel.add(btnNextPage);
+
+		btnShowDiscontinued = new JButton("Ngừng bán");
+		btnShowDiscontinued.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnShowDiscontinued.setFocusPainted(false);
+		btnShowDiscontinued.setBackground(Color.WHITE);
+		btnShowDiscontinued.setBounds(startX - btnWidth - spacing, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnShowDiscontinued);
+
+		btnShowAvailable = new JButton("Còn hàng");
+		btnShowAvailable.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnShowAvailable.setFocusPainted(false);
+		btnShowAvailable.setBackground(Color.WHITE);
+		btnShowAvailable.setBounds(startX - btnWidth*2 - spacing*2, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnShowAvailable);
 	}
 
+	public JButton getAddButton() { return btnAdd; }
+	public JButton getDeleteButton() { return btnDel; }
+	public JButton getShowAvailableButton() { return btnShowAvailable; }
+	public JButton getShowDiscontinuedButton() { return btnShowDiscontinued; }
 	public String getProductName() { return ProName_textField.getText(); }
 	public String getPrice() { return Price_textField.getText(); }
 	public String getQuantity() { return Quan_textField.getText(); }

@@ -48,6 +48,32 @@ public class ProductController {
 			}
 		});
 
+		this.view.getShowDiscontinuedButton().addActionListener(e -> {
+			currentProductList = service.getAllDiscontinued();
+			currentPage = 1;
+			updateTablePage();
+		});
+
+		this.view.getShowAvailableButton().addActionListener(e -> {
+			currentProductList = service.getAll();
+			currentPage = 1;
+			updateTablePage();
+		});
+		this.view.getShowDiscontinuedButton().addActionListener(e -> {
+			currentProductList = service.getAllDiscontinued();
+			currentPage = 1;
+			updateTablePage();
+			view.getAddButton().setEnabled(false);
+			view.getDeleteButton().setEnabled(false);
+		});
+
+		this.view.getShowAvailableButton().addActionListener(e -> {
+			currentProductList = service.getAll();
+			currentPage = 1;
+			updateTablePage();
+			view.getAddButton().setEnabled(true);
+			view.getDeleteButton().setEnabled(true);
+		});
 		loadTable();
 	}
 
@@ -57,10 +83,13 @@ public class ProductController {
 		updateTablePage();
 	}
 
+
 	private void updateTablePage() {
 		int total = currentProductList.size();
 		totalPage = (int) Math.ceil((double) total / pageSize);
 		if (totalPage == 0) totalPage = 1;
+		if (currentPage > totalPage) currentPage = totalPage;
+		if (currentPage < 1) currentPage = 1;
 		int start = (currentPage - 1) * pageSize;
 		int end = Math.min(start + pageSize, total);
 
@@ -71,11 +100,15 @@ public class ProductController {
 			model.addRow(new Object[]{
 					p.getProductID(),
 					p.getName(),
-					p.getPrice(),
-					p.getQuantity(),
+					p.getQuantity(), // Quantity column
+					p.getPrice(),    // Price column
 					p.getCategory().getCategoryName()
 			});
 		}
+
+		view.getPageInfoLabel().setText("Page " + currentPage + "/" + totalPage);
+		view.getPrevPageButton().setEnabled(currentPage > 1);
+		view.getNextPageButton().setEnabled(currentPage < totalPage);
 	}
 
 	class AddListener implements ActionListener {
@@ -134,6 +167,7 @@ public class ProductController {
 		}
 	}
 
+	// In ProductController.java, inside EditListener
 	class EditListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -144,19 +178,18 @@ public class ProductController {
 				String priceStr = view.getPrice();
 				String quantityStr = view.getQuantity();
 
-				if (name == null || name.trim().isEmpty()|| name.equals("Enter Name")
+				if (name == null || name.trim().isEmpty() || name.equals("Enter Name")
 						|| priceStr == null || priceStr.trim().isEmpty() || priceStr.equals("Enter Price")
 						|| quantityStr == null || quantityStr.trim().isEmpty() || quantityStr.equals("Enter Quantity")) {
 					JOptionPane.showMessageDialog(view, "Vui lòng nhập đầy đủ thông tin sản phẩm!");
 					return;
 				}
-				if(!inputUtil.isValidProductName(name)){
-					JOptionPane.showMessageDialog(view,"Tên sản phẩm không hợp lệ!");
+				if (!inputUtil.isValidProductName(name)) {
+					JOptionPane.showMessageDialog(view, "Tên sản phẩm không hợp lệ!");
 					return;
 				}
 				double price;
 				int quantity;
-				// Kiểm tra định dạng số
 				try {
 					price = Double.parseDouble(priceStr);
 					quantity = Integer.parseInt(quantityStr);
@@ -172,14 +205,23 @@ public class ProductController {
 					JOptionPane.showMessageDialog(view, "Vui lòng chọn danh mục.");
 					return;
 				}
+
+				// Check if current list is discontinued
+				boolean isDiscontinuedView = currentProductList.size() > 0 &&
+						"Ngừng bán".equals(currentProductList.get(0).gettrangThai());
+				if (isDiscontinuedView && quantity < 1) {
+					JOptionPane.showMessageDialog(view, "Khi sửa sản phẩm ngừng bán, số lượng phải từ 1 trở lên!");
+					return;
+				}
+
 				Product p = new Product(id, name, price, quantity, selectedCategory);
 				if (quantity > 0) {
 					service.update(p);
-					JOptionPane.showMessageDialog(view,"Cập nhật sản phẩm thành công");
+					JOptionPane.showMessageDialog(view, "Cập nhật sản phẩm thành công");
 				} else {
 					service.delete(p);
-				}
 					JOptionPane.showMessageDialog(view, "Cập nhật sản phẩm thành công");
+				}
 				loadTable();
 				view.clearFields();
 			} else {
@@ -187,7 +229,6 @@ public class ProductController {
 			}
 		}
 	}
-
 	class DeleteListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -257,18 +298,24 @@ public class ProductController {
 		JOptionPane.showMessageDialog(view, message, "Cảnh báo", JOptionPane.WARNING_MESSAGE);
 	}
 
+	// Trong ProductController.java, trong SearchListener
 	class SearchListener implements KeyListener {
 		@Override
 		public void keyReleased(KeyEvent e) {
 			String keyword = view.getSearchKeyword();
-			currentProductList = service.searchByName(keyword);
+			boolean isDiscontinuedView = currentProductList.size() > 0 &&
+					"Ngừng bán".equals(currentProductList.get(0).gettrangThai());
+			if (isDiscontinuedView) {
+				currentProductList = service.searchDiscontinuedByName(keyword);
+			} else {
+				currentProductList = service.searchByName(keyword);
+			}
 			currentPage = 1;
 			updateTablePage();
 		}
 		@Override public void keyTyped(KeyEvent e) {}
 		@Override public void keyPressed(KeyEvent e) {}
 	}
-
 	private void setupTableSelectionListener() {
 		view.addTableSelectionListener(event -> {
 			if (!event.getValueIsAdjusting()) {
@@ -284,8 +331,8 @@ public class ProductController {
 	private void fillFormFromSelectedRow(int selectedRow) {
 		JTable table = view.getProductTable();
 		view.setProductName(table.getValueAt(selectedRow, 1).toString());
-		view.setPrice(table.getValueAt(selectedRow, 2).toString());
-		view.setQuantity(table.getValueAt(selectedRow, 3).toString());
+		view.setQuantity(table.getValueAt(selectedRow, 2).toString()); // Quantity
+		view.setPrice(table.getValueAt(selectedRow, 3).toString());    // Price
 		view.setSelectedCategoryByName(table.getValueAt(selectedRow, 4).toString());
 	}
 }

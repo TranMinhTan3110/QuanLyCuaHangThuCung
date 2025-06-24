@@ -225,10 +225,9 @@ public class MainView extends JFrame {
 
 	private JPanel createBillingsPanel() {
 		BillView billView = new BillView();
-		DaoInterface billRepo = new BillDAO();
-		BillService billService = new BillService(billRepo);
-		DaoInterface userRepo = new CustomerDao();
-		CustomerService customerService = new CustomerService(userRepo);
+		BillDAO billDAO = new BillDAO();
+		BillService billService = new BillService(billDAO);
+		CustomerService customerService = new CustomerService(billDAO); // Sử dụng đúng BillDAO
 		DaoInterface productRepo = new ProductDAO();
 		ProductService productService = new ProductService(productRepo);
 		DaoInterface petRepo = new PetDAO();

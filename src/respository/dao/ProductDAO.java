@@ -268,7 +268,7 @@ public class ProductDAO implements DaoInterface<Product> {
                c.categoryID, c.categoryName, p.trangThai
         FROM Product p
         JOIN Category c ON p.categoryID = c.categoryID
-        WHERE p.trangThai = 'Ngừng bán'
+        WHERE p.trangThai = N'Ngừng bán'
     """;
 
 		try (Connection con = DatabaseConnection.getConnection();
@@ -294,6 +294,28 @@ public class ProductDAO implements DaoInterface<Product> {
 				product.settrangThai(trangThai);
 
 				products.add(product);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	public ArrayList<Product> selectDiscontinuedByNameLike(String name) {
+		ArrayList<Product> products = new ArrayList<>();
+		String sql = """
+        SELECT p.productID, p.name, p.price, p.quantity,
+               c.categoryID, c.categoryName, p.trangThai
+        FROM Product p
+        JOIN Category c ON p.categoryID = c.categoryID
+        WHERE p.name LIKE ? AND p.trangThai = N'Ngừng bán'
+    """;
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, "%" + name + "%");
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				// ... tạo Product như các hàm khác ...
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -12,36 +12,35 @@ public class CustomerDao implements DaoInterface<Customer> {
 	@Override
 	public boolean insert(Customer customer) {
 		String sqlPerson = "INSERT INTO Person(name, phone, address) VALUES(?, ?, ?)";
-		String sqlCustomer = "INSERT INTO Customer(id, loyaltyPoints, membershipLevel) VALUES (?, ?, ?)";
+		String sqlCustomer = "INSERT INTO Customer(id, loyaltyPoints, membershipLevel, trangThai) VALUES (?, ?, ?, ?)";
 
 		try (Connection con = DatabaseConnection.getConnection();
 			 PreparedStatement stPerson = con.prepareStatement(sqlPerson, Statement.RETURN_GENERATED_KEYS);
 			 PreparedStatement stCustomer = con.prepareStatement(sqlCustomer)) {
 
-			con.setAutoCommit(false); // Tắt auto-commit để đảm bảo tính toàn vẹn dữ liệu
+			con.setAutoCommit(false);
 
-			// Chèn vào bảng Person
 			stPerson.setString(1, customer.getName());
 			stPerson.setString(2, customer.getPhone());
 			stPerson.setString(3, customer.getAddress());
-//            stPerson.setString(4, "Customer"); // Đặt type là "Customer"
 			stPerson.executeUpdate();
-			// Lấy ID của Person vừa chèn
+
 			ResultSet resultset = stPerson.getGeneratedKeys();
 			int personId;
 			if (resultset.next()) {
 				personId = resultset.getInt(1);
 				customer.setId(personId);
 			} else {
-				throw new SQLException("Không thể lấy ID của Person!");
+				throw new SQLException("Cannot get Person ID!");
 			}
-			// Chèn vào bảng Customer với ID vừa lấy
+
 			stCustomer.setInt(1, personId);
 			stCustomer.setInt(2, customer.getLoyaltyPoints());
 			stCustomer.setString(3, customer.getMembershipLevel());
+			stCustomer.setString(4, "hoạt động");
 			stCustomer.executeUpdate();
 
-			con.commit(); // Lưu thay đổi vào database
+			con.commit();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -52,10 +51,9 @@ public class CustomerDao implements DaoInterface<Customer> {
 	@Override
 	public boolean update(Customer customer) {
 		String sqlPerson = "UPDATE Person SET name = ?, phone = ?, address = ? WHERE id = ?";
-		String sqlCustomer = "UPDATE Customer SET loyaltyPoints = ?, membershipLevel = ? WHERE id = ?";
+		String sqlCustomer = "UPDATE Customer SET loyaltyPoints = ?, membershipLevel = ?, trangThai = ? WHERE id = ?";
 
 		try (Connection con = DatabaseConnection.getConnection()) {
-			// Cập nhật bảng Person
 			try (PreparedStatement st1 = con.prepareStatement(sqlPerson)) {
 				st1.setString(1, customer.getName());
 				st1.setString(2, customer.getPhone());
@@ -64,11 +62,11 @@ public class CustomerDao implements DaoInterface<Customer> {
 				st1.executeUpdate();
 			}
 
-			// Cập nhật bảng Customer
 			try (PreparedStatement st2 = con.prepareStatement(sqlCustomer)) {
 				st2.setInt(1, customer.getLoyaltyPoints());
 				st2.setString(2, customer.getMembershipLevel());
-				st2.setInt(3, customer.getId());
+				st2.setString(3, customer.getStatus() == null ? "hoạt động" : customer.getStatus());
+				st2.setInt(4, customer.getId());
 				st2.executeUpdate();
 			}
 
@@ -79,26 +77,15 @@ public class CustomerDao implements DaoInterface<Customer> {
 		}
 	}
 
+	// Soft delete: set trangThai to "ngưng hoạt động"
 	@Override
 	public boolean delete(Customer customer) {
-		String sqlCustomer = "DELETE FROM Customer WHERE id = ?";
-		String sqlPerson = "DELETE FROM Person WHERE id = ?";
-
+		String sql = "UPDATE Customer SET trangThai = ? WHERE id = ?";
 		try (Connection con = DatabaseConnection.getConnection();
-				PreparedStatement stCustomer = con.prepareStatement(sqlCustomer);
-				PreparedStatement stPerson = con.prepareStatement(sqlPerson)) {
-
-			con.setAutoCommit(false); // Tắt auto-commit để đảm bảo tính toàn vẹn dữ liệu
-
-			// Xóa thông tin của Customer
-			stCustomer.setInt(1, customer.getId());
-			stCustomer.executeUpdate();
-
-			// Xóa thông tin của Person
-			stPerson.setInt(1, customer.getId());
-			stPerson.executeUpdate();
-
-			con.commit(); // Lưu thay đổi vào database
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, "ngưng hoạt động");
+			st.setInt(2, customer.getId());
+			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -108,24 +95,25 @@ public class CustomerDao implements DaoInterface<Customer> {
 
 	@Override
 	public ArrayList<Customer> getAll() {
-		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel "
-				+ "FROM Person p INNER JOIN Customer c ON p.id = c.id";
-
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE c.trangThai = ?";
 		ArrayList<Customer> customers = new ArrayList<>();
 		try (Connection con = DatabaseConnection.getConnection();
-				PreparedStatement st = con.prepareStatement(sql);
-				ResultSet rs = st.executeQuery()) {
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, "hoạt động");
+			try (ResultSet rs = st.executeQuery()) {
+				while (rs.next()) {
+					int id = rs.getInt("id");
+					String name = rs.getString("name");
+					String phone = rs.getString("phone");
+					String address = rs.getString("address");
+					int loyaltyPoints = rs.getInt("loyaltyPoints");
+					String membershipLevel = rs.getString("membershipLevel");
+					String status = rs.getString("trangThai");
 
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String phone = rs.getString("phone");
-				String address = rs.getString("address");
-				int loyaltyPoints = rs.getInt("loyaltyPoints");
-				String membershipLevel = rs.getString("membershipLevel");
-
-				Customer customer = new Customer(id, name, phone, address, loyaltyPoints, membershipLevel);
-				customers.add(customer);
+					Customer customer = new Customer(id, name, phone, address, loyaltyPoints, membershipLevel, status);
+					customers.add(customer);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -135,13 +123,10 @@ public class CustomerDao implements DaoInterface<Customer> {
 
 	@Override
 	public Customer selectByID(int id) {
-		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel "
-				+ "FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.id = ?";
-
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.id = ?";
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-
 			st.setInt(1, id);
-
 			try (ResultSet rs = st.executeQuery()) {
 				if (rs.next()) {
 					String name = rs.getString("name");
@@ -149,8 +134,8 @@ public class CustomerDao implements DaoInterface<Customer> {
 					String address = rs.getString("address");
 					int loyaltyPoints = rs.getInt("loyaltyPoints");
 					String membershipLevel = rs.getString("membershipLevel");
-
-					return new Customer(id, name, phone, address, loyaltyPoints, membershipLevel);
+					String status = rs.getString("trangThai");
+					return new Customer(id, name, phone, address, loyaltyPoints, membershipLevel, status);
 				}
 			}
 		} catch (SQLException e) {
@@ -160,72 +145,148 @@ public class CustomerDao implements DaoInterface<Customer> {
 	}
 
 	public boolean findByPhone(String phone) {
-		String sql = "SELECT 1 FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.phone = ?";
-
+		String sql = "SELECT 1 FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.phone = ? AND c.trangThai = ?";
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-
 			st.setString(1, phone);
-
+			st.setString(2, "hoạt động");
 			try (ResultSet rs = st.executeQuery()) {
-				return rs.next(); // Nếu có kết quả, trả về true
+				return rs.next();
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return false; // Nếu không tìm thấy
+		return false;
 	}
 
 	public List<Customer> customerListByName(String name) {
 		List<Customer> customers = new ArrayList<>();
-		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershiplevel " + // Lấy thêm các
-																										// cột cần thiết
-				"FROM Customer c " + "JOIN Person p ON c.id = p.id " + // Giả sử có cột person_id liên kết
-				"WHERE LOWER(p.name) LIKE ?";
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Customer c JOIN Person p ON c.id = p.id " +
+				"WHERE LOWER(p.name) LIKE ? AND c.trangThai = ?";
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-			st.setString(1, "%" + name.toLowerCase().trim() + "%"); // Thêm % vào chuỗi tìm kiếm và chuyển về chữ thường
+			st.setString(1, "%" + name.toLowerCase().trim() + "%");
+			st.setString(2, "hoạt động");
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				Customer customer = new Customer();
-				customer.setId(rs.getInt("id"));
-				customer.setName(rs.getString("name"));
-				customer.setPhone(rs.getString("phone"));
-				customer.setAddress(rs.getString("address"));
-				customer.setLoyaltyPoints(rs.getInt("loyaltyPoints"));
-				customer.setMembershipLevel(rs.getString("membershipLevel")); // Giả sử có cột rank trong Customer hoặc
-																				// Person
+				Customer customer = new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				);
 				customers.add(customer);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return customers; // Trả về danh sách khách hàng
+		return customers;
 	}
 
 	public List<Customer> customerListByPhone(String phone) {
 		List<Customer> customers = new ArrayList<>();
-		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershiplevel " + // Lấy thêm các
-																										// cột cần thiết
-				"FROM Customer c " + "JOIN Person p ON c.id = p.id " + // Giả sử có cột person_id liên kết
-				"WHERE LOWER(p.phone) LIKE ?";
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Customer c JOIN Person p ON c.id = p.id " +
+				"WHERE LOWER(p.phone) LIKE ? AND c.trangThai = ?";
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-			st.setString(1, phone.toLowerCase().trim() + "%"); // Thêm % vào chuỗi tìm kiếm và chuyển về chữ thường
+			st.setString(1, phone.toLowerCase().trim() + "%");
+			st.setString(2, "hoạt động");
 			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
-				Customer customer = new Customer();
-				customer.setId(rs.getInt("id"));
-				customer.setName(rs.getString("name"));
-				customer.setPhone(rs.getString("phone"));
-				customer.setAddress(rs.getString("address"));
-				customer.setLoyaltyPoints(rs.getInt("loyaltyPoints"));
-				customer.setMembershipLevel(rs.getString("membershipLevel")); // Giả sử có cột rank trong Customer hoặc
-																				// Person
+				Customer customer = new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				);
 				customers.add(customer);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return customers; // Trả về danh sách khách hàng
+		return customers;
+	}
+
+	public List<Customer> getByStatus(String status) {
+		List<Customer> customers = new ArrayList<>();
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE c.trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				customers.add(new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customers;
+	}
+
+	public List<Customer> customerListByNameAndStatus(String name, String status) {
+		List<Customer> customers = new ArrayList<>();
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Customer c JOIN Person p ON c.id = p.id " +
+				"WHERE LOWER(p.name) LIKE ? AND c.trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, "%" + name.toLowerCase().trim() + "%");
+			st.setString(2, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				customers.add(new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customers;
+	}
+
+	public List<Customer> customerListByPhoneAndStatus(String phone, String status) {
+		List<Customer> customers = new ArrayList<>();
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Customer c JOIN Person p ON c.id = p.id " +
+				"WHERE LOWER(p.phone) LIKE ? AND c.trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, phone.toLowerCase().trim() + "%");
+			st.setString(2, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				customers.add(new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customers;
 	}
 
 }

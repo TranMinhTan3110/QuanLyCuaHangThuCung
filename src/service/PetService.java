@@ -39,13 +39,20 @@ public class PetService {
     }
 
     // Tìm gần đúng theo tên
-    public ArrayList<Pet> searchByNameLike(String name) {
-        return petDAO.searchByName(name);
+    public ArrayList<Pet> searchByNameLike(String name, String status) {
+        return petDAO.searchByName(name, status);
     }
 
     // Lọc theo Species
-    public ArrayList<Pet> filterBySpecies(String species) {
-        return petDAO.filterBySpecies(species);
+    public ArrayList<Pet> filterBySpecies(String species, String status) {
+        return petDAO.filterBySpecies(species, status);
+    }
+    public ArrayList<String> getAllBreeds() {
+        return petDAO.getAllBreeds();
+    }
+
+    public ArrayList<Pet> filterByBreed(String breed, String status) {
+        return petDAO.filterByBreed(breed, status);
     }
 
     // Sắp xếp theo giá tăng dần
@@ -64,10 +71,17 @@ public class PetService {
     }
 
     // Lọc và sắp xếp theo species + giá
-    public ArrayList<Pet> filterALL(String species, String priceOrder) {
-        return petDAO.filterAndSort(species, priceOrder);
+    public ArrayList<Pet> filterALL(String species, String priceOrder, String status) {
+        return petDAO.filterAndSort(species, priceOrder, status);
     }
 
+    public ArrayList<Pet> filterBySpeciesAndBreed(String species, String breed, String priceOrder, String status) {
+        return petDAO.filterBySpeciesAndBreed(species, breed, priceOrder, status);
+    }
+
+    public ArrayList<String> getAllSpecies() {
+        return petDAO.getAllSpecies();
+    }
 
     // Kiểm tra tên Pet đã tồn tại chưa
     public boolean isProductExist(String name) {
@@ -82,6 +96,10 @@ public class PetService {
     // Bán pet (xoá theo ID)
     public boolean sellPet(int id) {
         return petDAO.deletePetByID(id);
+    }
+
+    public ArrayList<Pet> getPetsByStatus(String status) {
+        return petDAO.getPetsByStatus(status);
     }
 
     // Cập nhật trạng thái

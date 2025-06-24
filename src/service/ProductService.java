@@ -61,6 +61,20 @@ public class ProductService {
         return null;
     }
 
+    public ArrayList<Product> getAllDiscontinued() {
+        if (daoProduct instanceof ProductDAO) {
+            return ((ProductDAO) daoProduct).getAllDiscontinued();
+        }
+        return new ArrayList<>();
+    }
+
+    public ArrayList<Product> searchDiscontinuedByName(String name) {
+        if (daoProduct instanceof ProductDAO) {
+            return ((ProductDAO) daoProduct).selectDiscontinuedByNameLike(name);
+        }
+        return new ArrayList<>();
+    }
+
     public boolean updateByQua(int id, int sl) {
         if (daoProduct instanceof ProductDAO) {
             return ((ProductDAO) daoProduct).updateQuantity(id, sl);

@@ -3,20 +3,27 @@ package model.entity;
 public class Customer extends Person {
 	private int loyaltyPoints = 0;
 	private String membershipLevel;
-
+	private String status = "hoạt động";
 	// Constructor mặc định
 	public Customer() {
 	}
 
-	public Customer(int id, String name, String phone, String address, int loyaltyPoints, String membershipLevel) {
-		super(id, name, phone, address); // Gọi constructor của Person
-		this.loyaltyPoints += loyaltyPoints;
+	public Customer(int id, String name, String phone, String address, int loyaltyPoints, String membershipLevel, String status) {
+		super(id, name, phone, address);
+		this.loyaltyPoints = loyaltyPoints;
 		this.membershipLevel = membershipLevel;
+		this.status = status;
 	}
 
 	public Customer(int id, String name, String phone, String address) {
-		super(id, name, phone, address); // Gọi constructor của Person
+		super(id, name, phone, address);
+	}
+	public String getStatus() {
+		return status;
+	}
 
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public int getLoyaltyPoints() {

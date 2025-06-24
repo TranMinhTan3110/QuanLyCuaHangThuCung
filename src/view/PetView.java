@@ -2,6 +2,8 @@ package view;
 
 import java.awt.*;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
@@ -32,6 +34,10 @@ public class PetView extends JPanel {
 	private JButton btnPrevPage;
 	private JButton btnNextPage;
 	private JLabel lblPageInfo;
+
+	private JButton btnShowStopped;
+	private JButton btnShowSold;
+	private JButton btnShowAvailable;
 
 	public PetView() {
 		setLayout(null);
@@ -105,7 +111,7 @@ public class PetView extends JPanel {
 		lblGender.setBounds(325, 107, 76, 33);
 		panel_top.add(lblGender);
 
-		gender_comboBox = new JComboBox<>(new String[] {"Male", "Female"});
+		gender_comboBox = new JComboBox<>(new String[] {"male", "female"});
 		gender_comboBox.setFont(inputFont);
 		gender_comboBox.setBounds(411, 107, 140, 36);
 		gender_comboBox.setBackground(Color.WHITE);
@@ -203,7 +209,7 @@ public class PetView extends JPanel {
 		Hover.addPlaceholder(Search_textField, "search...");
 		panel_top.add(searchPanel);
 
-		// Table
+		// Table và model
 		model = new DefaultTableModel(null, columns) {
 			@Override public boolean isCellEditable(int r, int c) { return false; }
 		};
@@ -225,6 +231,31 @@ public class PetView extends JPanel {
 		Pet_Table.setShowGrid(false);
 		Pet_Table.setIntercellSpacing(new Dimension(0, 0));
 		((DefaultTableCellRenderer) Pet_Table.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
+
+		// ------ LOCK TABLE COLUMN REORDERING ------
+		Pet_Table.getTableHeader().setReorderingAllowed(false);
+
+		// ------ Bỏ chọn khi click ra ngoài và clear form ------
+		Pet_Table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				int row = Pet_Table.rowAtPoint(e.getPoint());
+				if (row == -1) {
+					Pet_Table.clearSelection();
+					clearFields();
+				}
+			}
+		});
+
+		// ------ Clear form khi không chọn dòng nào ------
+		Pet_Table.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int selectedRow = Pet_Table.getSelectedRow();
+				if (selectedRow == -1) {
+					clearFields();
+				}
+			}
+		});
 
 		JScrollPane Pet_ScrollPane = new JScrollPane(Pet_Table);
 		Pet_ScrollPane.setBounds(0, 240, 950, 390);
@@ -264,9 +295,36 @@ public class PetView extends JPanel {
 		btnNextPage.setBackground(Color.WHITE);
 		btnNextPage.setBounds(startX + btnWidth + 80 + spacing, 10, btnWidth, btnHeight);
 		paginationPanel.add(btnNextPage);
+
+
+		btnShowStopped = new JButton("Ngừng KD");
+		btnShowStopped.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnShowStopped.setFocusPainted(false);
+		btnShowStopped.setBackground(Color.WHITE);
+		btnShowStopped.setBounds(startX - btnWidth*2 - spacing*2, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnShowStopped);
+
+		btnShowSold = new JButton("Đã bán");
+		btnShowSold.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnShowSold.setFocusPainted(false);
+		btnShowSold.setBackground(Color.WHITE);
+		btnShowSold.setBounds(startX - btnWidth - spacing, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnShowSold);
+
+		btnShowAvailable = new JButton("Đang KD");
+		btnShowAvailable.setFont(new Font("Arial", Font.PLAIN, 15));
+		btnShowAvailable.setFocusPainted(false);
+		btnShowAvailable.setBackground(Color.WHITE);
+		btnShowAvailable.setBounds(startX - btnWidth*3 - spacing*3, 10, btnWidth, btnHeight);
+		paginationPanel.add(btnShowAvailable);
+
 	}
 
 	// ==== GETTERS for Controller ====
+	// Add getters:
+	public JButton getShowAvailableButton() { return btnShowAvailable;}
+	public JButton getShowStoppedButton() { return btnShowStopped; }
+	public JButton getShowSoldButton() { return btnShowSold; }
 	public JButton getAddButton() { return btnAdd; }
 	public JButton getDeleteButton() { return btnDel; }
 	public JButton getEditButton() { return btnEdit; }
@@ -287,21 +345,37 @@ public class PetView extends JPanel {
 	public String getBreed_textField() { return Breed_textField.getText(); }
 	public String getSearchKeyword() { return Search_textField.getText(); }
 
+	public void setBreedText(String text) {
+		Breed_textField.setText(text);
+	}
+
+	public void setSpeciesText(String text) {
+		Species_textField.setText(text);
+	}
+
 	// ==== ADD SEARCH LISTENER ====
 	public void addSearchKeyListener(KeyListener listener) {
 		Search_textField.addKeyListener(listener);
 	}
 
 	// ==== SET DATA TO FORM ====
-	public void setPetData(String id, String name, String species, String price, String breed, String gender, String age) {
+	// Sửa lại phương thức setPetData trong PetView.java
+	public void setPetData(String id, String name, String breed, String species, String gender, String age, String price) {
 		Name_textField.setText(name);
+		Breed_textField.setText(breed);
 		Species_textField.setText(species);
 		Price_textField.setText(price);
-		Breed_textField.setText(breed);
-		Age_textField.setText(age);
+
+		// Hiển thị tuổi dưới dạng số thực đầy đủ
+		try {
+			float ageFloat = Float.parseFloat(age);
+			Age_textField.setText(String.format("%.1f", ageFloat)); // Hiển thị 1 chữ số thập phân
+		} catch (Exception e) {
+			Age_textField.setText(age); // Giữ nguyên giá trị nếu có lỗi
+		}
+
 		gender_comboBox.setSelectedItem(gender);
 	}
-
 	// ==== CLEAR FORM ====
 	public void clearFields() {
 		Name_textField.setText("");

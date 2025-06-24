@@ -1,3 +1,4 @@
+// src/controller/BillController.java
 package controller;
 
 import com.itextpdf.io.font.constants.StandardFonts;
@@ -21,7 +22,6 @@ import service.CustomerService;
 import service.PetService;
 import service.ProductService;
 import view.BillView;
-
 import service.BillService;
 
 import javax.swing.*;
@@ -50,39 +50,80 @@ public class BillController {
 	private BigDecimal totalAmountEx;
 	private LocalDateTime createdDateEX;
 	private List<OrderDetail> orderDetailsEX;
+	private double pointsDiscount = 0;
 
 	public BillController(BillView view, BillService service, ProductService productService, PetService petService,
-			CustomerService customerService) {
+						  CustomerService customerService) {
 		this.billView = view;
 		this.billService = service;
 		this.productService = productService;
 		this.petService = petService;
 		this.customerService = customerService;
-//
+
+		billView.getBtnUsePoints().addActionListener(e -> useCustomerPoints());
 		addEventHandlers();
 		loadProductTable();
 		loadPetTable();
 		loadCustomerTable();
 	}
 
+	private void useCustomerPoints() {
+		int customerId = billView.getIDCustomer();
+		if (customerId == 0) {
+			JOptionPane.showMessageDialog(billView, "Vui lòng chọn khách hàng trước!");
+			return;
+		}
+		Customer customer = customerService.getCustomerById(customerId);
+		if (customer == null) {
+			JOptionPane.showMessageDialog(billView, "Không tìm thấy khách hàng!");
+			return;
+		}
+		double total = calculateTotalAmount();
+		int points = customer.getLoyaltyPoints();
+		double maxDiscount = total * 0.1; // 10% of order value
+		double discount = Math.min(points, maxDiscount);
+
+		if (discount <= 0) {
+			JOptionPane.showMessageDialog(billView, "Khách hàng không đủ điểm để sử dụng!");
+			return;
+		}
+
+		pointsDiscount = discount;
+		billView.getTotaltextField().setText(String.format("%.2f", total - discount));
+		JOptionPane.showMessageDialog(billView, "Đã dùng " + (int)discount + " điểm, giảm " + (int)discount + " VNĐ.");
+	}
+
+	private void resetBillTable() {
+		DefaultTableModel billModel = (DefaultTableModel) billView.getTableBillItems().getModel();
+		billModel.setRowCount(0); // Clear all items
+		billView.getTotaltextField().setText(""); // Clear total
+		// Optionally reset other fields if needed
+	}
+
 	private void addEventHandlers() {
 		billView.getProductButton().addActionListener(e -> {
-			System.out.println("load product table");
 			toggleTable("product");
 			loadProductTable();
-			System.out.println("load product table done");
 		});
 
 		billView.getPetButton().addActionListener(e -> {
-			System.out.println("load pet table");
 			toggleTable("pet");
 			loadPetTable();
 		});
 
 		billView.getCustomerButton().addActionListener(e -> {
-			System.out.println("load customer table");
 			toggleTable("customer");
 			loadCustomerTable();
+		});
+
+		billView.getBtnSave().addActionListener(e -> {
+			saveBill();
+			billView.getBtnSave().setEnabled(false); // Disable after save
+		});
+
+		billView.getBtnReload().addActionListener(e -> {
+			resetBillTable();
+			billView.getBtnSave().setEnabled(true); // Enable save again
 		});
 
 		billView.getTableProductList().addMouseListener(new MouseAdapter() {
@@ -93,7 +134,7 @@ public class BillController {
 					String id = model.getValueAt(row, 0).toString();
 					String name = model.getValueAt(row, 1).toString();
 					double price = Double.parseDouble(model.getValueAt(row, 2).toString());
-					addBillItem(id, name, 1, price); // mặc định 1 sản phẩm
+					addBillItem(id, name, 1, price);
 					updateTotalAmountField();
 				}
 			}
@@ -104,11 +145,10 @@ public class BillController {
 				int row = billView.getTablePetList().getSelectedRow();
 				if (row >= 0) {
 					DefaultTableModel billModel = (DefaultTableModel) billView.getTableBillItems().getModel();
-					String petID = billView.getTablePetList().getValueAt(row, 0).toString(); // ví dụ: 3PET
+					String petID = billView.getTablePetList().getValueAt(row, 0).toString();
 					String petName = billView.getTablePetList().getValueAt(row, 1).toString();
 					double price = Double.parseDouble(billView.getTablePetList().getValueAt(row, 3).toString());
 
-					// Kiểm tra petID đã tồn tại chưa
 					boolean alreadyAdded = false;
 					for (int i = 0; i < billModel.getRowCount(); i++) {
 						String existingID = billModel.getValueAt(i, 0).toString();
@@ -201,7 +241,6 @@ public class BillController {
 		boolean isPet = id.endsWith("PET");
 
 		if (!isPet) {
-			// xử lý sản phẩm như cũ
 			DefaultTableModel productModel = (DefaultTableModel) billView.getTableProductList().getModel();
 			int quantityInStock = -1;
 			for (int i = 0; i < productModel.getRowCount(); i++) {
@@ -216,7 +255,6 @@ public class BillController {
 				return;
 			}
 
-			// kiểm tra số lượng vượt quá tồn kho
 			for (int i = 0; i < billModel.getRowCount(); i++) {
 				String existingID = billModel.getValueAt(i, 0).toString();
 				if (existingID.equals(id)) {
@@ -231,12 +269,9 @@ public class BillController {
 					return;
 				}
 			}
-
-			// chưa có trong bill, thêm mới
 			billModel.addRow(new Object[] { id, name, quantity, price, quantity * price });
 
 		} else {
-			// xử lý thêm thú cưng - chỉ cho thêm 1 lần duy nhất
 			for (int i = 0; i < billModel.getRowCount(); i++) {
 				String existingID = billModel.getValueAt(i, 0).toString();
 				if (existingID.equals(id)) {
@@ -244,7 +279,6 @@ public class BillController {
 					return;
 				}
 			}
-
 			billModel.addRow(new Object[] { id, name, 1, price, price });
 		}
 	}
@@ -317,12 +351,10 @@ public class BillController {
 	private double calculateTotalAmount() {
 		DefaultTableModel billModel = (DefaultTableModel) billView.getTableBillItems().getModel();
 		double total = 0;
-
 		for (int i = 0; i < billModel.getRowCount(); i++) {
 			double lineTotal = Double.parseDouble(billModel.getValueAt(i, 4).toString());
 			total += lineTotal;
 		}
-
 		return total;
 	}
 
@@ -333,13 +365,15 @@ public class BillController {
 		int id = billView.getIDCustomer();
 
 		Order order = new Order();
-		order.setUserID(UserSession.getInstance().getUser().getId()); // hoặc từ session hiện tại
+		order.setUserID(UserSession.getInstance().getUser().getId());
 		staffNameEx = UserSession.getInstance().getUser().getName();
-		order.setCustomerID(billView.getIDCustomer());
-		order.setOrderDate(new Date()); // ngày hiện tại
-		System.out.println(order.getOrderDate());
-		order.setTotalPrice(calculateTotalAmount());// lấy từ view
-		totalAmountEx = BigDecimal.valueOf(order.getTotalPrice());
+		order.setCustomerID(id);
+		order.setOrderDate(new Date());
+		double total = calculateTotalAmount();
+		double finalTotal = total - pointsDiscount;
+		order.setTotalPrice(finalTotal);
+		totalAmountEx = BigDecimal.valueOf(finalTotal);
+
 		OrderDAO orderDAO = new OrderDAO();
 		try {
 			orderIDExport = orderDAO.insert(order);
@@ -348,14 +382,13 @@ public class BillController {
 		}
 
 		List<OrderDetail> detailList = new ArrayList<>();
-
 		DefaultTableModel model = (DefaultTableModel) billView.getTableBillItems().getModel();
 		int rowCount = model.getRowCount();
 
 		for (int i = 0; i < rowCount; i++) {
-			String itemID = model.getValueAt(i, 0).toString(); // cột ID
-			double price = Double.parseDouble(model.getValueAt(i, 3).toString()); // cột Giá
-			int quantity = Integer.parseInt(model.getValueAt(i, 2).toString()); // cột Số lượng
+			String itemID = model.getValueAt(i, 0).toString();
+			double price = Double.parseDouble(model.getValueAt(i, 3).toString());
+			int quantity = Integer.parseInt(model.getValueAt(i, 2).toString());
 
 			OrderDetail detail = new OrderDetail();
 			detail.setOrderID(orderIDExport);
@@ -365,13 +398,12 @@ public class BillController {
 			if (itemID.endsWith("PET")) {
 				int petId = Integer.parseInt(itemID.replace("PET", ""));
 				detail.setPetID(petId);
-				detail.setProductID(null); // phải dùng null
+				detail.setProductID(null);
 			} else {
 				int productId = Integer.parseInt(itemID);
 				detail.setProductID(productId);
-				detail.setPetID(null); // phải dùng null
+				detail.setPetID(null);
 			}
-
 			detailList.add(detail);
 		}
 		orderDetailsEX = detailList;
@@ -382,11 +414,22 @@ public class BillController {
 
 		Bill bill = new Bill();
 		bill.setOrderID(orderIDExport);
-		bill.setAmount(calculateTotalAmount());
+		bill.setAmount(finalTotal);
 		String method = billView.getPay_comboBox().getSelectedItem().toString();
-		bill.setbillMethod(method); // từ combo box
+		bill.setbillMethod(method);
 		bill.setbillTime(new java.sql.Date(System.currentTimeMillis()));
 		billService.addBill(bill);
+
+		// Deduct used points
+		if (pointsDiscount > 0 && id != 0) {
+			customerService.deductPoints(id, (int) pointsDiscount);
+			pointsDiscount = 0;
+		}
+		// Award new points (2% of original total, before discount)
+		if (id != 0) {
+			int newPoints = (int) Math.floor(total * 0.02);
+			customerService.addPoints(id, newPoints);
+		}
 
 		for (OrderDetail detail : detailList) {
 			Integer productID = detail.getProductID();
@@ -404,30 +447,23 @@ public class BillController {
 	}
 
 	private void exportBill(int orderID, String customerName, String staffName, BigDecimal totalAmount,
-			LocalDateTime createdDate, List<OrderDetail> orderDetails) {
-
-		// Tạo thư mục nếu chưa có
+							LocalDateTime createdDate, List<OrderDetail> orderDetails) {
 		File billDir = new File("bills");
 		if (!billDir.exists()) {
 			billDir.mkdir();
 		}
-
-		// Đường dẫn file PDF
 		String fileName = "Bill_Order_" + orderID + ".pdf";
 		File file = new File(billDir, fileName);
 
 		try {
-			// Khởi tạo PdfWriter và PdfDocument
 			PdfWriter writer = new PdfWriter(file);
 			PdfDocument pdfDoc = new PdfDocument(writer);
 			Document document = new Document(pdfDoc);
 
-			// Tạo các font
 			com.itextpdf.kernel.font.PdfFont normalFont = PdfFontFactory.createFont(StandardFonts.HELVETICA);
 			com.itextpdf.kernel.font.PdfFont boldFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
 			com.itextpdf.kernel.font.PdfFont italicFont = PdfFontFactory.createFont(StandardFonts.HELVETICA_OBLIQUE);
 
-			// Tiêu đề
 			Text titleText = new Text("HÓA ĐƠN THANH TOÁN").setFont(boldFont);
 			Paragraph title = new Paragraph(titleText).setTextAlignment(TextAlignment.CENTER).setFontSize(18)
 					.setBorder(new SolidBorder(1));
@@ -437,17 +473,14 @@ public class BillController {
 			document.add(new Paragraph("Khách hàng: " + customerName).setFont(normalFont));
 			document.add(new Paragraph("Nhân viên: " + staffName).setFont(normalFont));
 
-			// Xử lý createdDate null
 			String dateStr = (createdDate != null) ? createdDate.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
 					: "Chưa xác định";
 			document.add(new Paragraph("Ngày tạo: " + dateStr).setFont(normalFont));
 
 			document.add(new Paragraph(" "));
 
-			// Bảng chi tiết hóa đơn
 			Table table = new Table(UnitValue.createPercentArray(new float[] { 1, 4, 2, 3 })).useAllAvailableWidth();
 
-			// Header bảng
 			table.addHeaderCell(new Cell().add(new Paragraph("STT").setFont(boldFont)));
 			table.addHeaderCell(new Cell().add(new Paragraph("Tên mặt hàng").setFont(boldFont)));
 			table.addHeaderCell(new Cell().add(new Paragraph("SL").setFont(boldFont)));
@@ -476,29 +509,22 @@ public class BillController {
 			document.add(new Paragraph(" "));
 			document.add(new LineSeparator(new SolidLine()));
 
-			// Tổng tiền
 			Text totalText = new Text("Tổng cộng: " + String.format("%,.2f VNĐ", totalAmount)).setFont(boldFont);
 			Paragraph total = new Paragraph(totalText).setTextAlignment(TextAlignment.RIGHT);
 			document.add(total);
 
-			// Cảm ơn
 			Text thanksText = new Text("Cảm ơn quý khách!").setFont(italicFont);
 			Paragraph thanks = new Paragraph(thanksText).setTextAlignment(TextAlignment.CENTER);
 			document.add(thanks);
 
 			document.close();
 
-			System.out.println("Đã xuất hóa đơn ra file: " + file.getAbsolutePath());
-
-			// Mở file trên máy tính nếu hỗ trợ
 			if (Desktop.isDesktopSupported()) {
 				Desktop.getDesktop().open(file);
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.err.println("Lỗi khi tạo file PDF.");
 		}
 	}
-
 }

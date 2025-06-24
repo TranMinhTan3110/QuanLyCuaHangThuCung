@@ -71,7 +71,7 @@ public class PetDAO implements DaoInterface<Pet> {
 	@Override
 	public ArrayList<Pet> getAll() {
 		ArrayList<Pet> pets = new ArrayList<>();
-		String sql = "SELECT * FROM Pet WHERE trangThai = N'chua bán'";
+		String sql = "SELECT * FROM Pet WHERE trangThai = N'chưa bán'";
 
 		try (Connection con = DatabaseConnection.getConnection();
 				PreparedStatement st = con.prepareStatement(sql);
@@ -107,14 +107,32 @@ public class PetDAO implements DaoInterface<Pet> {
 		return null;
 	}
 
-	public ArrayList<Pet> searchByName(String keyword) {
+	public ArrayList<Pet> searchByName(String keyword, String status) {
 		ArrayList<Pet> pets = new ArrayList<>();
-		String sql = "SELECT * FROM Pet WHERE name LIKE ?";
+		String sql = "SELECT * FROM Pet WHERE name LIKE ? AND trangThai = ?";
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
-
 			st.setString(1, "%" + keyword + "%");
+			st.setString(2, status);
 			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("breed"),
+						rs.getString("species"), rs.getFloat("age"), rs.getDouble("price"), rs.getString("gender"));
+				pet.setTrangThai(rs.getString("trangThai"));
+				pets.add(pet);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pets;
+	}
 
+	public ArrayList<Pet> filterBySpecies(String species, String status) {
+		ArrayList<Pet> pets = new ArrayList<>();
+		String sql = "SELECT * FROM Pet WHERE species = ? AND trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, species);
+			st.setString(2, status);
+			ResultSet rs = st.executeQuery();
 			while (rs.next()) {
 				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("species"),
 						rs.getString("breed"), rs.getInt("age"), rs.getDouble("price"), rs.getString("gender"));
@@ -126,17 +144,75 @@ public class PetDAO implements DaoInterface<Pet> {
 		return pets;
 	}
 
-	public ArrayList<Pet> filterBySpecies(String species) {
-		ArrayList<Pet> pets = new ArrayList<>();
-		String sql = "SELECT * FROM Pet WHERE species = ?";
-		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+	public ArrayList<String> getAllBreeds() {
+		ArrayList<String> breeds = new ArrayList<>();
+		String sql = "SELECT DISTINCT breed FROM Pet WHERE (trangThai = N'chưa bán' OR trangThai IS NULL) ORDER BY breed";
 
-			st.setString(1, species);
-			ResultSet rs = st.executeQuery();
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql);
+			 ResultSet rs = st.executeQuery()) {
 
 			while (rs.next()) {
-				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("species"),
-						rs.getString("breed"), rs.getInt("age"), rs.getDouble("price"), rs.getString("gender"));
+				breeds.add(rs.getString("breed"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return breeds;
+	}
+
+	public ArrayList<String> getAllSpecies() {
+		ArrayList<String> speciesList = new ArrayList<>();
+		String sql = "SELECT DISTINCT species FROM Pet WHERE (trangThai = N'chưa bán' OR trangThai IS NULL) ORDER BY species";
+
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql);
+			 ResultSet rs = st.executeQuery()) {
+
+			while (rs.next()) {
+				speciesList.add(rs.getString("species"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return speciesList;
+	}
+
+	public ArrayList<Pet> filterBySpeciesAndBreed(String species, String breed, String priceOrder, String status) {
+		ArrayList<Pet> list = new ArrayList<>();
+		StringBuilder sql = new StringBuilder("SELECT * FROM Pet WHERE species = ? AND breed = ? AND trangThai = ?");
+		if (priceOrder != null && !priceOrder.isEmpty()) {
+			sql.append(" ORDER BY price ").append(priceOrder);
+		}
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement ps = con.prepareStatement(sql.toString())) {
+			ps.setString(1, species);
+			ps.setString(2, breed);
+			ps.setString(3, status);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("breed"),
+						rs.getString("species"), rs.getFloat("age"), rs.getDouble("price"), rs.getString("gender"));
+				pet.setTrangThai(rs.getString("trangThai"));
+				list.add(pet);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<Pet> filterByBreed(String breed, String status) {
+		ArrayList<Pet> pets = new ArrayList<>();
+		String sql = "SELECT * FROM Pet WHERE breed = ? AND trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, breed);
+			st.setString(2, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("breed"),
+						rs.getString("species"), rs.getFloat("age"), rs.getDouble("price"), rs.getString("gender"));
+				pet.setTrangThai(rs.getString("trangThai"));
 				pets.add(pet);
 			}
 		} catch (SQLException e) {
@@ -180,36 +256,32 @@ public class PetDAO implements DaoInterface<Pet> {
 		return list;
 	}
 
-	public ArrayList<Pet> filterAndSort(String species, String priceOrder) {
+	public ArrayList<Pet> filterAndSort(String species, String priceOrder, String status) {
 		ArrayList<Pet> list = new ArrayList<>();
-		StringBuilder sql = new StringBuilder("SELECT * FROM Pet WHERE trangThai = N'Chưa bán'");
-
+		StringBuilder sql = new StringBuilder("SELECT * FROM Pet WHERE trangThai = ?");
 		if (species != null && !species.isEmpty()) {
 			sql.append(" AND species = ?");
 		}
 		if (priceOrder != null && !priceOrder.isEmpty()) {
-			sql.append(" ORDER BY price ").append(priceOrder); // ASC hoặc DESC
+			sql.append(" ORDER BY price ").append(priceOrder);
 		}
-
 		try (Connection con = DatabaseConnection.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql.toString())) {
-
+			 PreparedStatement ps = con.prepareStatement(sql.toString())) {
 			int paramIndex = 1;
+			ps.setString(paramIndex++, status);
 			if (species != null && !species.isEmpty()) {
 				ps.setString(paramIndex++, species);
 			}
-
 			ResultSet rs = ps.executeQuery();
-
 			while (rs.next()) {
-				list.add(new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("species"),
-						rs.getString("breed"), rs.getInt("age"), rs.getDouble("price"), rs.getString("gender")));
+				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("breed"),
+						rs.getString("species"), rs.getFloat("age"), rs.getDouble("price"), rs.getString("gender"));
+				pet.setTrangThai(rs.getString("trangThai"));
+				list.add(pet);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return list;
 	}
 
@@ -257,20 +329,39 @@ public class PetDAO implements DaoInterface<Pet> {
 	}
 
 	public boolean isPetExists(String name) {
-		String sql = "SELECT COUNT(*) FROM Pet WHERE name = ?";
+		String sql = "SELECT COUNT(*) FROM Pet WHERE name = ? AND (trangThai = N'chưa bán' OR trangThai IS NULL)";
 
 		try (Connection con = DatabaseConnection.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
 
 			st.setString(1, name);
 			try (ResultSet rs = st.executeQuery()) {
 				if (rs.next()) {
-					int count = rs.getInt(1); // Lấy giá trị COUNT(*)
-					return count > 0; // Nếu > 0 nghĩa là đã có sản phẩm
+					int count = rs.getInt(1);
+					return count > 0;
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public ArrayList<Pet> getPetsByStatus(String status) {
+		ArrayList<Pet> pets = new ArrayList<>();
+		String sql = "SELECT * FROM Pet WHERE trangThai = ?";
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setString(1, status);
+			ResultSet rs = st.executeQuery();
+			while (rs.next()) {
+				Pet pet = new Pet(rs.getInt("petID"), rs.getString("name"), rs.getString("species"),
+						rs.getString("breed"), rs.getInt("age"), rs.getDouble("price"), rs.getString("gender"));
+				pet.setTrangThai(rs.getString("trangThai"));
+				pets.add(pet);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pets;
 	}
 }

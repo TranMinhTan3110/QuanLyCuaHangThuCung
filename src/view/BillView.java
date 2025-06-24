@@ -39,6 +39,8 @@ public class BillView extends JPanel {
 	private JTextField txtTotalAmount;
 	private JComboBox pay_comboBox;
 	private int idCustomer;
+	private JButton btnUsePoints;
+	private JButton btnReload;
 
 	private static final Color PRIMARY_COLOR = new Color(121, 162, 219);
 	private static final Color PRIMARY_HOVER = new Color(100, 140, 200);
@@ -48,20 +50,20 @@ public class BillView extends JPanel {
 	private static final Color BTN_DEL_HOVER = new Color(200, 50, 40);
 	private static final Color BG_FORM = new Color(245, 250, 255);
 	private static final Color TEXT_MAIN = new Color(40, 40, 40);
+	private static final Color TABLE_HEADER_BG = new Color(210, 225, 250); // đổi màu header
+	private static final Color TABLE_HEADER_FG = new Color(33, 70, 120); // màu chữ header
 
 	public BillView() {
 		setLayout(null);
 		setBounds(0, 0, 950, 750);
 		setBackground(new Color(200, 220, 240));
 
-		// Custom Scrollbar UI globally
 		UIManager.put("ScrollBar.thumb", new Color(200, 220, 240));
 		UIManager.put("ScrollBar.thumbHighlight", PRIMARY_COLOR);
 		UIManager.put("ScrollBar.thumbShadow", PRIMARY_COLOR);
 		UIManager.put("ScrollBar.thumbDarkShadow", PRIMARY_COLOR);
 		UIManager.put("ScrollBar.track", BG_FORM);
 
-		// Customer Info Panel
 		JPanel panel = new JPanel() {
 			@Override protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -107,7 +109,6 @@ public class BillView extends JPanel {
 		addressTextField.setBounds(30, 115, 390, 32);
 		panel.add(addressTextField);
 
-		// Tab buttons
 		productButton = createTabButton("Product", true);
 		productButton.setBounds(38, 175, 110, 36);
 		panel.add(productButton);
@@ -120,7 +121,6 @@ public class BillView extends JPanel {
 		customerButton.setBounds(318, 175, 110, 36);
 		panel.add(customerButton);
 
-		// Search fields
 		searchProductField = createRoundTextField("Search Product ID...");
 		searchProductField.setBounds(38, 222, 390, 32);
 		searchProductField.setVisible(true);
@@ -136,28 +136,24 @@ public class BillView extends JPanel {
 		searchCustomerField.setVisible(false);
 		panel.add(searchCustomerField);
 
-		// List label
 		lblProductList = new JLabel("Danh sách hàng hóa");
 		lblProductList.setFont(new Font("SansSerif", Font.BOLD, 16));
 		lblProductList.setForeground(PRIMARY_COLOR);
 		lblProductList.setBounds(35, 365, 250, 25);
 		add(lblProductList);
 
-		// Table Product
 		tableProductList = createModernTable(new String[] { "ID", "Name", "Price", "Quantity", "Category" });
 		scrollPaneProduct = createModernScrollPane(tableProductList);
 		scrollPaneProduct.setBounds(15, 400, 480, 320);
 		scrollPaneProduct.setVisible(true);
 		add(scrollPaneProduct);
 
-		// Table Pet
 		tablePetList = createModernTable(new String[] { "ID", "Name", "Species", "Price", "Breed", "Age" });
 		scrollPanePet = createModernScrollPane(tablePetList);
 		scrollPanePet.setBounds(15, 400, 480, 320);
 		scrollPanePet.setVisible(false);
 		add(scrollPanePet);
 
-		// Table Customer
 		tableCustomerList = createModernTable(new String[] { "ID", "Name", "Address", "Phone", "Rank", "Score" });
 		scrollPaneCustomer = createModernScrollPane(tableCustomerList);
 		scrollPaneCustomer.setBounds(15, 400, 480, 320);
@@ -184,7 +180,6 @@ public class BillView extends JPanel {
 			}
 		});
 
-		// Bill Panel
 		JPanel billPanel = new JPanel() {
 			@Override protected void paintComponent(Graphics g) {
 				super.paintComponent(g);
@@ -234,11 +229,16 @@ public class BillView extends JPanel {
 		billPanel.add(pay_comboBox);
 
 		btnAdd = createCircleButton("+", BTN_ADD, BTN_ADD_HOVER);
-		btnAdd.setBounds(120, 470, 50, 50);
+		btnAdd.setBounds(150, 470, 50, 50);
 		billPanel.add(btnAdd);
 
+		btnReload = createModernButton("Reload", PRIMARY_COLOR, PRIMARY_HOVER);
+		btnReload.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnReload.setBounds(60, 470, 80, 50);
+		billPanel.add(btnReload);
+
 		btnDel = createCircleButton("-", BTN_DEL, BTN_DEL_HOVER);
-		btnDel.setBounds(200, 470, 50, 50);
+		btnDel.setBounds(210, 470, 50, 50);
 		billPanel.add(btnDel);
 
 		btnSave = createModernButton("Lưu", PRIMARY_COLOR, PRIMARY_HOVER);
@@ -251,8 +251,16 @@ public class BillView extends JPanel {
 		btnExport.setBounds(220, 550, 150, 48);
 		billPanel.add(btnExport);
 
+		btnUsePoints = createModernButton("Dùng điểm", BTN_ADD, BTN_ADD_HOVER);
+		btnUsePoints.setFont(new Font("SansSerif", Font.BOLD, 15));
+		btnUsePoints.setBounds(270, 470, 110, 50);
+		billPanel.add(btnUsePoints);
+
 		setupButtonListeners();
 	}
+
+	public JButton getBtnReload() { return btnReload; }
+	public JButton getBtnUsePoints() { return btnUsePoints; }
 
 	private JTextField createRoundTextField(String placeholder) {
 		JTextField tf = new JTextField();
@@ -297,7 +305,6 @@ public class BillView extends JPanel {
 		sp.setBorder(BorderFactory.createEmptyBorder());
 		sp.setBackground(BG_FORM);
 		sp.getViewport().setBackground(BG_FORM);
-		// Custom scrollbar UI
 		sp.getVerticalScrollBar().setUI(new ModernScrollBarUI(PRIMARY_COLOR));
 		sp.getHorizontalScrollBar().setUI(new ModernScrollBarUI(PRIMARY_COLOR));
 		return sp;
@@ -312,10 +319,12 @@ public class BillView extends JPanel {
 		table.setRowHeight(38);
 		table.setSelectionBackground(new Color(230, 240, 255));
 		table.setSelectionForeground(TEXT_MAIN);
+
 		JTableHeader header = table.getTableHeader();
 		header.setFont(new Font("SansSerif", Font.BOLD, 17));
-		header.setBackground(PRIMARY_COLOR);
-		header.setForeground(Color.WHITE);
+		header.setBackground(TABLE_HEADER_BG);
+		header.setForeground(TABLE_HEADER_FG);
+
 		return table;
 	}
 

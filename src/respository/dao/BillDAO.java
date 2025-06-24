@@ -143,9 +143,9 @@ public class BillDAO implements DaoInterface<Bill> {
 	}
 
 	public ArrayList<Customer> getAllCustomer() {
-		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel "
-				+ "FROM Person p INNER JOIN Customer c ON p.id = c.id";
-
+// Change this line in getAllCustomer():
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Person p INNER JOIN Customer c ON p.id = c.id";
 		ArrayList<Customer> customers = new ArrayList<>();
 		try (Connection con = DatabaseConnection.getConnection();
 				PreparedStatement st = con.prepareStatement(sql);
@@ -158,8 +158,9 @@ public class BillDAO implements DaoInterface<Bill> {
 				String address = rs.getString("address");
 				int loyaltyPoints = rs.getInt("loyaltyPoints");
 				String membershipLevel = rs.getString("membershipLevel");
+				String status = rs.getString("trangThai");
 
-				Customer customer = new Customer(id, name, phone, address, loyaltyPoints, membershipLevel);
+				Customer customer = new Customer(id, name, phone, address, loyaltyPoints, membershipLevel, status);
 				customers.add(customer);
 			}
 		} catch (SQLException e) {
@@ -175,6 +176,55 @@ public class BillDAO implements DaoInterface<Bill> {
 			ps.setDouble(2, bill.getAmount());
 			ps.setInt(3, bill.getOrderID());
 			ps.executeUpdate();
+		}
+	}
+
+	public Customer getCustomerById(int id) {
+		String sql = "SELECT p.id, p.name, p.phone, p.address, c.loyaltyPoints, c.membershipLevel, c.trangThai " +
+				"FROM Person p INNER JOIN Customer c ON p.id = c.id WHERE p.id = ?";
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if (rs.next()) {
+				return new Customer(
+						rs.getInt("id"),
+						rs.getString("name"),
+						rs.getString("phone"),
+						rs.getString("address"),
+						rs.getInt("loyaltyPoints"),
+						rs.getString("membershipLevel"),
+						rs.getString("trangThai")
+				);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public void addPoints(int customerId, int points) {
+		String sql = "UPDATE Customer SET loyaltyPoints = loyaltyPoints + ? WHERE id = ?";
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setInt(1, points);
+			st.setInt(2, customerId);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void deductPoints(int customerId, int points) {
+		String sql = "UPDATE Customer SET loyaltyPoints = loyaltyPoints - ? WHERE id = ? AND loyaltyPoints >= ?";
+		try (Connection con = DatabaseConnection.getConnection();
+			 PreparedStatement st = con.prepareStatement(sql)) {
+			st.setInt(1, points);
+			st.setInt(2, customerId);
+			st.setInt(3, points);
+			st.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 }

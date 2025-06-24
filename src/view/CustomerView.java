@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import model.entity.Customer;
 import view.UI.Hover;
 
 public class CustomerView extends JPanel {
@@ -26,7 +27,7 @@ public class CustomerView extends JPanel {
     private JTextField Search_textField;
     private DefaultTableModel model;
     private JButton btnSave, btnEdit, btnDel;
-
+    private JButton btnActive, btnInactive;
     // Pagination
     private int currentPage = 1;
     private int rowsPerPage = 21;
@@ -36,6 +37,8 @@ public class CustomerView extends JPanel {
     private JLabel pageLabel;
 
     public CustomerView() {
+        this.btnActive = btnActive;
+        this.btnInactive = btnInactive;
         setLayout(null);
         setBounds(0, 0, 950, 750);
         setBackground(new Color(200, 220, 240));
@@ -244,6 +247,20 @@ public class CustomerView extends JPanel {
         btnNext.setEnabled(true);
         paginationPanel.add(btnNext);
 
+        btnInactive = new JButton("Ngưng HD");
+        btnInactive.setFont(new Font("Arial", Font.PLAIN, 15));
+        btnInactive.setFocusPainted(false);
+        btnInactive.setBackground(Color.WHITE);
+        btnInactive.setBounds(startX - 280, 10, 140, btnHeight);
+        paginationPanel.add(btnInactive);
+
+        btnActive = new JButton("Hoạt động");
+        btnActive.setFont(new Font("Arial", Font.PLAIN, 15));
+        btnActive.setFocusPainted(false);
+        btnActive.setBackground(Color.WHITE);
+        btnActive.setBounds(startX - 120 - 10, 10, 120, btnHeight); // Move left by 60px more
+        paginationPanel.add(btnActive);
+        // More space between buttons        paginationPanel.add(btnActive);
         btnPrev.addActionListener(e -> {
             if (currentPage > 1) {
                 currentPage--;
@@ -258,6 +275,26 @@ public class CustomerView extends JPanel {
         });
     }
 
+    public void setSaveEnabled(boolean enabled) {
+        btnSave.setEnabled(enabled);
+    }
+    public void setDeleteEnabled(boolean enabled) {
+        btnDel.setEnabled(enabled);
+    }
+
+    public void setCustomerTableData(List<Object[]> tableRows) {
+        allData.clear();
+        allData.addAll(tableRows);
+        currentPage = 1;
+        updateTableForCurrentPage();
+    }
+
+    public void setActiveButtonListener(ActionListener listener) {
+        btnActive.addActionListener(listener);
+    }
+    public void setInactiveButtonListener(ActionListener listener) {
+        btnInactive.addActionListener(listener);
+    }
     private void updateTableForCurrentPage() {
         model.setRowCount(0);
         int startIndex = (currentPage - 1) * rowsPerPage;
